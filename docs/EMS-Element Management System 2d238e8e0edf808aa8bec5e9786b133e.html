@@ -1,0 +1,719 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>EMS-Element Management System</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2d238e8e-0edf-808a-a8be-c5e9786b133e" class="page sans"><header><h1 class="page-title" dir="auto">EMS-Element Management System</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2d238e8e-0edf-80e8-b9a2-cea32cb2bd55" class="">What is an Element Management System (EMS)?</h1></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80ef-ada3-d6dd478548d9" class="">An Element Management System (EMS) is a specialized network management tool that provides comprehensive monitoring, configuration, and control of network elements within a telecommunications infrastructure. It serves as a critical layer in the telecommunications management hierarchy, bridging the gap between individual network devices and higher-level network management systems.</p></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-802c-b801-cd5109e5b6d3" class="">Core Functions</h2></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-805a-96bb-dd154f46ae62" class="bulleted-list"><li style="list-style-type:disc"><strong>Configuration Management:</strong> Enables administrators to configure and provision network elements, manage software updates, and maintain consistent settings across devices.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80fd-b3d9-f6c9edff3aec" class="bulleted-list"><li style="list-style-type:disc"><strong>Fault Management:</strong> Monitors network elements for failures and performance issues, generates alarms, and provides diagnostic tools for troubleshooting.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e6-9df7-c18c5911d0a7" class="bulleted-list"><li style="list-style-type:disc"><strong>Performance Management:</strong> Collects and analyzes performance metrics, monitors network quality, and generates reports on system health and efficiency.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8007-aa42-fcfa6f7741c6" class="bulleted-list"><li style="list-style-type:disc"><strong>Security Management:</strong> Manages access control, authentication, and security policies to protect network infrastructure from unauthorized access.</li></ul></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8034-8e0e-e6fe77b20523" class="">Key Benefits</h2></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80af-9c5a-f4e4394fb4ec" class="bulleted-list"><li style="list-style-type:disc"><strong>Centralized Control:</strong> Provides a single interface for managing multiple network elements, reducing operational complexity.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ba-ba8d-dbe6ad76df64" class="bulleted-list"><li style="list-style-type:disc"><strong>Improved Efficiency:</strong> Automates routine tasks and streamlines network operations, reducing manual intervention and human error.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b6-a046-e70b74126e70" class="bulleted-list"><li style="list-style-type:disc"><strong>Enhanced Visibility:</strong> Offers real-time monitoring and comprehensive reporting capabilities for better network insight.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e5-8f5f-c7f4263ff94d" class="bulleted-list"><li style="list-style-type:disc"><strong>Reduced Downtime:</strong> Enables faster fault detection and resolution, minimizing service disruptions.</li></ul></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8042-bb70-f25e3451f22a" class="">Common Use Cases</h2></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ca-ae50-eff242c05600" class="bulleted-list"><li style="list-style-type:disc">Managing base stations and radio access networks in cellular systems</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8077-9649-dc5e32d2d070" class="bulleted-list"><li style="list-style-type:disc">Controlling optical transport equipment in fiber networks</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-804f-b312-d815c2a5e6ec" class="bulleted-list"><li style="list-style-type:disc">Monitoring and configuring routers, switches, and other IP network devices</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8055-9acc-f8c6750f2f97" class="bulleted-list"><li style="list-style-type:disc">Managing 5G network infrastructure and virtualized network functions</li></ul></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80ed-8a12-cc8aa03de4f7" class="">Integration with Network Management Architecture</h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80e2-a204-eab18de51090" class="">EMS typically operates at the element management layer of the TMN (Telecommunications Management Network) framework, interfacing with network elements below and network management systems (NMS) above. This hierarchical approach enables scalable and efficient management of complex telecommunications networks.</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80ee-92bd-ea2a786deadc" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="2d238e8e-0edf-805c-a861-e1a1df877b19" class="link-to-page"><a href="5G%20EMS%20(Element%20Management%20System)%20%E2%80%93%20Full%20Software%202d238e8e0edf805ca861e1a1df877b19.html">5G EMS (Element Management System) – Full Software Design</a></figure></div><div style="display:contents" dir="ltr"><figure id="2d238e8e-0edf-80da-ab97-c0906148c424" class="link-to-page"><a href="EMS%20Architecture%20(Basic)%202d238e8e0edf80daab97c0906148c424.html"> EMS Architecture (Basic)</a></figure></div><div style="display:contents" dir="ltr"><figure id="2d238e8e-0edf-80bf-a164-f24bde02aff1" class="link-to-page"><a href="Product%20Requirements%20Document%20(PRD)%202d238e8e0edf80bfa164f24bde02aff1.html">Product Requirements Document (PRD)</a></figure></div><div style="display:contents" dir="ltr"><figure id="2d338e8e-0edf-80cf-82e6-ece83940b711" class="link-to-page"><a href="EMS%20Feature%20&amp;%20Function%20Categories%202d338e8e0edf80cf82e6ece83940b711.html">EMS Feature &amp; Function Categories</a></figure></div><div style="display:contents" dir="ltr"><figure id="2d238e8e-0edf-8036-a1c0-ef95b4940bd3" class="link-to-page"><a href="Implementation%20Plan%202d238e8e0edf8036a1c0ef95b4940bd3.html">Implementation Plan</a></figure></div><div style="display:contents" dir="ltr"><figure id="2d238e8e-0edf-8074-bdb1-e66563d1f71a" class="link-to-page"><a href="Private%205G%20EMS%20%E2%80%93%20Use%20Case%202d238e8e0edf8074bdb1e66563d1f71a.html">Private 5G EMS – Use Case</a></figure></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-80a6-824b-ca0640393010" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-802d-8e39-fef953b49f01" class="">In modern IT operations (AIOps) and industrial maintenance, these three concepts represent a progression from <strong>spotting</strong> a problem to <strong>explaining</strong> it and, finally, <strong>preventing</strong> it.</p></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8031-9b87-dfc55d2d86b1" class="">While they are often used together, they serve very different roles in the &quot;incident lifecycle.&quot;</p></div><div style="display:contents" dir="auto"><hr id="2d438e8e-0edf-800c-8f62-dd160c8b6449"/></div><div style="display:contents" dir="auto"><h2 id="2d438e8e-0edf-806c-9677-d1dd9261c8c4" class="">1. Anomaly Detection: The &quot;Watchdog&quot;</h2></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8058-bc6e-c834a0b68326" class=""><strong>Goal:</strong> To identify <em>when</em> something is wrong.</p></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8035-9071-cc792427cf41" class="">Anomaly detection uses machine learning to establish a baseline of &quot;normal&quot; behavior. When a data point (like a spike in CPU or a drop in sales) falls outside this expected range, it triggers an alert. It doesn&#x27;t tell you <em>why</em> it happened; it just tells you that the current state is weird.</p></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8090-bf46-c7434f0ec7d5" class="bulleted-list"><li style="list-style-type:disc"><strong>Logic:</strong> &quot;This is not what usually happens at 2:00 PM on a Tuesday.&quot;</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-80b0-834b-d68bb902ea71" class="bulleted-list"><li style="list-style-type:disc"><strong>Key Feature:</strong> Reduces manual threshold setting (e.g., instead of saying &quot;Alert me at 90%,&quot; the AI learns that 95% might be normal during a backup window).</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8013-8370-ce993e7113d1" class="bulleted-list"><li style="list-style-type:disc"><strong>Analogy:</strong> A smoke detector. It knows smoke isn&#x27;t normal, but it doesn&#x27;t know if it’s a toaster or a house fire.</li></ul></div><div style="display:contents" dir="auto"><hr id="2d438e8e-0edf-8005-afda-e536a96841f7"/></div><div style="display:contents" dir="auto"><h2 id="2d438e8e-0edf-80a6-85fe-e7b7b9d52646" class="">2. Intelligent Root Cause Analysis (iRCA): The &quot;Detective&quot;</h2></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-80a5-8119-e4edd787166b" class=""><strong>Goal:</strong> To explain <em>why</em> something went wrong.</p></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8067-bc8d-c999ddc0653d" class="">Once an anomaly is detected, iRCA looks across the entire system to find the &quot;patient zero.&quot; It uses topology mapping (how systems are connected) and event correlation to filter out &quot;noise&quot; and point to the specific component that failed.</p></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-804e-b22a-c963a0eaf447" class="bulleted-list"><li style="list-style-type:disc"><strong>Logic:</strong> &quot;The website is slow (anomaly) because the database disk is full (root cause).&quot;</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8081-b31a-f78f4b6d9c85" class="bulleted-list"><li style="list-style-type:disc"><strong>Key Feature:</strong> Groups hundreds of related alerts into a single incident to prevent &quot;alert storms.&quot;</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8028-ab0c-c294c6448e0e" class="bulleted-list"><li style="list-style-type:disc"><strong>Analogy:</strong> A mechanic. They don&#x27;t just see the &quot;Check Engine&quot; light; they plug in a scanner to find the specific faulty spark plug.</li></ul></div><div style="display:contents" dir="auto"><hr id="2d438e8e-0edf-809a-b56d-d0aa2a452c71"/></div><div style="display:contents" dir="auto"><h2 id="2d438e8e-0edf-8058-b219-ca867b9be954" class="">3. Predictive Fault Analysis (PFA): </h2></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-809e-876a-cdd751670d2b" class=""><strong>Goal:</strong> To predict <em>what will</em> go wrong before it happens.</p></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-800d-bce2-c035e846e1fa" class="">PFA is the most advanced stage. It analyzes historical patterns and leading indicators to forecast a failure in the future. It doesn&#x27;t wait for an anomaly; it identifies a trend that—if left unchecked—will lead to a crash.</p></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-80bc-8ffb-c15dad175f07" class="bulleted-list"><li style="list-style-type:disc"><strong>Logic:</strong> &quot;Based on the current rate of memory leakage, this server will crash in approximately 4 hours.&quot;</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-800d-9b2e-f28fc7dd2549" class="bulleted-list"><li style="list-style-type:disc"><strong>Key Feature:</strong> Moves from <em>reactive</em> (fixing it now) to <em>proactive</em> (scheduling a fix during a maintenance window).</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-80fd-866d-ed66d4e5b6e7" class="bulleted-list"><li style="list-style-type:disc"><strong>Analogy:</strong> A weather forecast. It tells you a storm is coming so you can board up the windows before the first raindoy falls.</li></ul></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8073-bf08-c080d13c10d7" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-805c-afe0-dfb3d83f4fd5" class="">Comparison Table</h3></div><div style="display:contents" dir="ltr"><table id="2d438e8e-0edf-80da-8d79-f18009263533" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-806e-bd62-d60b3bb61327"><td id="xlRH" class=""><strong>Feature</strong></td><td id="xaD]" class=""><strong>Anomaly Detection</strong></td><td id="t|?O" class=""><strong>Intelligent RCA</strong></td><td id="`BDi" class=""><strong>Predictive Fault Analysis</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-806e-b4a4-e20c995c3034"><td id="xlRH" class=""><strong>Primary Question</strong></td><td id="xaD]" class="">&quot;Is this normal?&quot;</td><td id="t|?O" class="">&quot;Where/Why did it break?&quot;</td><td id="`BDi" class="">&quot;When will it break?&quot;</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80d2-aa4e-d6566a877099"><td id="xlRH" class=""><strong>Temporal Focus</strong></td><td id="xaD]" class="">Present (Real-time)</td><td id="t|?O" class="">Past (Diagnostic)</td><td id="`BDi" class="">Future (Proactive)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80cd-8118-d594a24a5352"><td id="xlRH" class=""><strong>Primary Data</strong></td><td id="xaD]" class="">Current telemetry/logs</td><td id="t|?O" class="">Dependencies &amp; Relationships</td><td id="`BDi" class="">Historical trends &amp; Signatures</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-808d-9da3-f11bde687278"><td id="xlRH" class=""><strong>Business Value</strong></td><td id="xaD]" class="">Awareness &amp; Visibility</td><td id="t|?O" class="">Fast MTTR (Mean Time to Repair)</td><td id="`BDi" class="">Zero Downtime</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-80f5-9f0b-e7128728f64c" class="">AI &amp; Analytics Requirements</h3></div><div style="display:contents" dir="ltr"><figure id="2d338e8e-0edf-8062-a1d7-da21bbe7aa55" class="link-to-page"><a href="Anomaly%20detection%202d338e8e0edf8062a1d7da21bbe7aa55.html">Anomaly detection</a></figure></div><div style="display:contents" dir="ltr"><figure id="2d338e8e-0edf-8022-81d9-ca6f9d693e4e" class="link-to-page"><a href="Intelligent%20root%20cause%20analysis%202d338e8e0edf802281d9ca6f9d693e4e.html">Intelligent root cause analysis</a></figure></div><div style="display:contents" dir="ltr"><figure id="2d438e8e-0edf-803e-9b2e-d5c30490d203" class="link-to-page"><a href="Predictive%20Fault%20Analysis%202d438e8e0edf803e9b2ed5c30490d203.html">Predictive Fault Analysis</a></figure></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-80f8-8f1f-e7fb68cb238b" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="2d438e8e-0edf-8003-8a97-dbcd9af616e0" class="link-to-page"><a href="5G%20End-to-End%20Capacity%20Forecasting(%20pending%202d438e8e0edf80038a97dbcd9af616e0.html">5G End-to-End Capacity Forecasting( pending</a></figure></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8063-8f89-f3bfef9dac88" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="2d338e8e-0edf-801b-b992-e6fdf518bb13" class="">Private 5G Network Use Case Study </h1></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-803d-9d27-d96abb905286" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

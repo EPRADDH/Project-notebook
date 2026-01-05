@@ -1,0 +1,713 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Product Requirements Document (PRD)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2d338e8e-0edf-80ec-b81c-ca8a7696b8f4" class="page sans"><header><h1 class="page-title" dir="auto">Product Requirements Document (PRD)</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2d338e8e-0edf-8063-92d0-e94c15e12866" class="">Product Name</h1></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8051-afd3-dcfd68d49fec" class="">AI-Based Anomaly Detection Platform for 5G Networks &amp; Cloud-Native Infrastructure</p></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-805f-9adc-de96460628c9" class="">Version</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80b8-bf5b-d5262983ceaf" class="">v1.0</p></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80f3-8fdb-c6dc04b78abf" class="">Author</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8003-9005-de54504227b5" class="">Pradeep Dhote</p></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8016-a786-fc829f6ceb93"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80ec-962c-cf7481195c21" class="">1. Purpose &amp; Vision</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8001-a5f0-f5fcdc77ba64" class="">The purpose of this product is to <strong>proactively detect abnormal behavior</strong> across <strong>5G RAN, 5G Core, Kubernetes CNFs, routers, and DevOps pipelines</strong> using AI/ML instead of static thresholds.</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80dc-9194-df701a4be6c4" class=""><strong>Vision:</strong></p></div><div style="display:contents" dir="auto"><blockquote id="2d338e8e-0edf-800f-a8a5-f1bf868af626" class="">Detect unknown issues early, reduce alert noise, and enable faster root cause analysis (RCA) in complex 5G and cloud-native environments.</blockquote></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-803f-9399-eec666fc3534"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8077-83d1-fee1da1d5bfa" class="">2. Problem Statement</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80ac-a40f-dcac7cd1732a" class="">Traditional monitoring systems:</p></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8024-bf77-d90d6e9a65a2" class="bulleted-list"><li style="list-style-type:disc">Depend on static thresholds</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80da-be86-fdc04bc4b4b3" class="bulleted-list"><li style="list-style-type:disc">Generate excessive false alerts</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-802b-b5ac-f397d795356e" class="bulleted-list"><li style="list-style-type:disc">Fail to detect unknown or cascading issues</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8013-b4e0-c157dc5261c7" class="bulleted-list"><li style="list-style-type:disc">Cannot correlate issues across RAN, Core, and Cloud layers</li></ul></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8078-a648-e5b49a790076" class="">This leads to:</p></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8041-88c3-dd15ad3e3c4a" class="bulleted-list"><li style="list-style-type:disc">High MTTR</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-805a-af08-dca6ebabc0b7" class="bulleted-list"><li style="list-style-type:disc">SLA violations</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-806a-ae80-d992b3e55dc4" class="bulleted-list"><li style="list-style-type:disc">Operational inefficiency</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80c4-97ae-c4b42b814659"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80e4-af98-c6ed60e89a23" class="">3. Goals &amp; Success Metrics</h2></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-80a0-b288-c61e3fb8ca4b" class="">Goals</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80e9-8620-d61888ea2af4" class="bulleted-list"><li style="list-style-type:disc">Detect unknown anomalies without predefined rules</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8000-8673-f0f7165727bf" class="bulleted-list"><li style="list-style-type:disc">Reduce alert noise significantly</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-800c-bb61-e9acea2a4cb1" class="bulleted-list"><li style="list-style-type:disc">Provide early warning before customer impact</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80d8-ae7d-c8bceed5634d" class="bulleted-list"><li style="list-style-type:disc">Enable downstream RCA and automation</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-80e1-87bf-c750f1b446e6" class="">Success Metrics (KPIs)</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-808c-b983-d77d9bea1033" class="bulleted-list"><li style="list-style-type:disc">≥70% reduction in false alerts</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-800a-b0da-f7da98139468" class="bulleted-list"><li style="list-style-type:disc">≥50% reduction in MTTR</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8009-89bb-c7055f1577da" class="bulleted-list"><li style="list-style-type:disc">≥90% anomaly detection precision</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-803d-af1e-f2541eca7d0a" class="bulleted-list"><li style="list-style-type:disc">Detection latency &lt; 2 minutes</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8089-ad8a-ce82ae4ae458"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80fb-88f0-c847f3707aa8" class="">4. In-Scope Systems</h2></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-8042-b7fc-ff9a8293eb42" class="">Network &amp; Infrastructure Coverage</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-806f-9bd1-e6fe79d035db" class="bulleted-list"><li style="list-style-type:disc">5G RAN (Latency, PRB, Throughput)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8032-bbab-c8d7bb59550f" class="bulleted-list"><li style="list-style-type:disc">5G Core (AMF, SMF, UPF)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80ae-89d4-c762d78c4b8a" class="bulleted-list"><li style="list-style-type:disc">Kubernetes (Pods, Nodes, CNFs)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8029-8bbc-fbe752ab12d7" class="bulleted-list"><li style="list-style-type:disc">IP Routers (Packet loss, Jitter)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80b9-9918-f38ddb0b0b21" class="bulleted-list"><li style="list-style-type:disc">DevOps / CI-CD events</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80fe-9d42-fc0f0a853146"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-804d-870f-c2068038b33d" class="">5. User Personas</h2></div><div style="display:contents" dir="ltr"><table id="2d338e8e-0edf-8034-a07f-f5624ca91b93" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80d9-8f9e-d647815efa8c"><th id="ir~S" class="simple-table-header-color simple-table-header">Persona</th><th id="WrOm" class="simple-table-header-color simple-table-header">Responsibility</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-805c-9119-c592970c10f9"><td id="ir~S" class="">NOC Engineer</td><td id="WrOm" class="">Monitor network health</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-808e-931f-cfe075adbb48"><td id="ir~S" class="">SRE</td><td id="WrOm" class="">Platform stability</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80f8-921d-d3a837d5771c"><td id="ir~S" class="">DevOps Engineer</td><td id="WrOm" class="">CI/CD &amp; config changes</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80e9-9925-cca7528c043c"><td id="ir~S" class="">Network Architect</td><td id="WrOm" class="">Capacity &amp; design</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8087-85af-cc2a4a1e5352"><td id="ir~S" class="">CTO / Ops Head</td><td id="WrOm" class="">SLA &amp; cost optimization</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80d9-aa1c-de59cfea3f61"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8085-8cd1-dc5856fc9b2b" class="">6. Data Inputs</h2></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-8026-a589-d7cdd7cc1c6a" class="">Telemetry Sources</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8094-bbf7-c671fff52b43" class="bulleted-list"><li style="list-style-type:disc">Metrics: Prometheus, SNMP</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8080-b4ca-f0930160a772" class="bulleted-list"><li style="list-style-type:disc">Logs: Fluentd, Loki, Syslog</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8090-bfeb-c3ad537d18d2" class="bulleted-list"><li style="list-style-type:disc">Traces: OpenTelemetry</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8098-9a98-e330c6625610" class="bulleted-list"><li style="list-style-type:disc">Events: Kubernetes, CI/CD tools</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80ca-9a8a-cd5ac8c01ec7"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8089-b172-f9606c6e309b" class="">7. Functional Requirements</h2></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-8083-86fd-d904b3d1911f" class="">7.1 Anomaly Detection</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8003-add9-dbad4033d458" class="bulleted-list"><li style="list-style-type:disc">Detect point, contextual, and collective anomalies</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80ea-b7e5-fe94b144e0a3" class="bulleted-list"><li style="list-style-type:disc">Support unsupervised learning (no labels required)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80fa-a543-f6a0befe5fa1" class="bulleted-list"><li style="list-style-type:disc">Learn normal behavior dynamically</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-809d-af58-eb725e897efb" class="">7.2 AI/ML Models</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8083-a5af-c2cc62525be8" class="bulleted-list"><li style="list-style-type:disc">Isolation Forest for fast anomaly detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80cb-8070-c4fbf672bba0" class="bulleted-list"><li style="list-style-type:disc">Time-series models (LSTM / ARIMA)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80f6-8ccf-e6d88caed949" class="bulleted-list"><li style="list-style-type:disc">Autoencoders for multi-metric correlation</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8025-8e08-efc23c791e4c" class="bulleted-list"><li style="list-style-type:disc">Statistical baselines for validation</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-80ba-9b85-def57561f482" class="">7.3 Cross-Layer Correlation</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8061-97b7-edfff61dd011" class="bulleted-list"><li style="list-style-type:disc">Correlate anomalies by time window</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80ac-a052-ebb10e63d461" class="bulleted-list"><li style="list-style-type:disc">Map anomalies to topology &amp; dependencies</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8062-b432-d1c8473c821b" class="bulleted-list"><li style="list-style-type:disc">Identify blast radius</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-8027-a8c0-fbd237b0da17" class="">7.4 Alerting</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80b4-b8a2-f3d41b56e59c" class="bulleted-list"><li style="list-style-type:disc">Generate confidence-scored alerts</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8064-8e6d-f9eabe5b4679" class="bulleted-list"><li style="list-style-type:disc">Suppress duplicate &amp; cascading alerts</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80d3-b097-e4f61861a198" class="bulleted-list"><li style="list-style-type:disc">Support severity classification</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-802f-b0d7-cea9721fea14"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80b1-8d51-c64a58d5f5f3" class="">8. Non-Functional Requirements</h2></div><div style="display:contents" dir="ltr"><table id="2d338e8e-0edf-8097-8675-f91e8b6ad465" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-806e-b563-f83bbd775d5c"><th id="wkj]" class="simple-table-header-color simple-table-header">Requirement</th><th id="xbXC" class="simple-table-header-color simple-table-header">Target</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8011-a32e-d30eca7e4e0d"><td id="wkj]" class="">Scalability</td><td id="xbXC" class="">100k+ metrics/sec</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80b4-8a37-f1d24fd6c5de"><td id="wkj]" class="">Availability</td><td id="xbXC" class="">99.9%</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-802c-999d-e4e26fb1afd6"><td id="wkj]" class="">Latency</td><td id="xbXC" class="">&lt;2 min detection</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80a3-84e0-f0b4151187c0"><td id="wkj]" class="">Security</td><td id="xbXC" class="">RBAC, audit logs</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80cd-94b2-ef8ed600fffb"><td id="wkj]" class="">Multi-tenancy</td><td id="xbXC" class="">Required</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8040-9321-d983cd096fc9"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8008-8f47-ecc85a842b4f" class="">9. Outputs &amp; Integrations</h2></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-8098-a63f-ea9d5082b9c7" class="">Outputs</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80ec-b62a-e2315d4f401b" class="bulleted-list"><li style="list-style-type:disc">Anomaly alerts with confidence score</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-805f-909d-f596e60077d3" class="bulleted-list"><li style="list-style-type:disc">Impacted services &amp; entities</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-803c-b166-fccaab47ca22" class="bulleted-list"><li style="list-style-type:disc">Anomaly timelines</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-8091-ae1a-fb5986ae4a4c" class="">Integrations</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8082-997a-cfb77474fcfc" class="bulleted-list"><li style="list-style-type:disc">NOC dashboards</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8093-af5f-c48359cabecc" class="bulleted-list"><li style="list-style-type:disc">EMS / SMO platforms</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8000-aa24-d4eab62433ed" class="bulleted-list"><li style="list-style-type:disc">ChatOps (Slack / Teams)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8096-9909-f2533879dc89" class="bulleted-list"><li style="list-style-type:disc">Ticketing (Jira, ServiceNow)</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8059-9765-ccbc49ec01d3"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80bf-91de-c64eeb06c045" class="">10. Guardrails &amp; Trust Controls</h2></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80a7-a988-ea20d83a5377" class="bulleted-list"><li style="list-style-type:disc">Evidence-backed anomaly explanations</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8026-8a8b-dc6fa1388644" class="bulleted-list"><li style="list-style-type:disc">Confidence threshold gating</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80d9-839e-defb205254cf" class="bulleted-list"><li style="list-style-type:disc">Human-in-the-loop for critical alerts</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80ef-adb9-e16682094cee" class="bulleted-list"><li style="list-style-type:disc">Fallback to rule-based alerts</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80dd-974d-dd6d57aa65bc"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8044-a0f2-f0037a3a1860" class="">11. Future Enhancements</h2></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80a9-86c8-fdec7084df22" class="bulleted-list"><li style="list-style-type:disc">LLM-based anomaly explanation</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8094-a625-d0d7d27adcf1" class="bulleted-list"><li style="list-style-type:disc">Predictive anomaly detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8021-a42f-cfb03c42bd15" class="bulleted-list"><li style="list-style-type:disc">Closed-loop auto-remediation</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-809a-bb7d-f1c6fe8565be" class="bulleted-list"><li style="list-style-type:disc">Federated learning for multi-site deployments</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80ad-98d7-d86f01242780"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-802a-90f5-c0490aa49ce8" class="">12. Out of Scope (v1)</h2></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-801e-bebe-d827098d335e" class="bulleted-list"><li style="list-style-type:disc">Autonomous remediation without approval</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-801b-b566-c8f131d0a2bd" class="bulleted-list"><li style="list-style-type:disc">Full business KPI correlation</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-804d-949b-f2ad2710ff67" class="bulleted-list"><li style="list-style-type:disc">Vendor-specific RAN tuning</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8025-8b0b-ecc718ff4206"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80e2-a4a3-c4687a15e633" class="">13. Risks &amp; Mitigations</h2></div><div style="display:contents" dir="ltr"><table id="2d338e8e-0edf-8028-84c0-fc3a3b72581f" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80e5-94fe-eb242846e28a"><th id="ZKd{" class="simple-table-header-color simple-table-header">Risk</th><th id="IB^F" class="simple-table-header-color simple-table-header">Mitigation</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80c8-9f31-ee3a1fb5a305"><td id="ZKd{" class="">False positives</td><td id="IB^F" class="">Confidence scoring &amp; baselines</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80f4-bcc0-c9c5f2a694d9"><td id="ZKd{" class="">Model drift</td><td id="IB^F" class="">Continuous retraining</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8095-87b4-c59b5a4d9a81"><td id="ZKd{" class="">Trust in AI</td><td id="IB^F" class="">Explainability &amp; guardrails</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80be-b0dd-e1204ee8e392"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80da-8cbd-dba5e38d26f3" class="">14. One-Line Summary</h2></div><div style="display:contents" dir="auto"><blockquote id="2d338e8e-0edf-8099-9d86-fc04a13e563e" class="">An AI-driven anomaly detection system that learns normal behavior across 5G and cloud infrastructure to detect unknown issues early and enable faster, safer operations.</blockquote></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

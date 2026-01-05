@@ -1,0 +1,719 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Intelligent root cause analysis</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2d338e8e-0edf-8022-81d9-ca6f9d693e4e" class="page sans"><header><h1 class="page-title" dir="auto">Intelligent root cause analysis</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-80ce-b764-edfe2e7a1bc5" class=""><strong>Intelligent Root Cause Analysis (IRCA)</strong> is the evolution of traditional problem-solving, moving from manual, retrospective investigation to AI-driven, real-time diagnostics. While traditional RCA uses methods like the &quot;5 Whys&quot; or Fishbone diagrams, <strong>Intelligent RCA</strong> leverages Machine Learning (ML), Natural Language Processing (NLP), and Big Data to identify the &quot;why&quot; behind an issue automatically and often proactively.<br/><br/>1. Traditional vs. Intelligent RCA</h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8039-9942-fe6da28cd90b" class="">
+</p></div><div style="display:contents" dir="ltr"><table id="2d438e8e-0edf-80d1-9029-ed720c6d80f7" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80a0-8778-c8e3a33c9650"><td id="MKJV" class=""><strong>Feature</strong></td><td id=":gdM" class=""><strong>Traditional RCA</strong></td><td id="zVl\" class=""><strong>Intelligent RCA (AI-Driven)</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-8024-a820-d62d74911e70"><td id="MKJV" class=""><strong>Speed</strong></td><td id=":gdM" class="">Manual, can take days or weeks.</td><td id="zVl\" class="">Real-time or near real-time.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-806f-9e83-e1db8e523a61"><td id="MKJV" class=""><strong>Data Scope</strong></td><td id=":gdM" class="">Small, structured datasets.</td><td id="zVl\" class="">Massive, unstructured data (logs, traces, IoT).</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-8001-915b-dee385c6acb1"><td id="MKJV" class=""><strong>Approach</strong></td><td id=":gdM" class="">Reactive (after the failure).</td><td id="zVl\" class="">Proactive (predictive alerts before failure).</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80e4-83f0-ce53a654241c"><td id="MKJV" class=""><strong>Scalability</strong></td><td id=":gdM" class="">Limited by human expertise.</td><td id="zVl\" class="">Scales across complex global infrastructures.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80d1-bc1b-f21598f4ba5e"><td id="MKJV" class=""><strong>Human Bias</strong></td><td id=":gdM" class="">Subject to &quot;blame culture&quot; or tunnel vision.</td><td id="zVl\" class="">Objective, data-driven patterns.</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-80ae-8b9a-cf5443a70cd6" class="">2. How Intelligent RCA Works</h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-80da-9f99-d377053bb7f7" class="">The process typically follows a four-stage pipeline:</p></div><div style="display:contents" dir="auto"><ol type="1" id="2d438e8e-0edf-8085-a297-fcbef28447fb" class="numbered-list" start="1"><li><strong>Data Ingestion &amp; Normalization:</strong> Collecting telemetry data (logs, metrics, events) from across a system. AI helps normalize different data formats into a single &quot;source of truth.&quot;</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d438e8e-0edf-800e-916b-f4a67ecef2ef" class="numbered-list" start="2"><li><strong>Anomaly Detection:</strong> ML models establish a &quot;baseline&quot; of normal behavior. When a metric (like CPU spikes or sensor temperature) deviates, the system flags it instantly.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d438e8e-0edf-80ce-aff7-cb5f62bff2e1" class="numbered-list" start="3"><li><strong>Event Correlation:</strong> This is the &quot;brain&quot; of IRCA. Instead of treating 100 alerts as separate issues, the AI groups them, recognizing that a database failure caused the web server error, which caused the user login failure.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d438e8e-0edf-80ea-a844-e06e97b645d5" class="numbered-list" start="4"><li><strong>Causal Inference &amp; Graphing:</strong> Using <strong>Causal ML</strong>, the system builds a &quot;causal graph&quot; to distinguish between <em>correlation</em> (two things happened at once) and <em>causation</em> (one thing actually caused the other).</li></ol></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-80b1-baf1-db7e942c9905" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-80e5-a1c3-fb983bf94f52" class="">3. Key Use Cases</h3></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-8073-84e5-cd54c3f7579b" class=""><strong>IT Operations (AIOps)</strong></h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8056-a2e6-fc8fc190781d" class="">In modern cloud environments, a single outage can generate thousands of alerts. IRCA tools (like BigPanda or ScienceLogic) can:</p></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8029-b353-d2cb38a210af" class="bulleted-list"><li style="list-style-type:disc">Identify the specific code change or deployment that triggered a crash.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-80e2-b983-d6aa499dff64" class="bulleted-list"><li style="list-style-type:disc">Reduce Mean Time to Resolution (MTTR) by up to 50-70%.</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-80c8-a6da-e239cdfcc38c" class=""><strong>Smart Manufacturing (Industry 4.0)</strong></h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8098-a8dd-f4e6e57ce018" class="">If a robotic arm starts producing defective parts, IRCA analyzes vibration, heat, and torque data.</p></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-80f6-984b-d472b517fa61" class="bulleted-list"><li style="list-style-type:disc"><strong>Example:</strong> It might discover that a minor voltage fluctuation 20 minutes earlier caused a calibration drift, which a human operator would never have linked to the defect.</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-809c-bee9-e56a709f64fc" class=""><strong>Cybersecurity</strong></h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8080-b78e-cae3b8ba3ec8" class="">IRCA helps security teams trace a breach back to the initial entry point (e.g., a specific phishing email or an unpatched vulnerability) by correlating disparate network logs that seem unrelated to the naked eye.</p></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8024-8c8d-eb23d23e838e" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-80ca-bfca-d2cab1b180e9" class="">The 5G Use Case</h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-805b-912e-f6d3e3672f42" class="">To identify the most probable root cause of an incident spanning 5G RAN, Core, Kubernetes, and DevOps, you must move beyond domain silos. In these environments, a failure in one layer (like a Kubernetes pod crash) is often just a symptom of a root cause in another (like a faulty DevOps pipeline script or a router misconfiguration).</p></div><div style="display:contents" dir="ltr"><table id="2d438e8e-0edf-80f8-b281-c6281c83af98" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-802d-96ac-c04fd6971ee3"><td id="N&gt;@u" class=""><strong>Domain</strong></td><td id="EEjT" class=""><strong>Most Probable Root Causes</strong></td><td id="J&gt;^U" class=""><strong>Typical Symptoms</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80dd-9f35-faf019d5db2d"><td id="N&gt;@u" class=""><strong>5G RAN</strong></td><td id="EEjT" class="">Interference, Hardware degradation, or <strong>Firmware mismatches</strong> following a rollout.</td><td id="J&gt;^U" class="">High drop-call rates, sudden coverage holes, or synchronization (SCTP) errors.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80b5-ac8d-ca615fec44bd"><td id="N&gt;@u" class=""><strong>5G Core</strong></td><td id="EEjT" class=""><strong>SBI (Service Based Interface) failures</strong>, flawed SMF selection, or AMF-to-NRF connectivity issues.</td><td id="J&gt;^U" class="">UE (User Equipment) registration success but PDU session establishment failure.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80c5-8d33-eb062881a683"><td id="N&gt;@u" class=""><strong>Kubernetes</strong></td><td id="EEjT" class=""><strong>CPU/Disk Contention</strong> between CNFs, or VPA (Vertical Pod Autoscaler) causing frequent pod restarts.</td><td id="J&gt;^U" class="">High latency, &quot;CrashLoopBackOff,&quot; or inter-pod communication timeouts.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-8027-b7f6-d6ec4dbf4b67"><td id="N&gt;@u" class=""><strong>Routers/Transport</strong></td><td id="EEjT" class=""><strong>MTU Mismatches</strong>, VLAN misconfigurations, or backhaul congestion.</td><td id="J&gt;^U" class="">Large packet drops, TCP retransmissions, and end-to-end latency spikes.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80de-a8fb-e02abafa6bb9"><td id="N&gt;@u" class=""><strong>DevOps Pipelines</strong></td><td id="EEjT" class=""><strong>Configuration Drift</strong>, &quot;Broken&quot; Helm charts, or failing to update certificates during a CI/CD run.</td><td id="J&gt;^U" class="">Incidents immediately following a deployment or auto-scaling event.</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-809a-9216-e7e9a51bb355" class=""><strong>The 5G Use Case: Industrial &quot;Smart Factory&quot; Slicing</strong></h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-80ed-82f8-c81f06e23858" class="">In a modern manufacturing plant, a single 5G network must simultaneously support three conflicting requirements. This is achieved by creating three distinct &quot;Slices&quot; managed via Kubernetes and DevOps.</p></div><div style="display:contents" dir="ltr"><table id="2d438e8e-0edf-8019-b5a9-f396112ddbcc" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80f4-a904-c73bea364af6"><td id="oYe&lt;" class=""><strong>Slice Type</strong></td><td id="xUeT" class=""><strong>Application</strong></td><td id="Hoeb" class=""><strong>Technical Requirement</strong></td><td id="D[pT" class=""><strong>K8s / DevOps Role</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-8077-b52a-e2a4b72ed63a"><td id="oYe&lt;" class=""><strong>URLLC</strong></td><td id="xUeT" class=""><strong>Autonomous Robots / AGVs</strong></td><td id="Hoeb" class="">&lt; 1ms Latency, 99.999% Reliability</td><td id="D[pT" class="">Pods pinned to Edge nodes; high-priority scheduling.</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-80b5-9822-c5775a15e6e9"><td id="oYe&lt;" class=""><strong>mMTC</strong></td><td id="xUeT" class=""><strong>Massive Sensor Network</strong></td><td id="Hoeb" class="">Low Power, 1 Million+ devices/km²</td><td id="D[pT" class="">Lightweight CNFs (Containerized Network Functions).</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d438e8e-0edf-809e-a086-d3e84d5c8c68"><td id="oYe&lt;" class=""><strong>eMBB</strong></td><td id="xUeT" class=""><strong>AR-based Remote Maintenance</strong></td><td id="Hoeb" class="">10 Gbps Peak Throughput</td><td id="D[pT" class="">Dynamic scaling of User Plane Functions (UPF).</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8056-843c-d47028eca993" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-80df-b244-fbad5ab99a65" class=""><strong>Root Cause Analysis (RCA) Scenarios for this Use Case</strong></h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8075-b84e-e3f3696f1963" class="">Because these slices share the same physical RAN and Core, an incident in one can often be a &quot;hidden&quot; root cause for another.</p></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-80cc-ae4e-c5e0aa366261" class=""><strong>1. The &quot;Noisy Neighbor&quot; Incident (Kubernetes Root Cause)</strong></h3></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-807b-ade7-c8a16b222a45" class="bulleted-list"><li style="list-style-type:disc"><strong>Incident:</strong> The <strong>URLLC Slice</strong> (Robots) suddenly experiences jitter, causing robots to stop for safety.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-805e-a45f-f62f1dabe1ab" class="bulleted-list"><li style="list-style-type:disc"><strong>Apparent Cause:</strong> RAN congestion or interference.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8075-a207-e0c0c3b731e9" class="bulleted-list"><li style="list-style-type:disc"><strong>Intelligent Root Cause:</strong> A DevOps engineer deployed a new video analytics tool (eMBB) on the same Kubernetes worker node. The video tool&#x27;s pod is consuming all available <strong>CPU Cycles</strong>, delaying the time-sensitive packets of the Robot&#x27;s control pod.</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-8045-80f8-fe8217a691c6" class=""><strong>2. The &quot;MTU Mismatch&quot; Incident (Router Root Cause)</strong></h3></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-80a4-8f69-c56f0b60fb40" class="bulleted-list"><li style="list-style-type:disc"><strong>Incident:</strong> <strong>AR Maintenance headsets</strong> (eMBB) keep disconnecting or showing fragmented video.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8087-9d4e-d1201bce46ad" class="bulleted-list"><li style="list-style-type:disc"><strong>Apparent Cause:</strong> Low signal strength in the RAN.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8090-b5da-d922be4c5810" class="bulleted-list"><li style="list-style-type:disc"><strong>Intelligent Root Cause:</strong> A router in the transport network between the RAN and the Core has an <strong>MTU (Maximum Transmission Unit)</strong> set to 1500 bytes. Because 5G GTP (GPRS Tunnelling Protocol) adds overhead, the large video packets are being fragmented or dropped, leading to session failure.</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-8009-8d50-e4e66f6a4cc0" class=""><strong>3. The &quot;Configuration Drift&quot; Incident (DevOps Root Cause)</strong></h3></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-809b-8142-e3d521f75566" class="bulleted-list"><li style="list-style-type:disc"><strong>Incident:</strong> After a routine update, <strong>Sensors</strong> (mMTC) can no longer register with the network.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-807e-ab7d-da4ccb3f4793" class="bulleted-list"><li style="list-style-type:disc"><strong>Apparent Cause:</strong> Core Network (AMF) failure.</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-809b-bb62-ecc846e60fd9" class="bulleted-list"><li style="list-style-type:disc"><strong>Intelligent Root Cause:</strong> The CI/CD pipeline pushed a &quot;stable&quot; Helm chart update that accidentally reverted a <strong>Service-Based Interface (SBI)</strong> IP address to a testing value. The Core is healthy, but the &quot;address book&quot; is wrong.</li></ul></div><div style="display:contents" dir="auto"><hr id="2d438e8e-0edf-8006-83bc-e899f124776a"/></div><div style="display:contents" dir="auto"><h3 id="2d438e8e-0edf-80df-9259-fbb94038fdb4" class=""><strong>Summary of IRCA Benefits for 5G</strong></h3></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-80c0-9a3c-c7c1b335cb0e" class="">To solve these, an <strong>Intelligent RCA</strong> system must correlate:</p></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-806a-a4b5-f87623ff6571" class="bulleted-list"><li style="list-style-type:disc"><strong>DevOps:</strong> Deployment timestamps (Did a change happen?).</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-80ff-bfc3-e9f014d07067" class="bulleted-list"><li style="list-style-type:disc"><strong>Kubernetes:</strong> Kubelet metrics (Is there resource contention?).</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-80e5-a642-d54ddf64330e" class="bulleted-list"><li style="list-style-type:disc"><strong>5G Core:</strong> 3GPP Cause Codes (e.g., #111 Protocol Error).</li></ul></div><div style="display:contents" dir="auto"><ul id="2d438e8e-0edf-8079-b58c-eb16eca61466" class="bulleted-list"><li style="list-style-type:disc"><strong>RAN:</strong> PRB (Physical Resource Block) utilization.</li></ul></div><div style="display:contents" dir="auto"><p id="2d438e8e-0edf-8007-bd7c-fd65cebf119a" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8068-ad53-c6e677da8511" class="">Intelligent Root Cause Analysis (iRCA) starts after anomalies are detected.</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80f5-bc3f-c01d3625f298" class="">We ingest metrics, logs, traces, and change events, normalize them, and correlate issues across time and system dependencies.</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80c8-8f10-f6423d37d53b" class="">A causal intelligence layer builds relationships and scores likely causes.</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8097-bb85-f6deefa7fc9f" class="">Before explaining anything, guardrails ensure evidence-only reasoning and confidence checks.</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80e5-a41f-db0eca1739cc" class="">Finally, the LLM explains the root cause in plain language and sends it to NOC, ChatOps, and ITSM systems.”</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8067-ae86-d82b52c4e4c9" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="2d338e8e-0edf-80ea-a2b5-c5c002cf4c81" class="link-to-page"><a href="iRCA-%20PRD%202d338e8e0edf80eaa2b5c5c002cf4c81.html">iRCA- PRD</a></figure></div><div style="display:contents" dir="ltr"><figure id="2d338e8e-0edf-80f9-9013-da08122bd630" class="image"><a href="image%202.png"><img style="width:710px" src="image%202.png"/></a></figure></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

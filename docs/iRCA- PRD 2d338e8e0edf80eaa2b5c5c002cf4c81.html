@@ -1,0 +1,713 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>iRCA- PRD</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2d338e8e-0edf-80ea-a2b5-c5c002cf4c81" class="page sans"><header><h1 class="page-title" dir="auto">iRCA- PRD</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2d338e8e-0edf-8069-8b21-f980da09f0f3" class="">Product Requirements Document (PRD)</h1></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8044-b9f7-fc68ef0c5b11" class="">Product Name</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80b9-a896-c00f362cd52d" class="">Intelligent Root Cause Analysis (iRCA) Platform</p></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-809f-8c93-c7b57a63b7e2" class="">Version</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8059-ac99-ded12c9a6601" class="">v1.0</p></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80d1-8826-c4958d0104dd" class="">Author</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80c9-95d9-dda8555c2bf6" class="">Pradeep Dhote</p></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-806d-a88b-df592203cbc2"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80f6-902b-fd4e3044385a" class="">Short Layman Explanation (What is Intelligent RCA?)</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-80e8-9bde-d54bc408bdc3" class=""><strong>Intelligent Root Cause Analysis (iRCA)</strong> means using AI to automatically find <strong>the real reason behind a problem</strong>, instead of engineers manually checking hundreds of alerts, logs, and dashboards.</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-805e-adcf-f34fa3d7c882" class="">In simple words:</p></div><div style="display:contents" dir="auto"><blockquote id="2d338e8e-0edf-80e1-8e8d-fa54cfb51aef" class="">iRCA connects the dots across network, cloud, and applications to explain what broke, why it broke, and where to fix it — in minutes, not hours.</blockquote></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80ca-bd50-f0a389396882"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8033-b864-cfa8f34ed4e3" class="">1. Purpose &amp; Vision</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8030-ab4a-f481c47de12d" class="">The purpose of iRCA is to <strong>automatically identify the most probable root cause</strong> of incidents across <strong>5G RAN, 5G Core, Kubernetes CNFs, routers, and DevOps pipelines</strong>, and present it in a clear, explainable manner.</p></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8011-b610-ecd18bc31b2b" class=""><strong>Vision:</strong></p></div><div style="display:contents" dir="auto"><blockquote id="2d338e8e-0edf-80d7-91d5-e7306e7322f8" class="">Reduce MTTR dramatically by replacing manual war-room troubleshooting with AI-driven, evidence-based RCA.</blockquote></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80d3-b071-cdf7baedee3c"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-809c-a32d-c2f23f049541" class="">2. Problem Statement</h2></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-8021-bc33-c85dfd42a211" class="">Current RCA processes:</p></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-808c-a5e8-e3e0920814c1" class="bulleted-list"><li style="list-style-type:disc">Are manual and slow</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80ee-9f3b-c40fd775173f" class="bulleted-list"><li style="list-style-type:disc">Require multiple teams (NOC, SRE, DevOps, Network)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80e2-8710-f75c7de7dd7b" class="bulleted-list"><li style="list-style-type:disc">Suffer from alert storms and data silos</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8020-918d-f729d79c9042" class="bulleted-list"><li style="list-style-type:disc">Do not scale with cloud-native 5G complexity</li></ul></div><div style="display:contents" dir="auto"><p id="2d338e8e-0edf-805b-ae88-ffef4abc7760" class="">As a result:</p></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8044-8a45-fe42841c8dbd" class="bulleted-list"><li style="list-style-type:disc">Incidents take hours to resolve</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80d9-8418-faba3a990f66" class="bulleted-list"><li style="list-style-type:disc">Root causes are often guessed</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8009-89f7-f283770a538f" class="bulleted-list"><li style="list-style-type:disc">Same issues repeat</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8035-b7d3-c6cac568c673"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80e4-bab4-c1a7726c0999" class="">3. Goals &amp; Success Metrics</h2></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-803a-8d2e-df5ca008ceaa" class="">Goals</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8007-b9f1-f34ba74b9ff1" class="bulleted-list"><li style="list-style-type:disc">Automatically identify probable root cause</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80b7-8788-d7f1cf2194e0" class="bulleted-list"><li style="list-style-type:disc">Correlate issues across network, cloud, and DevOps layers</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80d4-816a-e48705441fd1" class="bulleted-list"><li style="list-style-type:disc">Provide explainable and trusted RCA</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8086-a804-c6fe66d88ad6" class="bulleted-list"><li style="list-style-type:disc">Support faster and safer remediation</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-80b1-8483-e46374df1c86" class="">Success Metrics (KPIs)</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-807a-8382-f3baeb025973" class="bulleted-list"><li style="list-style-type:disc">≥60% reduction in MTTR</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8064-886e-d9294d6cc62b" class="bulleted-list"><li style="list-style-type:disc">≥70% reduction in manual troubleshooting effort</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80f8-812f-e777e311ba70" class="bulleted-list"><li style="list-style-type:disc">≥85% RCA accuracy</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80a2-a6ca-fb12f69020d5" class="bulleted-list"><li style="list-style-type:disc">RCA generation time &lt; 5 minutes</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80ca-8f86-e5801f213e9d"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-807a-88ef-e26d8a78a781" class="">4. In-Scope Systems</h2></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8004-a20e-f01d786b21d5" class="bulleted-list"><li style="list-style-type:disc">5G RAN (Latency, PRB, Radio failures)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80aa-804b-e1df4a069a72" class="bulleted-list"><li style="list-style-type:disc">5G Core (AMF, SMF, UPF)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8019-8ce7-eb4a12aaaf86" class="bulleted-list"><li style="list-style-type:disc">Kubernetes (CNFs, Pods, Nodes)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8023-b820-cd369bca81e0" class="bulleted-list"><li style="list-style-type:disc">IP Routers &amp; Transport Network</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8063-a822-d73e8f6d23fb" class="bulleted-list"><li style="list-style-type:disc">CI/CD, Config &amp; Release events</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-807a-b99b-fa3b8b8d15b4"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80a7-a9b4-eb1d0ea5af7e" class="">5. User Personas</h2></div><div style="display:contents" dir="ltr"><table id="2d338e8e-0edf-80b1-8cc8-f6051acb8fc6" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80e3-9eb2-e0749ceb3e27"><th id="dp?]" class="simple-table-header-color simple-table-header">Persona</th><th id=";o}U" class="simple-table-header-color simple-table-header">Responsibility</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-804d-9d83-ebe1af4e51c1"><td id="dp?]" class="">NOC Engineer</td><td id=";o}U" class="">Incident monitoring</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80b8-992e-ff59223bcb97"><td id="dp?]" class="">SRE</td><td id=";o}U" class="">Reliability &amp; stability</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8048-84c8-f14aa44eccaa"><td id="dp?]" class="">DevOps Engineer</td><td id=";o}U" class="">Releases &amp; configs</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8020-a80a-eb3200842bb3"><td id="dp?]" class="">Network Engineer</td><td id=";o}U" class="">Core &amp; RAN health</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-80f1-8d61-eb7332bfb75f"><td id="dp?]" class="">CTO / Ops Head</td><td id=";o}U" class="">SLA &amp; cost control</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80f6-a0ee-f3f3f124143e"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-803e-a5b3-ec7a9e0b2d19" class="">6. Inputs to iRCA</h2></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-806a-abd0-c754cee21534" class="bulleted-list"><li style="list-style-type:disc">Anomalies from AI-based detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-804e-a208-d1c55814d866" class="bulleted-list"><li style="list-style-type:disc">Metrics (latency, CPU, throughput)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8047-b5d3-dc38915f75e1" class="bulleted-list"><li style="list-style-type:disc">Logs (CNF, router, application)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8055-80f1-f2f689733a87" class="bulleted-list"><li style="list-style-type:disc">Traces (end-to-end flow)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-808a-9b84-c99faa32d650" class="bulleted-list"><li style="list-style-type:disc">Events (K8s, CI/CD, config changes)</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-800d-8db1-c63dbaf18142"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80f7-9272-c1ba8e931151" class="">7. Functional Requirements</h2></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-8050-b0c7-db4840b37932" class="">7.1 Correlation Engine</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80fe-b038-f59e5914b4f0" class="bulleted-list"><li style="list-style-type:disc">Correlate issues by time window</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-807d-b272-e30d84acd96e" class="bulleted-list"><li style="list-style-type:disc">Map dependencies across layers</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8068-97e3-d133e4c0571f" class="bulleted-list"><li style="list-style-type:disc">Identify blast radius</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-808f-a2f7-d3a67680db60" class="">7.2 RCA Intelligence</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-804e-a10f-dd4f3537c400" class="bulleted-list"><li style="list-style-type:disc">Build causal relationship graphs</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-802d-bbb8-f897becb79bd" class="bulleted-list"><li style="list-style-type:disc">Rank probable root causes</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8057-975e-f6ab0ffff97d" class="bulleted-list"><li style="list-style-type:disc">Assign confidence scores</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-8023-b3de-c910c28bdea8" class="">7.3 Explainability</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80f9-b43d-ffedbf83abf2" class="bulleted-list"><li style="list-style-type:disc">Explain <em>why</em> a root cause is selected</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8089-8929-dc2a18fecf11" class="bulleted-list"><li style="list-style-type:disc">Show supporting evidence (metrics/logs)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80a3-963a-e75dc7a4ad8c" class="bulleted-list"><li style="list-style-type:disc">Maintain RCA traceability</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-80be-a870-e75d1c75cafe" class="">7.4 Human-in-the-Loop</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8024-95fe-c7a0b7d3196a" class="bulleted-list"><li style="list-style-type:disc">Allow engineers to validate or override RCA</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-805b-8fe7-de3f9db88999" class="bulleted-list"><li style="list-style-type:disc">Capture feedback for learning</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8055-8024-c77a5887fd41"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8030-8796-d5579cabf2b2" class="">8. LLM-Based RCA Explanation (Guarded)</h2></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80ba-a63b-cadd522bb11a" class="bulleted-list"><li style="list-style-type:disc">Convert RCA output into human-readable explanation</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8097-ad20-dd9c2da2c26e" class="bulleted-list"><li style="list-style-type:disc">Use evidence-only context</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80fd-9544-cf30caad8f17" class="bulleted-list"><li style="list-style-type:disc">Enforce confidence thresholds</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8026-aa69-ed176be62e12" class="bulleted-list"><li style="list-style-type:disc">Prevent hallucination</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8088-bd84-f75bc0dc8bf9"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8067-9321-df83ab330c1b" class="">9. Non-Functional Requirements</h2></div><div style="display:contents" dir="ltr"><table id="2d338e8e-0edf-808f-9ed9-cf0499c56e4f" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-805b-bef2-e323dcecd411"><th id="gJS}" class="simple-table-header-color simple-table-header">Requirement</th><th id="PJ@Q" class="simple-table-header-color simple-table-header">Target</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8074-8361-c7aab448a005"><td id="gJS}" class="">Availability</td><td id="PJ@Q" class="">99.9%</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8002-a1ea-f5b88193f324"><td id="gJS}" class="">Scalability</td><td id="PJ@Q" class="">Multi-cluster, multi-site</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8035-9e38-de1a42d65649"><td id="gJS}" class="">Security</td><td id="PJ@Q" class="">RBAC, audit trails</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8036-becb-ee004e81ea49"><td id="gJS}" class="">Latency</td><td id="PJ@Q" class="">RCA &lt; 5 min</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8075-bc5b-e11efe9abd3f"><td id="gJS}" class="">Compliance</td><td id="PJ@Q" class="">Telco-grade</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-802d-a2bf-d57f0e2ef0ec"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8037-9fd7-cbea59c69a7f" class="">10. Outputs &amp; Integrations</h2></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-80eb-a53c-f1b7719d3809" class="">Outputs</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-809f-97bd-cacd0b0c7bce" class="bulleted-list"><li style="list-style-type:disc">Root cause summary</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8003-8af9-da6b6d3b69c6" class="bulleted-list"><li style="list-style-type:disc">Impacted services</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-801f-91a3-c844acb122fa" class="bulleted-list"><li style="list-style-type:disc">Confidence score</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8096-82f2-c6f65aab6a82" class="bulleted-list"><li style="list-style-type:disc">Suggested actions</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d338e8e-0edf-804b-bb6a-fd351d0422fb" class="">Integrations</h3></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80cd-ae39-e45eef8d080d" class="bulleted-list"><li style="list-style-type:disc">NOC dashboards</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80b2-9f29-d935964049a0" class="bulleted-list"><li style="list-style-type:disc">ChatOps (Slack / Teams)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8028-8153-d707731d2c01" class="bulleted-list"><li style="list-style-type:disc">Ticketing (Jira / ServiceNow)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80f9-994e-c7b7c47dfb8c" class="bulleted-list"><li style="list-style-type:disc">EMS / SMO systems</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80bf-93b1-f3b34b2de53f"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8011-af63-ed4b26da160b" class="">11. Guardrails &amp; Trust Controls</h2></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8082-be98-d86a6e2b1dbb" class="bulleted-list"><li style="list-style-type:disc">Evidence-based RCA only</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80f0-a7c1-cb0573d3b8b9" class="bulleted-list"><li style="list-style-type:disc">Confidence gating</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-807f-863f-c0bc433c8cfa" class="bulleted-list"><li style="list-style-type:disc">No auto-remediation without approval</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-80f2-b04f-cff7ecc6f6e4" class="bulleted-list"><li style="list-style-type:disc">Fallback to manual RCA</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-80bc-a8d7-cd1d44f0d5c0"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-804d-bb54-dcc8b5452fcb" class="">12. Risks &amp; Mitigations</h2></div><div style="display:contents" dir="ltr"><table id="2d338e8e-0edf-8006-adcb-df2c4ee32404" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-808b-b8e2-e1816b7d364a"><th id="[E^M" class="simple-table-header-color simple-table-header">Risk</th><th id="CHxH" class="simple-table-header-color simple-table-header">Mitigation</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-809e-84b6-e49e96342974"><td id="[E^M" class="">Wrong RCA</td><td id="CHxH" class="">Confidence score &amp; human review</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-808c-8cb1-f33523c62dc0"><td id="[E^M" class="">Data quality issues</td><td id="CHxH" class="">Validation &amp; baselines</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d338e8e-0edf-8094-a399-dc323ba1162c"><td id="[E^M" class="">Low trust in AI</td><td id="CHxH" class="">Explainability &amp; transparency</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-8087-a64a-c640d204f2c1"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-80d8-8559-ff480b30abca" class="">13. Out of Scope (v1)</h2></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8079-a43a-d21145a592a4" class="bulleted-list"><li style="list-style-type:disc">Fully autonomous remediation</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-804d-bc2b-e5cf3efad5cb" class="bulleted-list"><li style="list-style-type:disc">Business KPI RCA</li></ul></div><div style="display:contents" dir="auto"><ul id="2d338e8e-0edf-8072-843a-d4d3f22a5ab0" class="bulleted-list"><li style="list-style-type:disc">Vendor-specific tuning</li></ul></div><div style="display:contents" dir="auto"><hr id="2d338e8e-0edf-807c-b8a7-ebf6bf3a0bc2"/></div><div style="display:contents" dir="auto"><h2 id="2d338e8e-0edf-8087-a742-eeca51350026" class="">14. One-Line Summary</h2></div><div style="display:contents" dir="auto"><blockquote id="2d338e8e-0edf-80e9-960d-d9681db30a30" class="">Intelligent RCA uses AI to automatically identify and explain the true root cause of incidents across 5G and cloud infrastructure, reducing MTTR while keeping humans in control.</blockquote></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

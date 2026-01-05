@@ -1,0 +1,849 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>5G EMS (Element Management System) – Full Software Design</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2d238e8e-0edf-805c-a861-e1a1df877b19" class="page sans"><header><h1 class="page-title" dir="auto">5G EMS (Element Management System) – Full Software Design</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2d238e8e-0edf-80a4-9fb2-e9f7250f3cdb" class="">5G EMS</h1></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-803f-ad44-ee785e05ef27" class=""><strong>AI-powered | Automated | Cloud-native | Telco-grade</strong></p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-808a-993c-d01e99846710" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80bd-955c-fbdda22be821" class="">1. What is 5G EMS (in simple terms)</h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8065-aa9b-d59cb9a7e370" class=""><br/>A <strong>5G EMS</strong> is used to <strong>manage, monitor, configure, and troubleshoot 5G network elements</strong> such as:</p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8029-8a10-c279b49eaba8" class="bulleted-list"><li style="list-style-type:disc">gNB (CU / DU / RU)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8078-a3b0-db8b33c997ad" class="bulleted-list"><li style="list-style-type:disc">5GC network functions (AMF, SMF, UPF – depending on scope)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80af-8802-d18548955ec9" class="bulleted-list"><li style="list-style-type:disc">Edge nodes</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8046-b7c3-c362248b11f3" class="bulleted-list"><li style="list-style-type:disc">Radios, switches, servers</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-808b-9d82-ef3af353fd2e" class="">EMS is responsible for:</p></div><div style="display:contents" dir="auto"><blockquote id="2d238e8e-0edf-8082-b54d-eafe267d5bde" class="">Configure → Monitor → Analyze → Heal → Optimize</blockquote></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80ff-80f2-f89fd9f4a8cf" class=""><br/>EMS works at the <strong>network element level</strong>,</p></div><div style="display:contents" dir="auto"><h2 id="3a922d0a-bea2-4ff8-a789-330fb85480db" class="">2. High-Level EMS Architecture</h2></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d72844f4-b98b-412e-87fe-339d7ec50b67" class="code code-wrap"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph TD
+    A[EMS UI / Portal&lt;br/&gt;Web, Mobile, API, Role-based Dashboards]
+    
+    B[EMS Application Layer]
+    B1[FCAPS Engine]
+    B2[Automation Orchestrator]
+    B3[AI/ML Analytics Engine]
+    B4[Policy Engine]
+    
+    C[EMS Integration Layer]
+    C1[NETCONF / REST / gRPC / SNMP]
+    C2[Kafka / MQTT / Streaming]
+    C3[Vendor Adaptors]
+    
+    D[Network Elements- 5GC / UPF / CU / DU / RU / Edge / RAN EMS ]
+    
+    A --&gt; B
+    B --&gt; B1 &amp; B2 &amp; B3 &amp; B4
+    B1 &amp; B2 &amp; B3 &amp; B4 --&gt; C
+    C --&gt; C1 &amp; C2 &amp; C3
+    C1 &amp; C2 &amp; C3 --&gt; D</code></pre></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80ee-be28-f0385dffa7ac" class="">3. Core EMS Modules (FCAPS+)</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80a7-a72d-cc4ebf90cf2b" class="">3.1 Fault Management (AI-powered)</h3></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8008-bbc2-fa31f9ee3223" class=""><strong>Traditional</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8050-8bb0-d844080136e5" class="bulleted-list"><li style="list-style-type:disc">Real-time alarm generation:<div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8099-874a-d3f94842b3b3" class="bulleted-list"><li style="list-style-type:circle">Link down</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8077-8296-d8fc14d0426d" class="bulleted-list"><li style="list-style-type:circle">Hardware failure</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8020-9aa9-d24100ec0faa" class="bulleted-list"><li style="list-style-type:circle">Power failure</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80d7-9c6c-ef6c52576683" class="bulleted-list"><li style="list-style-type:circle">High CPU / overheating</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-804e-a31c-ce6cce635a5e" class="bulleted-list"><li style="list-style-type:disc">Alarm severity levels:<div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8071-b523-ead16ae8f000" class="bulleted-list"><li style="list-style-type:circle">Critical / Major / Minor / Warning</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-802f-95b0-e154f176d85f" class="bulleted-list"><li style="list-style-type:disc">Alarm correlation (root cause analysis)</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80fb-98e3-d65c57de268d" class=""><strong>Modern EMS (AI-based)</strong></p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80b5-8765-df4086c693d5" class=""><strong>Features</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8024-897e-cafcdf7c1b57" class="bulleted-list"><li style="list-style-type:disc">Alarm correlation (cross-layer)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80d1-832d-d09cb8be20f2" class="bulleted-list"><li style="list-style-type:disc">Noise reduction (90% alarm suppression)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80fb-9cb6-d406dfaa8f10" class="bulleted-list"><li style="list-style-type:disc">Predictive fault detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8025-9269-c28b121ed5ea" class="bulleted-list"><li style="list-style-type:disc">Auto-ticket creation</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-803f-9f3c-f118e689d9aa" class=""><strong>AI Logic</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80f9-8082-d9afa96c25f0" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Example Scenario 1
+
+IF
+  Packet Loss ↑
+  AND CPU Utilization ↑
+  AND PRB Utilization ↑
+THEN
+  Predict: DU overload in next 15 mins
+ACTION:
+  Scale DU OR shift traffic
+
+Example Scenario 2
+
+“If DU link goes down → EMS correlates alarms → shows root cause → notifies NOC instantly”</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-807e-b2c7-e8a1ec4c0723" class="">3.2 Configuration Management (Zero-Touch)</h3></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-809b-8fdc-dd80266e06e4" class=""><strong>Capabilities</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80af-aab3-e62fbb8486be" class="bulleted-list"><li style="list-style-type:disc">gNB parameters provisioning</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8063-957a-ce2966951973" class="bulleted-list"><li style="list-style-type:disc">CU/DU split config</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80d8-be03-e9a16eef58df" class="bulleted-list"><li style="list-style-type:disc">Network slicing config</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8030-8d7f-c8e62c3e14f3" class="bulleted-list"><li style="list-style-type:disc">Bulk configuration push</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e7-b1b5-d27e68f22adf" class="bulleted-list"><li style="list-style-type:disc">Golden config compliance</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-804a-958a-c6dce1ffa2e4" class="bulleted-list"><li style="list-style-type:disc">Zero-Touch Provisioning (ZTP)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8074-a0d8-fa1c1dd2aad8" class="bulleted-list"><li style="list-style-type:disc">Configuration backup &amp; rollback</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8061-b336-d9554235be55" class=""><strong>Automation</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80ba-9200-df15240bd836" class="code code-wrap"><code class="language-YAML" style="white-space:pre-wrap;word-break:break-all">trigger:new_gNB_detected
+actions:
+-validate_hardware
+-apply_baseline_config
+-attach_to_core
+-verify_KPIs
+-mark_as_active
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8044-87c8-fb30289a1eea" class=""><strong>Protocols</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8082-96c7-eaea17f69411" class="bulleted-list"><li style="list-style-type:disc">NETCONF/YANG</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-806b-b833-daa2f6def3e4" class="bulleted-list"><li style="list-style-type:disc">REST APIs</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80f5-9227-d46697f335c1" class="bulleted-list"><li style="list-style-type:disc">gRPC</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8018-802c-c6d0d392ee69" class="bulleted-list"><li style="list-style-type:disc">Vendor CLI fallback</li></ul></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8097-99bf-f005631cc6d7"/></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8056-a014-eeb6a1b5eecf" class="">3.3 Performance Management (Real-time + AI)</h3></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8065-ab7d-d1f32a79d205" class="">Use Cases</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8056-84c6-d3c5705176d5" class="bulleted-list"><li style="list-style-type:disc">Traffic analysis per cell / per gNB</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-808c-8fd6-cd23ad59f13e" class="bulleted-list"><li style="list-style-type:disc">Peak hour analysis</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b0-9818-f693b2c9b652" class="bulleted-list"><li style="list-style-type:disc">Congestion detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80c1-9aa1-dcfa17e96481" class="bulleted-list"><li style="list-style-type:disc">Trend analysis (daily / weekly / monthly)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8086-a9e7-d32cce32a1f0" class="bulleted-list"><li style="list-style-type:disc">SLA performance reports</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80a9-8fce-f8f7faa46af3" class=""><strong>KPIs</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-809e-a2ea-fcf068409d45" class="bulleted-list"><li style="list-style-type:disc">Throughput</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8027-a936-cd34078dde8e" class="bulleted-list"><li style="list-style-type:disc">Latency</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-808d-a8b2-eaf89b321580" class="bulleted-list"><li style="list-style-type:disc">PRB Utilization</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80a6-ab04-f915c74952bb" class="bulleted-list"><li style="list-style-type:disc">SINR / RSRP / RSRQ</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8082-b364-f44967ab90d2" class="bulleted-list"><li style="list-style-type:disc">Packet loss</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e6-9d6b-e6a63a9691cd" class="bulleted-list"><li style="list-style-type:disc">Slice-wise KPIs</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80e9-9b02-d39abe7f115c" class=""><strong>AI Analytics</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8050-8bb7-d457263b6253" class="bulleted-list"><li style="list-style-type:disc">Traffic forecasting</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-802d-b9d6-d9d4647c5ab9" class="bulleted-list"><li style="list-style-type:disc">Congestion prediction</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80d2-a7c9-c2d435664a83" class="bulleted-list"><li style="list-style-type:disc">Capacity planning</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-802d-9f3a-dc1aee5a6b05" class="bulleted-list"><li style="list-style-type:disc">Slice SLA monitoring</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80c3-972f-f6d11311fe57" class=""><strong>Example AI Insight</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80c7-985f-c1d49194293c" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">&quot;Slice URLLC will breach latency SLA in 12 minutes
+Recommended Action: Enable Edge UPF + QoS boost&quot;
+
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8047-ac8e-f84065058273"/></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8084-80a9-ce97663f1ab5" class="">3.4 Software &amp; Firmware Management</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ce-bc97-c96328b23639" class="bulleted-list"><li style="list-style-type:disc">Remote software upgrade of:<div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-803c-9293-c261cce1f3c8" class="bulleted-list"><li style="list-style-type:circle">gNB</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80a1-a74d-c3935da4d4d7" class="bulleted-list"><li style="list-style-type:circle">CU/DU</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8008-92f5-ca96729e91e1" class="bulleted-list"><li style="list-style-type:disc">Scheduled upgrades (night window)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-802a-8c04-ceaf06e8f94c" class="bulleted-list"><li style="list-style-type:disc">Upgrade status tracking</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8020-bd9f-f4bebcc42101" class="bulleted-list"><li style="list-style-type:disc">Rollback on failure</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8064-90d7-dcadf2bb562f" class="">3.5 Accounting / Usage (Optional EMS+)</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ad-ac28-d59bf5a75fe0" class="bulleted-list"><li style="list-style-type:disc">Slice-based usage</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8047-a690-c70c4d1bbe39" class="bulleted-list"><li style="list-style-type:disc">Enterprise private 5G billing</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80a1-82bf-dd1fd47eab39" class="bulleted-list"><li style="list-style-type:disc">Resource consumption tracking</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-807d-8e0c-e58fdffc7b65" class="bulleted-list"><li style="list-style-type:disc">API-based export to BSS</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8089-97b0-d7b94b07bcf4" class="bulleted-list"><li style="list-style-type:disc">Power consumption monitoring per site</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-805a-ad58-e978c06d5a61" class="bulleted-list"><li style="list-style-type:disc">Sleep mode management (low traffic hours)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-802c-bae9-e3e18534249d" class="bulleted-list"><li style="list-style-type:disc">Carbon footprint tracking</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-806f-bb38-fcdfa48745e5" class="bulleted-list"><li style="list-style-type:disc">Cost optimization reports</li></ul></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8065-8d0f-fcf9437fae76"/></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8045-9e8a-d787a4d220ae" class="">3.6 Security Management (Zero Trust)</h3></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80bd-99d4-f63239b1fd89" class=""><strong>Features</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8002-86ca-c79da087efb7" class="bulleted-list"><li style="list-style-type:disc">Role-based access (RBAC)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8073-9645-e28c5003d372" class="bulleted-list"><li style="list-style-type:disc">OAuth2 / OpenID</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80a3-9b0d-d0e608dd3e34" class="bulleted-list"><li style="list-style-type:disc">TLS / IPSec monitoring</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ca-9848-e9079635f437" class="bulleted-list"><li style="list-style-type:disc">Intrusion detection (AI)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80a0-b28f-e102b44fdef7" class="bulleted-list"><li style="list-style-type:disc">Config tamper detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8000-ae2a-f8b2e7f5e0ee" class="bulleted-list"><li style="list-style-type:disc">Secure login &amp; audit logs</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8040-bc1a-dbb599003770" class="bulleted-list"><li style="list-style-type:disc">Configuration change history</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80bb-ba75-c5584c8a07c6" class="bulleted-list"><li style="list-style-type:disc">Intrusion or abnormal behavior alerts</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8090-a42f-eb1cf2fc12c8" class=""><strong>AI Use</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-809c-9042-dcba9f349473" class="bulleted-list"><li style="list-style-type:disc">Behavior-based anomaly detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8001-9ba4-c52be99a3356" class="bulleted-list"><li style="list-style-type:disc">UE spoofing detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8033-a821-d5b182746b45" class="bulleted-list"><li style="list-style-type:disc">Signaling attack prediction</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80b0-b808-f469b6bac129" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80f4-bb6d-c1ba90b22a1a" class="">4. AI/ML Engine (Core Differentiator)</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80a9-83c5-cea0ecbd5084" class="">AI Models Used</h3></div><div style="display:contents" dir="ltr"><table id="2d238e8e-0edf-805f-b0bf-f9c22d457cd5" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8049-ba27-d3776cbe5a2b"><th id="Us:T" class="simple-table-header-color simple-table-header">Area</th><th id="&gt;Xau" class="simple-table-header-color simple-table-header">Model</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8054-bb5b-d078bb44e35e"><td id="Us:T" class="">Fault prediction</td><td id="&gt;Xau" class="">LSTM / Time-series</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8055-a29b-eed231256c90"><td id="Us:T" class="">Anomaly detection</td><td id="&gt;Xau" class="">Isolation Forest</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8085-89ab-f47538f32df0"><td id="Us:T" class="">Root cause</td><td id="&gt;Xau" class="">Graph Neural Networks</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-809f-8dbd-ee83532e33b2"><td id="Us:T" class="">Optimization</td><td id="&gt;Xau" class="">Reinforcement Learning</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8092-a778-fd259ea3af75"><td id="Us:T" class="">Traffic forecast</td><td id="&gt;Xau" class="">Prophet / LSTM</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8032-a873-c1d612911af7"/></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8052-857a-f6babe1dcc92" class="">AI Workflow (Vibe Code)</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-800f-ae57-caac19fd44e4" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">DATA → FEATURE ENGINE → MODEL → INSIGHT → ACTION
+
+</code></pre></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80ad-85d6-c09c8ecb60a6" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">while network_running:
+    metrics = collect_metrics()
+    anomalies = AI.detect(metrics)
+
+    if anomalies:
+        root_cause = AI.analyze(anomalies)
+        action = policy_engine.decide(root_cause)
+
+        if action.auto_approved:
+            automation.execute(action)
+        else:
+            notify_human(action)
+
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8063-8b62-dbb135486b2d"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8083-8084-cd467468b6d8" class="">5. Automation &amp; Closed Loop Assurance (CLA)</h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8028-9559-fde6b0b3f258" class=""><strong>Closed Loop = Sense → Think → Act</strong></p></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80dc-866f-c7c5b689f775" class="">Example: Self-Healing Loop</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80df-8a15-df877cf1bc66" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Event: gNB latency spike
+↓
+AI detects anomaly
+↓
+Policy engine evaluates impact
+↓
+Automation triggers:
+   - Restart CU function
+   - Shift traffic to neighbor cell
+   - Notify NOC
+↓
+Verify KPIs restored
+↓
+Close incident
+
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-802a-ac13-f1821e0a7b05"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80de-b6a4-ec1b8ccc388b" class="">6. Policy Engine (Business Rules)</h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80b0-aa70-dd861847d388" class=""><strong>Policy Types</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e8-8c42-f1398c239502" class="bulleted-list"><li style="list-style-type:disc">SLA-based</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ff-bdea-c4ddf7239ddf" class="bulleted-list"><li style="list-style-type:disc">Slice-based</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80a9-a5a3-cac873aedeac" class="bulleted-list"><li style="list-style-type:disc">Enterprise-based</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b0-85c1-d6f660a01794" class="bulleted-list"><li style="list-style-type:disc">Cost-based</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-808b-9651-ca8a8930de30" class=""><strong>Sample Policy</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-801b-b594-c16a08056b3d" class="code code-wrap"><code class="language-YAML" style="white-space:pre-wrap;word-break:break-all">policy_name:URLLC_SLA_Protection
+condition:
+latency&gt;10ms
+action:
+-prioritize_slice
+-allocate_extra_PRB
+-move_UPF_to_edge
+approval:auto
+
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-809d-a2a3-c37daae00041"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80a2-8df1-d414cf6033cd" class="">7. Reporting &amp; Analytics (Executive-Friendly)</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80a8-a24d-eb1e42ff9a68" class="">Use Cases</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80f3-a642-f872360f0b8e" class="bulleted-list"><li style="list-style-type:disc">SLA compliance reports</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-806d-8c0c-ca7eebf9361f" class="bulleted-list"><li style="list-style-type:disc">Availability reports</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-805e-8283-fd0fbf74c38e" class="bulleted-list"><li style="list-style-type:disc">Fault trends</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8026-8e6f-c1dea5a9f327" class="bulleted-list"><li style="list-style-type:disc">Capacity growth reports</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e4-84ab-f316955ac4f5" class="bulleted-list"><li style="list-style-type:disc">Export (PDF / Excel / API)</li></ul></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80fd-b72b-f10d7632a58f" class="">8. EMS User Interface (UI/UX)</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80fb-b917-f994e058ef72" class="">Dashboards</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8098-bd6f-fea3d224b44c" class="bulleted-list"><li style="list-style-type:disc">Network Health Score</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8020-8be0-f9fb96229b25" class="bulleted-list"><li style="list-style-type:disc">Slice SLA view</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8036-98d8-f9df50d62476" class="bulleted-list"><li style="list-style-type:disc">Cell Heatmap</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8020-a146-d2f587e6158a" class="bulleted-list"><li style="list-style-type:disc">Alarm Intelligence View</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b0-b643-f9201f573dac" class="bulleted-list"><li style="list-style-type:disc">AI Recommendations Panel</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-806e-b49f-cb9f9ab828b4" class="">Personas</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80c3-8452-ec54ce31d246" class="bulleted-list"><li style="list-style-type:disc">NOC Engineer</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8032-a7cf-f30cbfdefc64" class="bulleted-list"><li style="list-style-type:disc">RF Engineer</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8080-944e-df7ef1ad0639" class="bulleted-list"><li style="list-style-type:disc">Enterprise Admin</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-807b-a717-f1e83f7a81f3" class="bulleted-list"><li style="list-style-type:disc">CTO / CXO</li></ul></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8039-b3a1-edfd5446a2ce"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80aa-94b2-ecc5b1ef4042" class="">9. APIs &amp; Integration</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8075-8129-edaa06481ad8" class="">Northbound APIs</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-808e-bd90-c3d663c566b5" class="bulleted-list"><li style="list-style-type:disc">REST / OpenAPI</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8027-996d-d3a0644093d9" class="bulleted-list"><li style="list-style-type:disc">Webhooks</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80cb-9139-ca4764c02573" class="bulleted-list"><li style="list-style-type:disc">Kafka topics</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80c0-af59-d11bb23565ba" class="">Southbound</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-801a-ab97-fbe0af87c541" class="bulleted-list"><li style="list-style-type:disc">NETCONF/YANG</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ff-84ab-f1c154440ed5" class="bulleted-list"><li style="list-style-type:disc">SNMP</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ce-b919-d0be8f56b254" class="bulleted-list"><li style="list-style-type:disc">gRPC</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8072-b458-d13c06e1ffbe" class="bulleted-list"><li style="list-style-type:disc">Vendor-specific APIs</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80d7-97c6-e6119c124da4" class="">Integration With</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8046-b730-e5dd3191423e" class="bulleted-list"><li style="list-style-type:disc">NMS / SMO</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80d1-bc1d-cccc8635847b" class="bulleted-list"><li style="list-style-type:disc">BSS/OSS</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ea-9559-ee1b922ff653" class="bulleted-list"><li style="list-style-type:disc">ITSM (ServiceNow, Jira)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b2-87e9-c2698aa16d73" class="bulleted-list"><li style="list-style-type:disc">Analytics platforms</li></ul></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8037-b394-f8d3a9fb97af"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8058-a1a0-dd0715a0580f" class="">10. Cloud-Native Design</h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80be-8332-d4db48603726" class=""><strong>Tech Stack (Recommended)</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80d6-b25c-edcf0e268f10" class="bulleted-list"><li style="list-style-type:disc">Microservices: Kubernetes</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-800d-a776-c7b7b7a5f961" class="bulleted-list"><li style="list-style-type:disc">Messaging: Kafka</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8084-b7d3-c393bf1f1ec3" class="bulleted-list"><li style="list-style-type:disc">DB: TimescaleDB + MongoDB</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-805a-a721-ff04133fd80f" class="bulleted-list"><li style="list-style-type:disc">AI: Python + TensorFlow</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8007-8674-f131d3394e22" class="bulleted-list"><li style="list-style-type:disc">UI: React</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8060-bad9-c207f6598c54" class="bulleted-list"><li style="list-style-type:disc">Auth: Keycloak</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8019-96a1-c3ba890f5457" class=""><strong>Deployment</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8083-a8dc-cff9c4408568" class="bulleted-list"><li style="list-style-type:disc">Public Cloud</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-808a-b3e8-ed768cb5d83b" class="bulleted-list"><li style="list-style-type:disc">Private Cloud</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8033-9e30-c5263855c959" class="bulleted-list"><li style="list-style-type:disc">Edge</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-800f-b1c0-c8a36f887568" class="bulleted-list"><li style="list-style-type:disc">On-prem (telco DC)</li></ul></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-80ef-b4c6-d30369c39d5c"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-800a-99ea-f3fb797c6cca" class="">11. EMS → SMO Ready (Future Proof)</h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8062-81cb-e942c79fcfa4" class="">EMS is designed to evolve into:</p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80be-adbd-dec0a9506ce1" class="bulleted-list"><li style="list-style-type:disc">O-RAN SMO</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8054-a43f-f916a3a39a99" class="bulleted-list"><li style="list-style-type:disc">RIC integration (xApp/rApp)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80eb-931d-e8cfb4431c83" class="bulleted-list"><li style="list-style-type:disc">Multi-vendor open RAN</li></ul></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-80c6-89b3-eda5a238b946"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8046-bc45-ca632b845e69" class="">12. What Makes This EMS Special</h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8016-8545-c57873cc6170" class="">✔ AI-first</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80cb-a650-e5d40978f077" class="">✔ Vendor-agnostic</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80ba-ae18-c5d151150832" class="">✔ Private 5G friendly</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8039-863b-c009a50f4af0" class="">✔ Automation heavy (low OPEX)</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-809c-8fed-cb280f218833" class="">✔ API-driven</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80e3-b611-f49074deddd5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80f0-b097-d4807f09ee00" class=""><strong>How ONE 5G EMS can be used for BOTH Public 5G and Private 5G networks</strong>, without changing core software—only policies, scale, and integrations<br/><br/></p></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8059-8fa0-ed25d8e818a1" class="">1. Key Principle (Very Important)</h2></div><div style="display:contents" dir="auto"><blockquote id="2d238e8e-0edf-80f1-84ec-dbd24b9f353d" class="">Public 5G and Private 5G are NOT different technically<div style="display:contents" dir="auto"><p id="2d238e8e-0edf-804c-82e4-e1bf0f557a7a" class="">They differ in:</p></div></blockquote></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80cd-abf8-d7659f20bfec" class="bulleted-list"><li style="list-style-type:disc"><strong>Scale</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80de-bc07-e012f14e81e8" class="bulleted-list"><li style="list-style-type:disc"><strong>SLAs</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-807c-afa0-d4d3ac42f168" class="bulleted-list"><li style="list-style-type:disc"><strong>Security</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80cf-991b-d0e16e60fc50" class="bulleted-list"><li style="list-style-type:disc"><strong>Ownership</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8062-a3d9-dcfe826b6859" class="bulleted-list"><li style="list-style-type:disc"><strong>Automation level</strong></li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-800b-9d89-c009ae4200f9" class="">So EMS must be:</p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-803a-9caf-e4e10157fac9" class="bulleted-list"><li style="list-style-type:disc"><strong>Common core</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80c7-aff8-e8b5488767d5" class="bulleted-list"><li style="list-style-type:disc"><strong>Configurable behavior</strong></li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80a8-8770-f6c8e2e768ff" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="ecbff953-2ab2-4324-b2c9-ed11da0db2db" class="">2. Unified EMS Architecture</h2></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="f1f4ccbf-a0a0-42a6-b4b1-70cf39c0e26a" class="code code-wrap"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph TD
+    A[Unified 5G EMS&lt;br/&gt;Single Codebase, Multi-Tenant]
+    
+    B[Public Network&lt;br/&gt;Telco Ops]
+    C[Private Network&lt;br/&gt;Enterprise]
+    
+    A --&gt; B
+    A --&gt; C</code></pre></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-809c-bd69-f75da213c901" class="">3. EMS Feature Mapping (Public vs Private)</h2></div><div style="display:contents" dir="ltr"><table id="2d238e8e-0edf-8065-b600-c753d87f9ed5" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-80ca-b5cd-e068fa6627cf"><th id="\jAq" class="simple-table-header-color simple-table-header">EMS Function</th><th id="gKJm" class="simple-table-header-color simple-table-header">Public 5G</th><th id="=}M;" class="simple-table-header-color simple-table-header">Private 5G</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-80e0-b979-c7e3957f7358"><td id="\jAq" class="">Fault Mgmt</td><td id="gKJm" class="">Massive alarms, AI correlation</td><td id="=}M;" class="">Small alarms, instant action</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-804a-b14f-e67e201d836b"><td id="\jAq" class="">Config Mgmt</td><td id="gKJm" class="">Vendor-specific, controlled</td><td id="=}M;" class="">Zero-touch, fast</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-80c9-b51b-f857519537ee"><td id="\jAq" class="">Performance</td><td id="gKJm" class="">SLA + KPI heavy</td><td id="=}M;" class="">Application-focused</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8055-8ad9-c9eb0d63f843"><td id="\jAq" class="">Automation</td><td id="gKJm" class="">Semi-auto</td><td id="=}M;" class="">Full closed-loop</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8029-829c-ca7f8c56f677"><td id="\jAq" class="">AI Analytics</td><td id="gKJm" class="">Capacity + QoE</td><td id="=}M;" class="">Predictive + optimization</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-80b9-b88f-c12ad2abfcb4"><td id="\jAq" class="">Security</td><td id="gKJm" class="">Compliance-driven</td><td id="=}M;" class="">Zero-trust, local control</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-80dd-a99f-ea60968e293e"><td id="\jAq" class="">UI</td><td id="gKJm" class="">NOC-centric</td><td id="=}M;" class="">Business-centric</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80fb-863b-edc47fdd6c5a" class="">4. Public 5G EMS Usage</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8053-89d0-d1054134efba" class="">Who Uses It</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b8-bbe3-fa0133163567" class="bulleted-list"><li style="list-style-type:disc">Telco NOC</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8032-8ae7-d4deec9010d6" class="bulleted-list"><li style="list-style-type:disc">RF Engineers</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80c0-a49f-e02fc6074ef7" class="bulleted-list"><li style="list-style-type:disc">Core Network Teams</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-805b-862e-d28d45e5f554" class="">Managed Elements</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80d3-8d68-f75711c71f07" class="bulleted-list"><li style="list-style-type:disc">Thousands of gNBs</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-805e-9fad-c6fe5cc79451" class="bulleted-list"><li style="list-style-type:disc">Multi-vendor RAN</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-800a-ac32-d9c3c853104c" class="bulleted-list"><li style="list-style-type:disc">National 5GC</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b8-82bd-fecce6f0e41c" class="bulleted-list"><li style="list-style-type:disc">Transport network</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8076-b850-dff029f3c15d" class="">EMS Behavior (Public Mode)</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-8052-8ad3-ce0a57cd2b29" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">- Alarm suppression (95%)
+- Manual approval for critical actions
+- Long-term trend analytics
+- Vendor certification enforcement
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80ba-8a4f-d72315f02d17" class="">Example Use Case</h3></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8014-9d65-e8eb67eab700" class=""><strong>Nationwide Congestion Prediction</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80df-bc98-e5d469de2ce6" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">AI predicts festival traffic surge
+EMS recommends:
+- Add temporary carriers
+- Adjust handover parameters
+- Scale UPF
+
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8090-ba4c-fd39bd56a847"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80e8-82ba-ce39715a0561" class="">5. Private 5G EMS Usage</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8038-bf63-ecb4b99e0e3e" class="">Who Uses It</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-801a-901e-fb78fc5387fc" class="bulleted-list"><li style="list-style-type:disc">Factory IT Admin</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8083-968b-d0f9a3198ad2" class="bulleted-list"><li style="list-style-type:disc">Mine Operations Manager</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b8-9b49-d06a52fd4bfe" class="bulleted-list"><li style="list-style-type:disc">Port Automation Team</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-807b-bdf1-d9b6bd131561" class="">Managed Elements</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8043-b706-c0525c51b0ee" class="bulleted-list"><li style="list-style-type:disc">Small number of gNBs</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8061-a714-ceb897c999ef" class="bulleted-list"><li style="list-style-type:disc">Dedicated 5GC</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e8-ad28-fafdc9422e9c" class="bulleted-list"><li style="list-style-type:disc">Edge servers</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-802e-8b49-c21f755618c8" class="bulleted-list"><li style="list-style-type:disc">Industrial devices</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80bc-8bcd-f0a50f2f11e0" class="">EMS Behavior (Private Mode)</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80ac-b733-e4902658d831" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">- Full automation allowed
+- Instant self-healing
+- Application-level monitoring
+- Simple UI
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8031-a751-d18edd7ba1fa" class="">Example Use Case</h3></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8011-9abe-f814d43e5abc" class=""><strong>Factory Robot Network</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80de-b7c6-f443ee193b5d" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Latency spike detected
+EMS auto:
+- Prioritize URLLC slice
+- Move UPF to edge
+- Restart faulty DU
+(No human approval needed)
+
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-80f1-8f98-fb84dd96c898"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80c2-8829-f5a4497ff2a9" class="">6. Multi-Tenant &amp; Slice-Aware EMS</h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8075-94fa-db97857463e0" class="">EMS supports:</p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8037-84c2-faf8e3a8b282" class="bulleted-list"><li style="list-style-type:disc">Telco tenants</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8052-85a6-e78681779766" class="bulleted-list"><li style="list-style-type:disc">Enterprise tenants</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8035-943a-cd0c223b7935" class="bulleted-list"><li style="list-style-type:disc">MVNOs</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8087-acc6-f22d20e21a21" class="bulleted-list"><li style="list-style-type:disc">Government networks</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-808f-9521-e3cf4c7e0f92" class="">Logical Isolation</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-8033-ba46-cdac4854ada9" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Tenant A → Public Network
+Tenant B → Private Factory
+Tenant C → Private Mine
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80f2-b4d3-ce98f56f8a3f" class="">Each tenant has:</p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80d4-a4a6-cd3572711ace" class="bulleted-list"><li style="list-style-type:disc">Separate dashboards</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8070-aa87-d85a8fee0a43" class="bulleted-list"><li style="list-style-type:disc">Separate policies</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-809e-b6e6-cdcab4eef396" class="bulleted-list"><li style="list-style-type:disc">Separate SLAs</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8046-9a3f-efa7d2e29860" class="bulleted-list"><li style="list-style-type:disc">Separate automation permissions</li></ul></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8090-a16d-f882d78765e3"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80d1-8706-cad91880aa36" class="">7. Policy Engine = Key Differentiator</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-804a-9892-d394374e061d" class="">Public Network Policy</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80ed-a39a-e4a599ae5e63" class="code code-wrap"><code class="language-YAML" style="white-space:pre-wrap;word-break:break-all">approval_required:true
+automation_level:medium
+risk_threshold:low
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-8015-9417-dcad2d72f1d4" class="">Private Network Policy</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-80e7-b44a-e50d12a99a70" class="code code-wrap"><code class="language-YAML" style="white-space:pre-wrap;word-break:break-all">approval_required:false
+automation_level:high
+risk_threshold:high
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-804b-a769-c58a42da7e00" class="">Same EMS → Different behavior</p></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8092-9c9f-fba383e241f6"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8086-8e93-e52ed50ad67b" class="">8. AI Analytics Difference</h2></div><div style="display:contents" dir="ltr"><table id="2d238e8e-0edf-8032-b323-ef33c2cd6d98" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8014-9a1c-efa98b741416"><th id="jREy" class="simple-table-header-color simple-table-header">AI Area</th><th id="g&lt;hM" class="simple-table-header-color simple-table-header">Public</th><th id="lm\[" class="simple-table-header-color simple-table-header">Private</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-807b-be68-cde4186c4de6"><td id="jREy" class="">Prediction</td><td id="g&lt;hM" class="">Traffic, QoE</td><td id="lm\[" class="">Failure, downtime</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-80ae-b0a3-d95737dcb90d"><td id="jREy" class="">Optimization</td><td id="g&lt;hM" class="">Cost, spectrum</td><td id="lm\[" class="">Latency, reliability</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8020-8b56-e92dabdd8c30"><td id="jREy" class="">Time Horizon</td><td id="g&lt;hM" class="">Hours / days</td><td id="lm\[" class="">Seconds / minutes</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8022-94a1-d23c4e7f95a0"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8035-afa3-cf994efab134" class="">9. Security Handling</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80ad-8a0e-f4610ec0477e" class="">Public 5G</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ca-b44d-d3c8d7afa1ac" class="bulleted-list"><li style="list-style-type:disc">Regulatory compliance</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80b9-b770-c7d680bad024" class="bulleted-list"><li style="list-style-type:disc">Lawful intercept coordination</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80ee-b31f-ced24d21273e" class="bulleted-list"><li style="list-style-type:disc">Multi-operator security</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-806a-a08e-ef1b658d5f8f" class="">Private 5G</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-803c-b05d-fa8aa1a4201e" class="bulleted-list"><li style="list-style-type:disc">Zero trust</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e1-a123-f7bc7980ee47" class="bulleted-list"><li style="list-style-type:disc">Enterprise IAM</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e9-8a2a-d9aa9555bce5" class="bulleted-list"><li style="list-style-type:disc">OT/IT security integration</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80ec-ace3-c834ed43825b" class="">EMS switches security mode via <strong>tenant profile</strong>.</p></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-802b-a23a-c3ca4b29e4a3"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-8012-bd90-caac91e88ab9" class="">10. EMS Deployment Model</h2></div><div style="display:contents" dir="ltr"><table id="2d238e8e-0edf-809d-8c0b-d6b9fd604b4a" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-80a5-b998-f9842dfd22c6"><th id="HbET" class="simple-table-header-color simple-table-header">Model</th><th id="ecG|" class="simple-table-header-color simple-table-header">Public</th><th id="iQyX" class="simple-table-header-color simple-table-header">Private</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-807e-b800-c38e248511d1"><td id="HbET" class="">Central DC</td><td id="ecG|" class="">✔</td><td id="iQyX" class="">Optional</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8088-90a8-d112f57f33c2"><td id="HbET" class="">Edge</td><td id="ecG|" class="">Optional</td><td id="iQyX" class="">✔</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-8041-86ac-f57913a3a84f"><td id="HbET" class="">Cloud</td><td id="ecG|" class="">✔</td><td id="iQyX" class="">✔</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d238e8e-0edf-80d7-ae53-d7f5ac671325"><td id="HbET" class="">On-Prem</td><td id="ecG|" class="">Rare</td><td id="iQyX" class="">✔</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2d238e8e-0edf-8044-992c-c9866547326d"/></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-803a-8028-e7495eeb05ac" class="">11. Real-World Combined Scenario</h2></div><div style="display:contents" dir="auto"><h3 id="2d238e8e-0edf-80a9-b04b-fd7823be8ce6" class="">Telco + Enterprise</h3></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8084-a1a9-dddf79eff9b1" class="bulleted-list"><li style="list-style-type:disc">Telco runs public 5G</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-802b-ac81-d59fa2f2b013" class="bulleted-list"><li style="list-style-type:disc">Same telco offers <strong>Private 5G as a Service</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8037-8f54-e473e5ddf61e" class="bulleted-list"><li style="list-style-type:disc">EMS manages both</li></ul></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d238e8e-0edf-8036-8b2a-ca5fc6042489" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">One EMS
+→ Multiple Enterprises
+→ Different SLAs
+→ Same operations team
+→ Lower OPEX
+</code></pre></div><div style="display:contents" dir="auto"><h2 id="2d238e8e-0edf-80c4-ad3d-d105fe65d49b" class="">12. Why This Matters  </h2></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80e6-b7bd-e4c782545c1a" class="">Here&#x27;s an expanded explanation of why having one unified EMS for both public and private 5G networks matters:</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8003-ad95-f741b72e1d6e" class=""><strong>Business Impact</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8017-9339-f6abf86acecf" class="bulleted-list"><li style="list-style-type:disc"><strong>Market Expansion</strong>: A single product can serve two distinct markets—telecom operators and enterprises—without needing separate development teams or codebases</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8082-a021-d3c8bee442d2" class="bulleted-list"><li style="list-style-type:disc"><strong>Faster Time-to-Market</strong>: Deploy to both public and private 5G customers simultaneously, accelerating sales cycles and revenue generation</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8013-ad66-f897e99b5540" class="bulleted-list"><li style="list-style-type:disc"><strong>Reduced Engineering Costs</strong>: One development effort, one maintenance cycle, shared bug fixes and feature improvements across both use cases</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8013-9dfb-c3e3748d119e" class=""><strong>Operational Benefits</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8055-8266-c593e2f4271d" class="bulleted-list"><li style="list-style-type:disc"><strong>Lower OPEX</strong>: Operations teams can manage both network types using the same tools, training, and processes</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8025-a5f0-dac06760aca2" class="bulleted-list"><li style="list-style-type:disc"><strong>Unified Expertise</strong>: Engineers develop deep knowledge of one system rather than splitting attention across multiple platforms</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80c1-8300-ec29603026d6" class="bulleted-list"><li style="list-style-type:disc"><strong>Consistent User Experience</strong>: Similar workflows and interfaces reduce cognitive load when switching between network types</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80b8-9ba2-d17c2ce56f0e" class=""><strong>Technical Advantages</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8080-a3d6-f4f23c77c580" class="bulleted-list"><li style="list-style-type:disc"><strong>Scalability</strong>: The same architecture scales from small private networks (10-100 devices) to massive public networks (millions of users)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-80e4-8b5f-fe5cdb37bbd7" class="bulleted-list"><li style="list-style-type:disc"><strong>Future-Proof</strong>: As telcos offer &quot;Private 5G as a Service,&quot; they can leverage existing infrastructure and expertise</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-807c-842a-eb82b74bc411" class="bulleted-list"><li style="list-style-type:disc"><strong>Standards Compliance</strong>: Both implementations follow the same 3GPP standards, making a unified approach technically feasible</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8078-81e4-fed59a1db526" class=""><strong>Competitive Edge</strong></p></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-803e-a3ce-cf3a37bb27cc" class="bulleted-list"><li style="list-style-type:disc"><strong>Vendor Differentiation</strong>: Most competitors have separate products for public and private 5G, creating complexity and higher costs</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-8023-87fb-e82b2f336ac1" class="bulleted-list"><li style="list-style-type:disc"><strong>Cross-Selling Opportunities</strong>: Telcos can easily offer private 5G to enterprise customers using their existing EMS investment</li></ul></div><div style="display:contents" dir="auto"><ul id="2d238e8e-0edf-808b-bdde-e25443195af4" class="bulleted-list"><li style="list-style-type:disc"><strong>Resource Efficiency</strong>: Development resources focus on making one excellent product rather than maintaining multiple mediocre ones</li></ul></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8086-b0f3-c73a10ab0ada" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-803c-a801-f4eeefd660c1" class="">If  EMS like this:</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-80f3-bb3a-d95f8431bd1a" class="">✔ One product</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8047-90fb-d7c86b461410" class="">✔ Two markets</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8019-9dd2-f547d84890da" class="">✔ Faster sales</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8043-bb42-d21a7f2d458c" class="">✔ Lower engineering cost</p></div><div style="display:contents" dir="auto"><p id="2d238e8e-0edf-8089-a5bb-c2bba8d2b930" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
