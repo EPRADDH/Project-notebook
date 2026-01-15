@@ -1,0 +1,713 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coal Mine EMS (Element Management System)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2e9ff13f-3ca0-80fa-a71a-d545810b7548" class="page sans"><header><h1 class="page-title" dir="auto">Coal Mine EMS (Element Management System)</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2e9ff13f-3ca0-8078-8356-f720797c7295" class="">Solution Design Document – DGMS &amp; 5G-Ready</h1></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-800d-9a01-df21ed324653"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8060-967d-d54f20958a56" class="">1. Introduction</h2></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8086-b5cd-f592e75f556c" class="">The <strong>Coal Mine EMS</strong> is the central system responsible for <strong>managing, monitoring, controlling, and automating all mine elements</strong> such as sensors, machines, cameras, wearables, drones, and safety systems over a <strong>5G Private Network</strong>.</p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8063-a104-fa71ae44a31f" class="">The EMS acts as the <strong>single source of truth for mine operations and safety</strong>, while integrating with <strong>NMS (network health)</strong> and <strong>AI-RCA (intelligent decision-making)</strong>.</p></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8096-8707-c27a13c45a05"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-808a-aa1a-df6276db69e4" class="">2. EMS Design Philosophy (Mining-First)</h2></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-80db-9b38-dd6aeb3fc99e" class="numbered-list" start="1"><li><strong>Safety-first, not IT-first</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8009-bc5f-cb0138866f6f" class="numbered-list" start="2"><li><strong>Works in harsh underground conditions</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8049-93bf-c0bcd2af3ae5" class="numbered-list" start="3"><li><strong>Simple for operators, powerful underneath</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8088-ac6f-e81fec446f46" class="numbered-list" start="4"><li><strong>DGMS-compliant by default</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8048-af0a-fe3299e32ce0" class="numbered-list" start="5"><li><strong>Fail-safe &amp; redundant</strong></li></ol></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-805c-ae1b-dc1c43948760"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-802b-b723-f676b214495c" class="">3. EMS Scope &amp; Responsibilities</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80e0-9c6d-e4d09fe26566" class="">EMS Owns:</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8048-a55d-c33d1b5e9d53" class="bulleted-list"><li style="list-style-type:disc">Devices, machines, sensors</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b3-aa39-f39f327ed46e" class="bulleted-list"><li style="list-style-type:disc">Safety logic &amp; automation</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8099-8489-d359b1f2c2a6" class="bulleted-list"><li style="list-style-type:disc">Alerts &amp; alarms</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8034-ac6d-d4bfee9da067" class="bulleted-list"><li style="list-style-type:disc">Data collection &amp; logs</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804f-8bd0-f97d1247e9c8" class="bulleted-list"><li style="list-style-type:disc">DGMS reports</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8037-bcfa-f4b99b1c0dd6" class="">EMS Does NOT Own:</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801a-a66a-e80ba3ce60a6" class="bulleted-list"><li style="list-style-type:disc">5G radio &amp; core health (NMS)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8037-b6a1-fdb98cf591a9" class="bulleted-list"><li style="list-style-type:disc">Deep root cause reasoning (AI-RCA)</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-80c2-a25b-f14ce7910ddd"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8097-99ec-e04f71d9c072" class="">4. High-Level EMS Architecture</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-806b-8712-dadf12bb64b8" class="">Layers</h3></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-801a-ac54-f9c0f783345d" class="numbered-list" start="1"><li>Field Devices &amp; Machines</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-806a-856d-e023acb7d242" class="numbered-list" start="2"><li>Connectivity (5G / Wired)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-80c1-9e8b-ef1b4e5e9380" class="numbered-list" start="3"><li>EMS Ingestion &amp; Control Layer</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-802c-8e77-ec99496b4999" class="numbered-list" start="4"><li>EMS Analytics &amp; Rules Engine</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8079-9cb1-c2afecd1402b" class="numbered-list" start="5"><li>EMS Applications &amp; Dashboards</li></ol></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8093-9419-dc19a84939c2"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-80bf-b8d4-ce4f3c5ef38a" class="">5. Managed Elements (What EMS Controls)</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8016-99e1-f34b090307f3" class="">5.1 Safety &amp; Environmental Devices</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8075-b6e5-f16a3d7cfaf8" class="bulleted-list"><li style="list-style-type:disc">Multi-gas sensors (CH₄, CO, O₂)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80de-991f-fbf93811f56a" class="bulleted-list"><li style="list-style-type:disc">Fire &amp; smoke detectors</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ea-a771-d63e0ddec545" class="bulleted-list"><li style="list-style-type:disc">Dust, temperature, humidity sensors</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801f-b1c6-d0b7ba3aab45" class="bulleted-list"><li style="list-style-type:disc">Sirens &amp; evacuation alarms</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a1-8703-c3273206c18a" class="bulleted-list"><li style="list-style-type:disc">Roof movement &amp; vibration sensors</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8058-8914-c7f0ef6c50de" class="">5.2 Miner Wearables</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c9-8066-d49edeaa8662" class="bulleted-list"><li style="list-style-type:disc">Smart helmets (camera, SOS)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801b-8c25-ec67fbd18191" class="bulleted-list"><li style="list-style-type:disc">Location tags</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-805f-99d8-e58ad749b561" class="bulleted-list"><li style="list-style-type:disc">Health sensors</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ba-b1ba-f99a8dc55324" class="bulleted-list"><li style="list-style-type:disc">Smart cap lamps</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8015-a078-c486edcccbb9" class="">5.3 Cameras &amp; Vision Systems</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801f-a574-cfb8915c7325" class="bulleted-list"><li style="list-style-type:disc">AI CCTV cameras</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a5-ba39-d410e71847b7" class="bulleted-list"><li style="list-style-type:disc">Thermal cameras</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d4-bade-d3e74a3c7a5f" class="bulleted-list"><li style="list-style-type:disc">PTZ cameras</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d5-aee7-eb231adbdd61" class="bulleted-list"><li style="list-style-type:disc">360° cameras</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8084-ae92-d1b6a958bea0" class="">5.4 Machinery &amp; OT Equipment</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f7-9091-c3b54942ca90" class="bulleted-list"><li style="list-style-type:disc">Conveyor belts</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8000-85d9-c7aa5d267abd" class="bulleted-list"><li style="list-style-type:disc">Drillers &amp; cutters</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8065-aaaa-c69c0fcb9174" class="bulleted-list"><li style="list-style-type:disc">Loaders &amp; dumpers</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80cc-b4ba-e60b6d1fb79c" class="bulleted-list"><li style="list-style-type:disc">Cranes</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b7-9337-e64fd7872746" class="bulleted-list"><li style="list-style-type:disc">Hydraulic hammers</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c1-a786-d18945f425fa" class="bulleted-list"><li style="list-style-type:disc">Ventilation fans</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8072-a676-c3c75d760dc5" class="">5.5 Drones &amp; Robotics</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f4-bbe4-c2df58eb6d39" class="bulleted-list"><li style="list-style-type:disc">Inspection drones</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-800c-8dd0-faae7cae5ce6" class="bulleted-list"><li style="list-style-type:disc">Thermal drones</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-806c-aa40-d82377f4249c" class="bulleted-list"><li style="list-style-type:disc">Emergency reconnaissance robots</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8059-968f-dbda8d0f560e"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8024-be96-dfac9f8488be" class="">6. EMS Core Functional Modules</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80ba-bfa3-ded09190bf16" class="">6.1 Device Lifecycle Management</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804e-8fa6-f974f5bf500d" class="bulleted-list"><li style="list-style-type:disc">Auto discovery &amp; onboarding</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80bf-98ca-f950d004eec8" class="bulleted-list"><li style="list-style-type:disc">Provisioning &amp; configuration</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8001-b5cc-e8ddf01aae88" class="bulleted-list"><li style="list-style-type:disc">Firmware &amp; software updates</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801d-86f0-c490e075eaf2" class="bulleted-list"><li style="list-style-type:disc">Health &amp; heartbeat monitoring</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-803f-8631-d413ba8ef972"/></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8012-93e6-c79a702682f2" class="">6.2 Telemetry &amp; Data Ingestion</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801e-9565-cf09d9a33b50" class="bulleted-list"><li style="list-style-type:disc">High-frequency sensor data</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8016-88bb-f289185d5296" class="bulleted-list"><li style="list-style-type:disc">Video streams (real-time &amp; stored)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8074-ae11-c1c4cdf26ad0" class="bulleted-list"><li style="list-style-type:disc">Event &amp; alarm data</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8094-99e5-ef9c1903e985" class="bulleted-list"><li style="list-style-type:disc">Control feedback</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8083-a69c-f690a749ae9c" class="">Protocols supported:</p></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80de-a2a5-efac33898444" class="bulleted-list"><li style="list-style-type:disc">MQTT</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ab-9a81-ca6be7aef4fb" class="bulleted-list"><li style="list-style-type:disc">REST / HTTPS</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8077-964f-d5e12f0d2d6a" class="bulleted-list"><li style="list-style-type:disc">OPC-UA</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8030-9b40-f40bef126f39" class="bulleted-list"><li style="list-style-type:disc">RTSP (video)</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8023-a765-d9c1f2334306"/></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8085-8e02-f8f7ab715bdd" class="">6.3 Real-Time Monitoring</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8062-814e-d3197fe75e39" class="bulleted-list"><li style="list-style-type:disc">Live gas &amp; environment dashboards</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8055-913b-dc54fd96af2d" class="bulleted-list"><li style="list-style-type:disc">Miner location heatmaps</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8073-98cd-d023f0adf2f2" class="bulleted-list"><li style="list-style-type:disc">Machine status views</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c2-b5e1-cb24b819fdd2" class="bulleted-list"><li style="list-style-type:disc">Zone-wise safety indicators</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8015-aa1d-fcdad28d6dee"/></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8055-aff4-d5d64edb150a" class="">6.4 Rules Engine (Safety Logic)</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-803b-a567-e96734e2fe6c" class="">Examples:</p></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ab-b1cc-c747bd133004" class="bulleted-list"><li style="list-style-type:disc">IF methane &gt; threshold → siren ON</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8066-a577-c9b5f3ecfa27" class="bulleted-list"><li style="list-style-type:disc">IF temperature rising + vibration → conveyor shutdown</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8035-9101-ee031d567623" class="bulleted-list"><li style="list-style-type:disc">IF miner enters restricted zone → alert</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8063-8e7e-cb1dfe21cb49" class="bulleted-list"><li style="list-style-type:disc">IF no movement + high temp → fatigue alert</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-80a3-9bb5-e79fad4adfaf"/></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8017-9f5a-d72d51e9065d" class="">6.5 Control &amp; Automation</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8096-9d2d-ed76a0f86ffa" class="bulleted-list"><li style="list-style-type:disc">Remote start/stop of machines</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8098-a3ef-cb945c57d376" class="bulleted-list"><li style="list-style-type:disc">Ventilation fan speed control</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b7-8a49-f121705e168d" class="bulleted-list"><li style="list-style-type:disc">Conveyor auto-shutdown</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809c-b788-c9e75641bf16" class="bulleted-list"><li style="list-style-type:disc">Emergency broadcast alerts</li></ul></div><div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-80eb-84c7-eac14763b5ed" class="">EMS automation always follows DGMS-approved logic</blockquote></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8040-875e-c3c744721c01"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-80ff-a7c4-c287bd1cc5e4" class="">7. EMS Interfaces – How Everything Connects</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80b2-bf46-c72ba3124ba5" class="">7.1 Device → EMS</h3></div><div style="display:contents" dir="ltr"><table id="2e9ff13f-3ca0-8037-a481-e3af33521b44" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80c7-8186-c28eb4e1f31d"><th id="ClhX" class="simple-table-header-color simple-table-header">Device Type</th><th id="GrFi" class="simple-table-header-color simple-table-header">Interface</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-802d-ad01-ca91595529b1"><td id="ClhX" class="">Sensors</td><td id="GrFi" class="">MQTT / 5G CPE</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8014-8cfd-fa9ae3625835"><td id="ClhX" class="">Wearables</td><td id="GrFi" class="">5G / BLE → Gateway</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8060-944a-e582aa2a5959"><td id="ClhX" class="">Cameras</td><td id="GrFi" class="">RTSP / ONVIF</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80e3-ab9d-e83aed35473c"><td id="ClhX" class="">Machines</td><td id="GrFi" class="">PLC → OPC-UA</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8042-9648-cda216563978"><td id="ClhX" class="">Drones</td><td id="GrFi" class="">5G IP Stream</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-808e-a1ea-f93c0bed8ca1"/></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-805a-81e5-f3fd610f2066" class="">7.2 EMS → Machines (Control)</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8035-aa2a-e46c004ca8f4" class="bulleted-list"><li style="list-style-type:disc">Secure command APIs</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-808f-abbe-dc60695d3d0e" class="bulleted-list"><li style="list-style-type:disc">Role-based authorization</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8064-a83e-c5acca0ec104" class="bulleted-list"><li style="list-style-type:disc">Manual override support</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-80fe-87b8-dca63e09fbe7"/></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80d4-a6b5-ea0fe3fd0196" class="">7.3 EMS ↔ NMS Integration</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ae-a6c6-ff807201f9d7" class="bulleted-list"><li style="list-style-type:disc">EMS queries network health</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f3-849e-c22c0fc3f20e" class="bulleted-list"><li style="list-style-type:disc">EMS adapts QoS needs (emergency priority)</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8087-bd02-e5b3187f65f6"/></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80ae-a3d3-e051cc008c83" class="">7.4 EMS ↔ AI-RCA Integration</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-802c-8c49-f8656ce80fd4" class="bulleted-list"><li style="list-style-type:disc">EMS sends alarms &amp; telemetry</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a2-8266-e22b30654233" class="bulleted-list"><li style="list-style-type:disc">AI-RCA sends root cause &amp; recommendations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80de-9887-c06ca25de863" class="bulleted-list"><li style="list-style-type:disc">EMS executes approved actions</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8092-bd38-f8d3f8d7e1c2"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-802b-b958-c74f009e1518" class="">8. Alarm &amp; Incident Management</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80b0-8bae-c283f7a60fad" class="">Alarm Lifecycle</h3></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-80f9-9cf8-cdb6c9078524" class="numbered-list" start="1"><li>Detection</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8010-bde4-e21e9a37f613" class="numbered-list" start="2"><li>Correlation</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-80d6-b884-ff87f983ad3d" class="numbered-list" start="3"><li>Severity classification</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8090-a87a-faa913407a2d" class="numbered-list" start="4"><li>Notification (siren, app, SMS)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8038-801a-f459cad19649" class="numbered-list" start="5"><li>Acknowledgement</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-8082-898a-f1675f3a832c" class="numbered-list" start="6"><li>Closure</li></ol></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-80d0-9974-faa0ea787b4f"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-80c8-80d4-fc6841958326" class="">9. DGMS Compliance &amp; Reporting</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8029-bf81-f4ce9efce909" class="">Mandatory Reports</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8041-8459-db033af3a764" class="bulleted-list"><li style="list-style-type:disc">Gas concentration trends</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8069-b249-de86bfe940d1" class="bulleted-list"><li style="list-style-type:disc">Fire &amp; incident logs</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8014-b244-d0a8a1d931b2" class="bulleted-list"><li style="list-style-type:disc">Worker attendance &amp; movement</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8041-91e5-f706e3f9ba34" class="bulleted-list"><li style="list-style-type:disc">Emergency response timeline</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-807e-8995-e12ec297bd3c" class="">Formats:</p></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8073-9709-e2198eafc476" class="bulleted-list"><li style="list-style-type:disc">PDF</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8030-9d82-e41e5c1bd01d" class="bulleted-list"><li style="list-style-type:disc">CSV</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8079-adf3-c4f7f75eda4c" class="bulleted-list"><li style="list-style-type:disc">Digital signatures</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-802c-bf1e-f8dd7fb28e39"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8002-bbb3-e844c08f138f" class="">10. Security &amp; Access Control</h2></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-805f-a4fc-d4b180b75bc0" class="bulleted-list"><li style="list-style-type:disc">Role-based access (RBAC)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8022-9976-e4a4fec537da" class="bulleted-list"><li style="list-style-type:disc">Device authentication</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8080-8dec-ca52bc189210" class="bulleted-list"><li style="list-style-type:disc">Encrypted communication</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-803d-b9de-dc685df7bfd2" class="bulleted-list"><li style="list-style-type:disc">Audit trails</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-80f2-8975-c087864915d5"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8044-9acf-ee945f65f4d3" class="">11. High Availability &amp; Fail-Safe</h2></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8041-993a-fb2e497d7741" class="bulleted-list"><li style="list-style-type:disc">Edge-first operation</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a7-9e72-db8572292fc7" class="bulleted-list"><li style="list-style-type:disc">Local decision even if WAN fails</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8005-849a-ef77e449080d" class="bulleted-list"><li style="list-style-type:disc">Battery-backed alarms</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-806e-9e29-cbf29a481837" class="bulleted-list"><li style="list-style-type:disc">Manual override for machines</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-80a0-a116-f14f3d738fdb"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8017-844d-e3bb7dbab48b" class="">12. EMS KPIs</h2></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8073-830f-c85934506f61" class="bulleted-list"><li style="list-style-type:disc">Mean time to detect (MTTD)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-805b-86a2-d2e5e34d2e59" class="bulleted-list"><li style="list-style-type:disc">Mean time to respond (MTTR)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a1-a6e1-e344a82386ab" class="bulleted-list"><li style="list-style-type:disc">Safety incident reduction</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8053-a175-e2abbfbf1b96" class="bulleted-list"><li style="list-style-type:disc">Device uptime</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8053-8db5-c060567e236f" class="bulleted-list"><li style="list-style-type:disc">False alarm rate</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8039-b3a5-c77cb35eb7e3"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8058-b278-d8013b0b3991" class="">13. Deployment Model</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8076-9f02-db7fe0dd7709" class="">Phase 1 – Safety Core</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80eb-abc3-d03b0c2f7b61" class="bulleted-list"><li style="list-style-type:disc">Gas, fire, wearables</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-802a-843a-d4c31285c50c" class="">Phase 2 – Operations</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d9-92c1-c4d95c6ab2a6" class="bulleted-list"><li style="list-style-type:disc">Machines, conveyors, cameras</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8067-9667-feedd8123fc2" class="">Phase 3 – Intelligence</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-802c-a15e-cd7f1b7ba0e3" class="bulleted-list"><li style="list-style-type:disc">AI-RCA, predictive analytics</li></ul></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-8060-b748-ef81cd7e1391"/></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8056-925f-c9532f7e7aad" class="">14. Summary</h2></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80f6-a453-dcd047c441bb" class="">The Coal Mine EMS is the <strong>operational brain of a 5G-enabled mine</strong>, ensuring:</p></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80bf-840a-e1ff1cc64a24" class="bulleted-list"><li style="list-style-type:disc">Miner safety</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8062-a15b-d0db14fe0956" class="bulleted-list"><li style="list-style-type:disc">Operational efficiency</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8085-b9db-eff93e3c9d9e" class="bulleted-list"><li style="list-style-type:disc">Regulatory compliance</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a0-b890-df15d1ccd7f7" class="bulleted-list"><li style="list-style-type:disc">Automation with accountability</li></ul></div><div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-80e4-916e-d049f054eccb" class="">If NMS is the nervous system and AI-RCA is the brain, EMS is the heart of the digital mine.</blockquote></div><div style="display:contents" dir="auto"><hr id="2e9ff13f-3ca0-807a-882e-e472e922a09b"/></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80ac-9387-e0dc90db4c47" class=""><strong>End of Document</strong></p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
