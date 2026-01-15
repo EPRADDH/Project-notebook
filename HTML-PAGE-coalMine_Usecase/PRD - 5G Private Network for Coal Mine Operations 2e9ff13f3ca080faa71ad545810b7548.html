@@ -1,0 +1,720 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>PRD - 5G Private Network for Coal Mine Operations</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2e9ff13f-3ca0-80fa-a71a-d545810b7548" class="page sans"><header><h1 class="page-title" dir="auto">PRD - 5G Private Network for Coal Mine Operations</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80e5-ba1a-e4ebeceed343" class=""><strong>Product Requirements Document (PRD)</strong></h3></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8050-b427-d037c355a700" class=""><strong>DGMS‑Ready 5G Private Network for Coal Mine Operations</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8036-9adf-ef6edf068c97" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8047-8435-f074fb188df7" class=""><strong>1. Document Control</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80f2-9797-fa339b0d2502" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-808b-98b5-c444bc1eea17" class="bulleted-list"><li style="list-style-type:disc"><strong>Product Name:</strong> DGMS‑Ready 5G Private Network for Coal Mine Operations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80fa-940f-cf97be1a66e4" class="bulleted-list"><li style="list-style-type:disc"><strong>Version:</strong>0</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8039-bfa4-d88f2c56ebd8" class="bulleted-list"><li style="list-style-type:disc"><strong>Prepared By:</strong> Product &amp; Network Architecture Team</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80fe-8917-ce12174f93ae" class="bulleted-list"><li style="list-style-type:disc"><strong>Target Audience:</strong> Mine Management, DGMS Officials, Safety Officers, IT/OT Teams</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8014-8390-f8f604413304" class="bulleted-list"><li style="list-style-type:disc"><strong>Compliance Reference:</strong> DGMS Guidelines, Mines Act 1952, Coal Mine Regulations (CMR)</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8082-aafa-c323c2046a1d" class=""><strong>2. Purpose of the Document</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80cb-9dca-fd21e9a0d8a6" class="">This PRD defines the <strong>business, functional, technical, safety, and compliance requirements</strong> for deploying a <strong>DGMS‑compliant Private 5G Network</strong> in underground and opencast coal mines. The objective is to enhance <strong>worker safety, operational efficiency, automation readiness, and regulatory compliance</strong> through real‑time connectivity and intelligent monitoring.</p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-800d-bb20-e7cdafc3147e" class=""><strong>3. Business Problem Statement</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8084-824b-e7b11738ee06" class="">Coal mine operations currently suffer from:<div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f6-a051-f2c486dd958c" class="bulleted-list"><li style="list-style-type:disc">Limited and unreliable underground connectivity</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80e7-ab17-d13897fc1b82" class="bulleted-list"><li style="list-style-type:disc">Delayed detection of gas, fire, and roof‑fall hazards</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801f-8304-f1af7741b220" class="bulleted-list"><li style="list-style-type:disc">High human exposure in hazardous zones</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d2-aafa-cc992d0b2460" class="bulleted-list"><li style="list-style-type:disc">Manual equipment monitoring and reactive maintenance</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80de-b9c4-feab2912032c" class="bulleted-list"><li style="list-style-type:disc">Fragmented systems and limited real‑time visibility</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-807b-a82a-fb2da94666d6" class="bulleted-list"><li style="list-style-type:disc">Manual, audit‑heavy DGMS compliance processes</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-805a-978c-da8385c84682" class="">These challenges lead to <strong>safety risks, production loss, higher operating costs, and regulatory exposure</strong>.</p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-802e-af21-ea3ae77f1861" class=""><strong>4. Goals &amp; Objectives</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8042-8a19-d6a25d433a58" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8081-a139-c38860840bb4" class="bulleted-list"><li style="list-style-type:disc">Enable <strong>real‑time safety monitoring</strong> and proactive hazard detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-805d-a1ef-cde7df96b6b2" class="bulleted-list"><li style="list-style-type:disc">Reduce accidents and human exposure in high‑risk zones</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80cd-a862-f67df310df35" class="bulleted-list"><li style="list-style-type:disc">Improve equipment uptime and production efficiency</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8029-9e13-ff12bc7f0933" class="bulleted-list"><li style="list-style-type:disc">Establish a <strong>DGMS‑ready digital compliance framework</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f9-8695-f07f4def22e4" class="bulleted-list"><li style="list-style-type:disc">Create a scalable foundation for <strong>automation, AI, and autonomous mining</strong></li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-808f-8c3c-ca38865e5001" class=""><strong>5. Scope Definition</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-809b-9e74-da6db35b5577" class=""><strong>5.1 In Scope</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ed-a56b-ef2eb0061a59" class="bulleted-list"><li style="list-style-type:disc">Private 5G Network (RAN, Core, Edge)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-800f-832c-c4c44f73232e" class="bulleted-list"><li style="list-style-type:disc">Underground &amp; surface coverage</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8037-a55f-d5483f2f1099" class="bulleted-list"><li style="list-style-type:disc">Safety &amp; environmental sensors (Gas, Fire, Ventilation)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8089-97eb-eb35cb3fbaae" class="bulleted-list"><li style="list-style-type:disc">Cameras, drones, and worker wearables</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80dc-97d3-e091861958bc" class="bulleted-list"><li style="list-style-type:disc">Equipment connectivity and telematics</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804d-9f67-daaaf87154bf" class="bulleted-list"><li style="list-style-type:disc">AI analytics, dashboards, and alerts</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80fb-a089-d0d5a9543cca" class="bulleted-list"><li style="list-style-type:disc">Command &amp; Control Center</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d3-b57a-f815e7c05226" class="bulleted-list"><li style="list-style-type:disc">VR‑based virtual mine (inspection &amp; training)</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8057-893c-c10f9eb4538c" class=""><strong>5.2 Out of Scope</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8006-b0cb-e548de30ec17" class="bulleted-list"><li style="list-style-type:disc">Mine excavation or geological design</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801c-92d2-c7a473858c53" class="bulleted-list"><li style="list-style-type:disc">ERP, payroll, or HR systems</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80cd-985d-c180715b3170" class="bulleted-list"><li style="list-style-type:disc">Consumer‑grade devices</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8090-95b6-c08c450d0d04" class="bulleted-list"><li style="list-style-type:disc">Full mine‑wide autonomous operations (future phase)</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8009-91aa-f347a5662df0" class=""><strong>6. Key Stakeholders</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-807b-abb2-d93feae7d4b4" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8059-9b31-f6e2fbe889f2" class="bulleted-list"><li style="list-style-type:disc">Mine Owner / Operator</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80e0-b209-f63bf71afddc" class="bulleted-list"><li style="list-style-type:disc">DGMS Authorities</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8035-827f-ff144955f0f6" class="bulleted-list"><li style="list-style-type:disc">Safety &amp; Compliance Officers</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80cc-8e54-d511d5988ad1" class="bulleted-list"><li style="list-style-type:disc">IT &amp; OT Teams</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ab-b494-d98a63801587" class="bulleted-list"><li style="list-style-type:disc">OEM Equipment Vendors</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-807f-9404-ecc39446a33c" class="bulleted-list"><li style="list-style-type:disc">Network &amp; System Integrator</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8031-ba50-c344eca7e6c5" class="">
+</p></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-800d-85bc-d8cdabc9bf4d" class=""><strong>7. User Personas</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8095-87c1-d378dd126f74" class=""><strong>7.1 Safety Officer</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8055-883b-fc50ca5e3826" class="bulleted-list"><li style="list-style-type:disc">Needs real‑time alerts and incident visibility<div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8067-a6ba-e74210c51e46" class="bulleted-list"><li style="list-style-type:circle">Requires DGMS‑ready reports</li></ul></div></li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-804f-bf8c-f2974e793c53" class=""><strong>7.2 Mine Manager</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80be-9e0b-ccda0954f491" class="bulleted-list"><li style="list-style-type:disc">Production and shift‑wise visibility</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80e8-bf3d-da6f16038826" class="bulleted-list"><li style="list-style-type:disc">Equipment health and utilization insights</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80ee-80c5-c6d793eeec9b" class=""><strong>7.3 DGMS Inspector</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804b-a279-eb869b64d506" class="bulleted-list"><li style="list-style-type:disc">Compliance validation</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80bb-a311-dfa474bd568d" class="bulleted-list"><li style="list-style-type:disc">Digital audit trails and reports</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8067-88b1-e767224d22fc" class=""><strong>7.4 Operator / Worker</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-807d-8e5c-df16b1a2138a" class="bulleted-list"><li style="list-style-type:disc">Wearable safety alerts</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b7-b289-c570c279a7b0" class="bulleted-list"><li style="list-style-type:disc">SOS and emergency communication</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80dd-8d77-d6cd028e7b9a" class=""><strong>8. Functional Requirements</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-801b-a820-d6ac194c8150" class=""><strong>8.1 Safety Monitoring</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8060-b899-ce19f5e93463" class="bulleted-list"><li style="list-style-type:disc">Real‑time gas monitoring (CH₄, CO, O₂)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-808f-a00c-eae8a582330b" class="bulleted-list"><li style="list-style-type:disc">Fire and smoke detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b4-86dd-ca976c28150f" class="bulleted-list"><li style="list-style-type:disc">Worker location tracking (RTLS)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b2-9482-cd0023411e98" class="bulleted-list"><li style="list-style-type:disc">Emergency SOS alerts</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8016-88e7-cb9829d7d4d5" class="bulleted-list"><li style="list-style-type:disc">Automated siren and evacuation workflows</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-802f-b722-dc0d6547505c" class=""><strong>8.2 Surveillance &amp; Computer Vision</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8065-a590-d4e2bc42bf6c" class="bulleted-list"><li style="list-style-type:disc">AI‑based PPE compliance detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ef-858a-c03dc7f7f29c" class="bulleted-list"><li style="list-style-type:disc">Intrusion and restricted‑zone monitoring</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c1-bbda-e8f4c3e0a10f" class="bulleted-list"><li style="list-style-type:disc">Thermal hotspot detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-806b-94be-e41fcfc1e1e0" class="bulleted-list"><li style="list-style-type:disc">24×7 video recording and playback</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-803a-8640-e60c886e701c" class=""><strong>8.3 Equipment &amp; Machinery Monitoring</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-807e-a71f-f5f0c9d4fcff" class="bulleted-list"><li style="list-style-type:disc">Conveyor belt health monitoring</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80e7-b479-c33dbaecaf93" class="bulleted-list"><li style="list-style-type:disc">Remote crane and loader operations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-806c-9f1b-ca8bd1d0450e" class="bulleted-list"><li style="list-style-type:disc">Drill and excavator performance analytics</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8041-8938-cc220a182479" class="bulleted-list"><li style="list-style-type:disc">Predictive maintenance indicators</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80d8-b873-ea08c0412b2a" class=""><strong>8.4 Drone Operations</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8051-9c76-ed33eb9d460d" class="bulleted-list"><li style="list-style-type:disc">Tunnel and shaft inspection</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8030-a33f-d0243cc81d08" class="bulleted-list"><li style="list-style-type:disc">Fire, heat, and gas mapping</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c1-9756-ee6552847e07" class="bulleted-list"><li style="list-style-type:disc">Post‑blast inspection</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8063-a04b-c685dc54d8f6" class="bulleted-list"><li style="list-style-type:disc">Emergency reconnaissance</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-805b-9c1a-cb66cd58f9ac" class=""><strong>8.5 VR / Virtual Mine</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-801c-81af-e66715a355f5" class="bulleted-list"><li style="list-style-type:disc">Virtual DGMS inspections</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8058-963b-c04caed47cbb" class="bulleted-list"><li style="list-style-type:disc">Safety training simulations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8086-8a99-f7dbf921c188" class="bulleted-list"><li style="list-style-type:disc">Remote expert walkthroughs</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8041-9daa-dbe5d143693a" class="">
+</p></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-806d-b767-cc22a365baed" class=""><strong>9. Non‑Functional Requirements</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8087-bdcc-c57f210ed975" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8036-b433-f53d041929db" class="bulleted-list"><li style="list-style-type:disc"><strong>Latency:</strong> &lt;10 ms for safety‑critical operations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8020-af62-f1072cb6a97c" class="bulleted-list"><li style="list-style-type:disc"><strong>Availability:</strong> ≥99.99%</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80bc-b9e4-f37e38339eff" class="bulleted-list"><li style="list-style-type:disc"><strong>Security:</strong> Fully isolated private network</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8011-99be-d3d7ca4825c7" class="bulleted-list"><li style="list-style-type:disc"><strong>Scalability:</strong> Multi‑mine and multi‑site support</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ee-a15f-c2ecd7967f9e" class="bulleted-list"><li style="list-style-type:disc"><strong>Ruggedization:</strong> Industrial‑grade, explosion‑proof devices</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8004-8010-e2f79d372118" class=""><strong>10. Compliance &amp; DGMS Alignment</strong></h3></div><div style="display:contents" dir="ltr"><table id="2e9ff13f-3ca0-807a-86a9-f9558560cdb4" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-807a-b352-cb46316b6513"><td id="uu]^" class=""><strong>DGMS Requirement</strong></td><td id="uCri" class=""><strong>System Enablement</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-803e-a59c-f0c68c10a119"><td id="uu]^" class="">Gas Monitoring</td><td id="uCri" class="">Real‑time 5G gas sensors</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-806e-9eaa-c31592f6061f"><td id="uu]^" class="">Fire Detection</td><td id="uCri" class="">Thermal &amp; smoke sensors</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80cc-ae02-f5a2347f7472"><td id="uu]^" class="">Worker Safety</td><td id="uCri" class="">Wearables + location tracking</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80bf-b81d-f980e402a7d7"><td id="uu]^" class="">Incident Logs</td><td id="uCri" class="">Immutable digital logs</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8043-95fb-d23e8e15a99a"><td id="uu]^" class="">Emergency Response</td><td id="uCri" class="">Automated alerts &amp; sirens</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8034-87d0-f711aa817f3b"><td id="uu]^" class="">Inspection</td><td id="uCri" class="">VR‑based virtual mine</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8022-bde4-f4556baa79f1" class=""><strong>11. Data &amp; Reporting</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80f0-b8f8-eb814c008ed0" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809b-a54f-da93711d720f" class="bulleted-list"><li style="list-style-type:disc">Auto‑generated incident reports</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-805c-a0bc-e76a68f8ff37" class="bulleted-list"><li style="list-style-type:disc">Gas and environmental trend analysis</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b9-a3a3-c616a714675b" class="bulleted-list"><li style="list-style-type:disc">Equipment uptime &amp; downtime reports</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b1-a9d6-ed184f040090" class="bulleted-list"><li style="list-style-type:disc">Worker movement and attendance logs</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d0-9313-c69b6c7892af" class="bulleted-list"><li style="list-style-type:disc">DGMS audit‑ready exports (PDF / CSV)</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80d2-9738-fdd1b99a1626" class=""><strong>12. High‑Level Logical Architecture</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8010-8198-f137043955a0" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80bf-a03b-f9aeaa12423b" class="bulleted-list"><li style="list-style-type:disc">5G Devices, Sensors, Wearables</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8015-9078-ead74cf4cd47" class="bulleted-list"><li style="list-style-type:disc">Private 5G RAN (Small Cells)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c8-9016-f208f829a322" class="bulleted-list"><li style="list-style-type:disc">On‑Prem / Edge 5G Core</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809b-bdeb-e5b3fc531cf7" class="bulleted-list"><li style="list-style-type:disc">Edge AI &amp; Analytics Platform</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8005-93f3-ff8e18f069e6" class="bulleted-list"><li style="list-style-type:disc">Integrated Command &amp; Control Center</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c7-8061-da9447d789e0" class="bulleted-list"><li style="list-style-type:disc">Web, Mobile &amp; VR Access</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80b1-a87a-d7ea9b269e93" class=""><strong>13. Deployment Phases</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8018-a1b5-ce3e34db63be" class=""><strong>Phase 1: Pilot (0–3 Months)</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b1-877d-d5dce3ea79f2" class="bulleted-list"><li style="list-style-type:disc">Safety sensors and cameras</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80be-aba6-c03c0fd089d8" class="bulleted-list"><li style="list-style-type:disc">Private 5G pilot coverage</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-800a-87ba-e2d1c7eed25a" class="bulleted-list"><li style="list-style-type:disc">Basic dashboards and alerts</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80e7-b982-d915ee2517cb" class=""><strong>Phase 2: Automation (3–6 Months)</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-803a-837f-ef48f871d0f4" class="bulleted-list"><li style="list-style-type:disc">Equipment integration</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ea-a7b8-e88e4be2925b" class="bulleted-list"><li style="list-style-type:disc">AI analytics and drones</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8019-9481-c7ad0ab18f65" class="bulleted-list"><li style="list-style-type:disc">Workforce tracking</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-800b-8cd8-f426e28d44a5" class=""><strong>Phase 3: Advanced (9–12 Months)</strong><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8041-9307-f12070ff7179" class="bulleted-list"><li style="list-style-type:disc">VR virtual mine</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ac-a748-d66753f47295" class="bulleted-list"><li style="list-style-type:disc">Predictive maintenance</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-807b-9290-fef308c44e9e" class="bulleted-list"><li style="list-style-type:disc">Semi‑autonomous operations</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8084-ab82-f87a49ce236d" class=""><strong>14. Risks &amp; Mitigation</strong></h3></div><div style="display:contents" dir="ltr"><table id="2e9ff13f-3ca0-805a-b54f-df1d193348b5" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-804a-8ce0-fed6c6b0852b"><td id="aZ:\" class=""><strong>Risk</strong></td><td id="Mxzj" class=""><strong>Mitigation</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80c8-ad37-de32158fe1ae"><td id="aZ:\" class="">Underground signal loss</td><td id="Mxzj" class="">Dense small‑cell deployment</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-809d-b28d-e60a0b3751ea"><td id="aZ:\" class="">Device failure</td><td id="Mxzj" class="">Redundant sensors</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80a0-87de-f3c7676de821"><td id="aZ:\" class="">DGMS non‑acceptance</td><td id="Mxzj" class="">Early validation &amp; joint audits</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80e0-baf8-e6da4d60c9e7"><td id="aZ:\" class="">Cyber threats</td><td id="Mxzj" class="">Network isolation &amp; IAM</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8064-a6b2-d3aa1a318746" class=""><strong>15. Success Metrics (KPIs)</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-800b-81e9-fe573c304684" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809e-acdf-c40a2d66fada" class="bulleted-list"><li style="list-style-type:disc">Reduction in safety incidents (%)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8018-b0cc-d38f74f6047f" class="bulleted-list"><li style="list-style-type:disc">Mean Time to Detect (MTTD)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8095-b19a-f3d5611c05f9" class="bulleted-list"><li style="list-style-type:disc">Mean Time to Respond (MTTR)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b2-a1b4-f8841edf3b93" class="bulleted-list"><li style="list-style-type:disc">Equipment uptime (%)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f5-bd0c-cb5dea7276ee" class="bulleted-list"><li style="list-style-type:disc">DGMS audit clearance rate</li></ul></div><div style="display:contents" dir="auto"><ol type="1" id="2e9ff13f-3ca0-80fc-a6a2-e244062a3a3b" class="numbered-list" start="1"><li><strong>Approval &amp; Sign‑Off</strong></li></ol></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804a-9548-d2aab0c90ea4" class="bulleted-list"><li style="list-style-type:disc">Mine Management</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804f-9d63-e492517d4472" class="bulleted-list"><li style="list-style-type:disc">Safety Head</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8012-a94e-c44320b9ae60" class="bulleted-list"><li style="list-style-type:disc">IT / OT Head</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8071-941d-c9f9f6334a73" class="bulleted-list"><li style="list-style-type:disc">DGMS Representative</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8044-bb95-ef3726478499" class=""><strong>Scope &amp; Key Deliverables</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80cf-b633-ca5049b63a2f" class=""><strong>In Scope</strong></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80b6-9d01-cc921a0ba48a" class="">The project scope includes the <strong>design, deployment, integration, and operationalization</strong> of a <strong>5G-enabled smart mining ecosystem</strong> across selected underground and/or opencast coal mine areas.</p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80eb-90b9-f17032efa635" class=""><strong>1. Private 5G Network Deployment</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80e5-8f90-cbb599463271" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f2-a86e-dc9d99a96782" class="bulleted-list"><li style="list-style-type:disc">Design and deployment of a <strong>dedicated private 5G network</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80cb-ace3-fef45bba3042" class="bulleted-list"><li style="list-style-type:disc">Coverage for underground workings, surface operations, and control rooms</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f0-a257-d9c3d1cc76a2" class="bulleted-list"><li style="list-style-type:disc">Installation of small cells, edge gateways, and core network</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8001-bb68-d2fa0e93f889" class="bulleted-list"><li style="list-style-type:disc">Network slicing and Quality of Service (QoS) configuration</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8097-a1c4-ddc6a74e82ae" class="bulleted-list"><li style="list-style-type:disc">High availability and redundancy planning</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8037-85ae-efde4553f296" class="">
+</p></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-806f-a323-cea959e3414a" class=""><strong>2. Smart Safety &amp; Environmental Monitoring</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8097-b112-e4026dcb90fe" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b3-9e10-d46f20dd7ecb" class="bulleted-list"><li style="list-style-type:disc">Deployment of IoT sensors for:<div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f8-9fdc-f7570e1ce5ec" class="bulleted-list"><li style="list-style-type:circle">Gas (CH₄, CO, O₂)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8012-bf2d-d91d697b66f7" class="bulleted-list"><li style="list-style-type:circle">Temperature, humidity, ventilation</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8035-a56b-c929d4bff3f4" class="bulleted-list"><li style="list-style-type:circle">Strata movement and roof stability</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-800c-b9d3-d4b9103be9c5" class="bulleted-list"><li style="list-style-type:circle">Water level monitoring</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-802b-a77b-fc20373eed84" class="bulleted-list"><li style="list-style-type:disc">5G-enabled wearables for workforce safety</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8095-846c-c3c05235bb12" class="bulleted-list"><li style="list-style-type:disc">Real-time alerts and escalation workflows</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80a5-85fd-efcefd576595" class=""><strong>3. Workforce &amp; Asset Tracking</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80d6-a33d-dd1729d5f141" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-805b-a7b0-cefbf0d2b2b6" class="bulleted-list"><li style="list-style-type:disc">Real-time location tracking of personnel and mobile assets</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8000-b674-ee4c3aa8c179" class="bulleted-list"><li style="list-style-type:disc">Geo-fencing and restricted-zone monitoring</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8018-8534-e4dd759253e7" class="bulleted-list"><li style="list-style-type:disc">Emergency response and evacuation support</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-806f-b56f-fb0578933723" class="bulleted-list"><li style="list-style-type:disc">Shift-wise and zone-wise movement analytics</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-800e-854b-c53aa8706534" class=""><strong>4. Connected Equipment &amp; Telematics</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80e5-a112-fe5032d1f829" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8032-8405-e4ce2771deee" class="bulleted-list"><li style="list-style-type:disc">Integration of selected mining equipment:<div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-802f-8088-da715fd78380" class="bulleted-list"><li style="list-style-type:circle">Continuous miners / excavators</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8036-9931-c3966bfba5aa" class="bulleted-list"><li style="list-style-type:circle">Haulage vehicles and conveyors</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c2-bba5-ed3578ce44f1" class="bulleted-list"><li style="list-style-type:circle">Drilling and blasting equipment (where applicable)</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d7-b11c-e8045bf4feda" class="bulleted-list"><li style="list-style-type:disc">Live monitoring of equipment health and utilization</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-803b-b77d-f3b6ed179385" class="bulleted-list"><li style="list-style-type:disc">Remote diagnostics and condition monitoring</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80e0-a46e-f5fbe06221ab" class=""><strong>5. AI-Driven Analytics &amp; Predictive Maintenance</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8048-bc87-ffa6af49ec90" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c5-bbf4-d3260b1f36a5" class="bulleted-list"><li style="list-style-type:disc">Predictive maintenance models for critical assets</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8054-964a-db35910e6fee" class="bulleted-list"><li style="list-style-type:disc">Anomaly detection for safety and equipment health</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8068-9a9a-c563add9431b" class="bulleted-list"><li style="list-style-type:disc">Automated alerts and maintenance recommendations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-806e-a323-d5e9046b118a" class="bulleted-list"><li style="list-style-type:disc">Root Cause Analysis (RCA) dashboards</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80a6-9c74-d2fa7ba72fc0" class="">
+</p></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8078-b1a2-e42d4e34f6b8" class=""><strong>6. Centralized Mine Command &amp; Control Center</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-808f-bdf5-e5862264bce4" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8032-b896-d3bc524060e0" class="bulleted-list"><li style="list-style-type:disc">Establishment of an <strong>Integrated Mine Command &amp; Control Center (IMCCC)</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d6-b3f9-e25975ed0e72" class="bulleted-list"><li style="list-style-type:disc">Unified dashboards for:<div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8047-b6a5-f4c760457486" class="bulleted-list"><li style="list-style-type:circle">Safety and environment</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8091-9d4a-ef2991f11107" class="bulleted-list"><li style="list-style-type:circle">Production and operations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809b-b31b-ef2cdb3298d9" class="bulleted-list"><li style="list-style-type:circle">Equipment health</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d8-b362-c1863a1a6fd9" class="bulleted-list"><li style="list-style-type:circle">Workforce tracking</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8092-acaf-dab25b0a88d6" class="bulleted-list"><li style="list-style-type:disc">Digital Twin (basic) for monitoring and simulation</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-804b-987c-cb73f3853fef" class="">
+</p></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8099-b988-cbebda7dd1e7" class=""><strong>7. Compliance &amp; Reporting Automation</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80d2-b687-fa006da50098" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809b-a3db-f46adec28ab6" class="bulleted-list"><li style="list-style-type:disc">Automated data capture for statutory and regulatory reporting</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8071-a93a-c81f50b5e513" class="bulleted-list"><li style="list-style-type:disc">Incident logging and traceability</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80e7-8842-dbe0d3c190d6" class="bulleted-list"><li style="list-style-type:disc">Environmental monitoring and reporting dashboards</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804d-a99b-d39022b89381" class="bulleted-list"><li style="list-style-type:disc">Audit-ready digital records</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80a9-814b-d0abfd6f6ef1" class=""><strong>8. Key Deliverables</strong></h3></div><div style="display:contents" dir="ltr"><table id="2e9ff13f-3ca0-807b-ab66-f74dae63f33a" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80f0-b822-c34916bad23b"><td id="UZ|E" class=""><strong>Category</strong></td><td id="eDmO" class=""><strong>Key Deliverables</strong></td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80ec-a078-e481918c6304"><td id="UZ|E" class="">Network</td><td id="eDmO" class="">Private 5G network (operational &amp; tested)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-808f-ae07-f8f2bac308ca"><td id="UZ|E" class="">Safety</td><td id="eDmO" class="">Real-time safety monitoring system</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80ad-871b-db1ae6eaefc0"><td id="UZ|E" class="">IoT</td><td id="eDmO" class="">Sensor deployment &amp; data integration</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-807b-93f3-f9294db2d74b"><td id="UZ|E" class="">Analytics</td><td id="eDmO" class="">AI-based dashboards &amp; predictive models</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8000-8173-c76a84639eaa"><td id="UZ|E" class="">Operations</td><td id="eDmO" class="">Integrated Command &amp; Control Center</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8092-bd2b-c3916fc8d9ac"><td id="UZ|E" class="">Compliance</td><td id="eDmO" class="">Automated reporting &amp; audit trails</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-803a-8ce8-cd67a72b1bba"><td id="UZ|E" class="">Documentation</td><td id="eDmO" class="">Architecture, SOPs, and training materials</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80f0-ad5d-f98e2aea7004" class=""><strong>Success Metrics (High-Level)</strong></h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ad-acce-dd7a02eed6c9" class="bulleted-list"><li style="list-style-type:disc">Reduction in safety incidents</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c3-b876-f5880bf38b56" class="bulleted-list"><li style="list-style-type:disc">Improvement in equipment availability</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a9-bf82-cbc759697e07" class="bulleted-list"><li style="list-style-type:disc">Increase in production efficiency</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8040-8fd2-e2bf66df47f2" class="bulleted-list"><li style="list-style-type:disc">Reduction in unplanned downtime</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ea-9f84-e42f6be8d63a" class="bulleted-list"><li style="list-style-type:disc">Compliance adherence rate</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8063-902a-e8b17affbfed" class=""><strong>End of Document</strong></h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8060-a171-f61e30ae0046" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
