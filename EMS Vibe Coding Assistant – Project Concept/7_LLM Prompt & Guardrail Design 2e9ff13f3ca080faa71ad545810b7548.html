@@ -1,0 +1,775 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>LLM Prompt &amp; Guardrail Design</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2e9ff13f-3ca0-80fa-a71a-d545810b7548" class="page sans"><header><h1 class="page-title" dir="auto">LLM Prompt &amp; Guardrail Design</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-808a-8ad6-ee88605bd3cc" class="">EMS Vibe Coding Assistant</h2></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8037-ba2f-ee8ce0691e3f"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80dd-8755-ef58ab64773f" class="">1. Design Objectives</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8000-9244-db62821eda33" class="">The prompt and guardrail system must:</p></div><div style="display:contents" dir="auto"><ol type="1" id="2eaff13f-3ca0-8074-9594-f36561d8af0e" class="numbered-list" start="1"><li>Prevent unsafe EMS operations</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2eaff13f-3ca0-80cc-ba0e-c681f457da48" class="numbered-list" start="2"><li>Eliminate hallucinations and unauthorized actions</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2eaff13f-3ca0-8097-9965-e71224479c45" class="numbered-list" start="3"><li>Enforce telecom-domain correctness</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2eaff13f-3ca0-8002-b108-e6b2b9dab6fb" class="numbered-list" start="4"><li>Ensure explainability and auditability</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2eaff13f-3ca0-80c3-9ac5-ef2b835966b1" class="numbered-list" start="5"><li>Separate <strong>AI reasoning</strong> from <strong>EMS execution</strong></li></ol></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-803c-8bdd-e9cad4314fd2" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-807a-a8de-cf3b2153fbe2" class="">2. Multi-Layer Guardrail Architecture</h3></div><div style="display:contents" dir="ltr"><figure id="2eaff13f-3ca0-8038-b3a3-ebd8b4431423" class="image"><a href="LLM%20Prompt%20&amp;%20Guardrail%20Design/Screenshot_2026-01-16_133957.png"><img style="width:491px" src="LLM%20Prompt%20&amp;%20Guardrail%20Design/Screenshot_2026-01-16_133957.png"/></a></figure></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8097-8e54-e6416ffdb0e1" class="">3. Prompt Layer Design (LLM-Side Guardrails)</h3></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8047-b978-d4b113f40591" class="">3.1 System Prompt (Hard Guardrail)</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80ab-911b-dfbe7a6dc43e" class=""><strong>Purpose:</strong></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-807d-8e1b-e7bcbf3a3ac9" class="">Define <em>non-negotiable</em> AI behavior.</p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-804a-a1f1-cf41b826c9d1" class=""><strong>Injected once per session</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8050-ab5e-f35f72ec978d" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Youare EMS Vibe Coding Assistant.
+
+Rules you must always follow:
+- You donotexecute EMS actions directly.
+-All writeor destructive operations require explicituser approval.
+-Defaultto read-only if intentor parametersare unclear.
+- Never invent KPIs, alarms, parameters,or API responses.
+-Only use information provided via context.
+- If datais missing, askfor clarification.
+-Every recommendation must include reasoning.
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8084-a66b-ca9736e81776" class="">Prevents hallucination</p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8032-b752-c66f0d7ee946" class="">Prevents silent execution</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80e2-b45c-f451ea8569bd" class="">3.2 Domain Prompt (Telecom Guardrail)</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80b6-abac-c1b37a03b266" class=""><strong>Purpose:</strong></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-800b-a31d-d8c8c2cc34c0" class="">Prevent <em>domain-level errors</em>.</p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8053-adcd-cc45aa53bb90" class=""><strong>Static, version-controlled</strong></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80de-98d7-c79ba81c9535" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">EMS domain rules:
+- Performance issues must be checked before configuration changes.
+- Alarms have severities: Critical, Major, Minor, Warning.
+- Configuration parameters have defined min/max limits.
+- Rollback must be available for all config changes.
+- Alarm correlation must reference time alignment.
+
+ Prevents incorrect troubleshooting logic
+ Prevents unsafe config logic</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-807d-87e0-d16d1bada45f" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-803e-bfac-fa710d104486" class="">5. Safety &amp; Policy Guardrails (Non-LLM)</h2></div><div style="display:contents" dir="auto"><blockquote id="2eaff13f-3ca0-8059-8ff0-e49058d132de" class="">These MUST be implemented outside the LLM.</blockquote></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-809b-86cf-facc5c4d4c44" class="">5.1 RBAC Guardrail</h3></div><div style="display:contents" dir="ltr"><table id="2eaff13f-3ca0-80b7-bfb9-d8ef9cf85928" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80f9-a445-f68877d0865e"><th id="IbYn" class="simple-table-header-color simple-table-header">Role</th><th id="N]kt" class="simple-table-header-color simple-table-header">Allowed</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80e8-90b8-e83344ff41fe"><td id="IbYn" class="">NOC</td><td id="N]kt" class="">Read-only</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-806a-8462-eeee84986209"><td id="IbYn" class="">Engineer</td><td id="N]kt" class="">Preview + request</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8091-b754-d5b6df4831c7"><td id="IbYn" class="">Admin</td><td id="N]kt" class="">Approve + execute</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-809f-903b-cf3ac72362c6" class="">If role mismatch: BLOCK + Explain + Suggest escalation</p></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8072-b4cd-c6449541a497"/></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8031-99ce-ccb7216476c1" class="">5.2 Risk Classification Guardrail</h3></div><div style="display:contents" dir="ltr"><table id="2eaff13f-3ca0-80e1-9216-d57a38607819" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80b5-b1d5-c64c1922395d"><th id="Eiic" class="simple-table-header-color simple-table-header">Action</th><th id="lCrl" class="simple-table-header-color simple-table-header">Risk</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80f1-93ca-d37de10eb39e"><td id="Eiic" class="">KPI query</td><td id="lCrl" class="">Low</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80a2-9c0b-c0ee7bc20445"><td id="Eiic" class="">Alarm analysis</td><td id="lCrl" class="">Low</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80f9-8227-fce2600e0ed1"><td id="Eiic" class="">Config preview</td><td id="lCrl" class="">Medium</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8086-abcf-cc21f06ca4c7"><td id="Eiic" class="">Config apply</td><td id="lCrl" class="">High</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-803c-8e8f-ffd266c01121"><td id="Eiic" class="">Reboot</td><td id="lCrl" class="">Critical</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8029-90d7-c3789e2c7e4a" class=""><strong>Critical actions require:</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-803f-aa2c-d8985d86d717" class="bulleted-list"><li style="list-style-type:disc">Explicit confirmation</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-800e-8ab2-e2ae88436499" class="bulleted-list"><li style="list-style-type:disc">Second approval (optional)</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80a5-aea2-ede939f1974e" class="bulleted-list"><li style="list-style-type:disc">Rollback readiness</li></ul></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-800d-9494-e01f948a819a" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8056-b6d5-f8587f020dce" class="">6. Parameter Validation Guardrail</h3></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8000-ab93-dec994b8a758" class="">Example Rules</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-800c-b542-cb5f15943c32" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">TX Power:
+-Min:-5dB
+-Max:+3dB
+-Step:1dB</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-806e-a273-c982ad864559" class="">Validation Response</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80b6-88cf-d61ba393c1de" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+&quot;status&quot;:&quot;BLOCKED&quot;,
+&quot;reason&quot;:&quot;Requested value exceeds safe limit&quot;,
+&quot;suggestion&quot;:&quot;+1 dB&quot;
+}
+
+ LLM cannot override this
+ Ensures network safety</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-802a-8d44-dc251820cff0" class="">7. Approval Guardrail Flow</h3></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-803b-b7a3-fe51353e81e6" class="">Write Action Flow</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80b6-9ed6-e879e119a899" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">User Request
+   ↓
+LLM Proposal (PreviewOnly)
+   ↓
+PolicyCheck
+   ↓
+UI Confirmation
+   ↓
+EMS Execution
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-802c-8ffd-f76bba9f060a" class="">Approval Prompt (LLM)</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8037-b99f-ec4d2d0dcf44" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">This action changes live network configuration.
+Impact: Medium
+Rollback: Available
+Do you wantto proceed?
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8043-bb70-e766951d1248" class="">8. Execution Isolation Guardrail</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80b4-bd34-fe5a0c600b45" class=""><strong>Critical Rule:</strong></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-809b-9530-fbdb0c139d5b" class="">LLM never calls EMS APIs directly.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8026-adcd-fb342c0e8358" class="">Architecture Rule</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-804c-8644-dffd2fda3a0c" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">LLM →StructuredJSON
+Backend →APIMapper →EMS
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8076-a3d4-e98c1f7c3c47" class="">Why?</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8080-a72c-dd68344cf2f7" class="bulleted-list"><li style="list-style-type:disc">Prevents prompt injection</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8063-982c-ef401bd54444" class="bulleted-list"><li style="list-style-type:disc">Enables full audit trail</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8058-a905-d386b1b64bd0" class="bulleted-list"><li style="list-style-type:disc">Allows human override</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80b4-9907-da47cb088128" class="">9. Response Guardrails (User-Facing)</h3></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80f3-9a12-d2ecf14eddbd" class="">Response Rules</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-807c-ae75-e221c3e4651e" class="bulleted-list"><li style="list-style-type:disc">No raw API payloads</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80e0-a3a0-e9674383780a" class="bulleted-list"><li style="list-style-type:disc">No vendor-internal terms</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-802c-b318-dce33a0dfd91" class="bulleted-list"><li style="list-style-type:disc">No absolute certainty unless proven</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-808b-abed-f35ecd1d4d1e" class="bulleted-list"><li style="list-style-type:disc">Always show next safe steps</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-801f-acb0-f699811cb083" class="">Example Safe Response</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80c7-8cbe-d1fe28a3f811" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">This change may improve cell-edge coverage.
+Monitor throughputand alarmsfor15 minutes.
+Rollbackis availableif degradation occurs.
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-807f-94a1-fb0d68cee52d" class="">10. Hallucination Prevention Strategy</h3></div><div style="display:contents" dir="ltr"><table id="2eaff13f-3ca0-8060-b243-eb2275178b17" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80bf-bca9-ced108605e8d"><th id="JXuU" class="simple-table-header-color simple-table-header">Risk</th><th id="\xp:" class="simple-table-header-color simple-table-header">Guardrail</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8004-8f6c-fa906ccb50a2"><td id="JXuU" class="">Fake KPI</td><td id="\xp:" class="">Context-only data</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80d0-98b8-ca68b43cf387"><td id="JXuU" class="">Fake alarms</td><td id="\xp:" class="">EMS API required</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80af-b61a-eb800d12fb9f"><td id="JXuU" class="">Unsafe config</td><td id="\xp:" class="">Param validation</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8011-a895-fe39a6543eb6"><td id="JXuU" class="">Overconfidence</td><td id="\xp:" class="">Confidence scoring</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8030-98ec-c0a22d3d313b"><td id="JXuU" class="">Prompt injection</td><td id="\xp:" class="">System prompt isolation</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80b5-a1c1-d4d109e6aacb" class="">11. Prompt Injection Defense</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80df-a39a-e94b732c01fc" class="">Detection</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8054-8cd2-f18c24fd5f12" class="bulleted-list"><li style="list-style-type:disc">User attempts to override rules</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-807d-8fe5-f5dbe9bce398" class="bulleted-list"><li style="list-style-type:disc">Requests to bypass approval</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80a6-acaa-d2b815d0398b" class="bulleted-list"><li style="list-style-type:disc">Requests to execute hidden commands</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80d5-a9fa-e4c52c89b3b2" class="">Response Pattern</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8022-95a7-c95bb913d547" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">🚫 Request Denied
+Reason: Action violates EMS safety policy
+Suggestion: Use preview or contact admin
+</code></pre></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-802f-a1c1-f0d315fa6c83" class="">12. Audit &amp; Compliance Guardrail</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-805b-9f5d-d17b48a51aa8" class="">Every interaction logs:</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80e5-ae8f-e8fde48b158a" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+&quot;user&quot;:&quot;engineer01&quot;,
+&quot;role&quot;:&quot;Engineer&quot;,
+&quot;intent&quot;:&quot;CONFIG_PREVIEW&quot;,
+&quot;approval&quot;:&quot;NOT_GRANTED&quot;,
+&quot;timestamp&quot;:&quot;2026-01-16T22:45&quot;
+}
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-803f-b6a1-cb95b34ea634" class="">Required for:</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-802c-978e-c4cec48702ec" class="bulleted-list"><li style="list-style-type:disc">Telecom compliance</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-807a-8544-d13124a776f5" class="bulleted-list"><li style="list-style-type:disc">Security audits</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8079-b873-d793fd0f742d" class="bulleted-list"><li style="list-style-type:disc">Incident investigation</li></ul></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

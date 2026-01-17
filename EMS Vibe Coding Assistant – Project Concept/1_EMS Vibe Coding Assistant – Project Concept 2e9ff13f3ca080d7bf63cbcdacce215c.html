@@ -1,0 +1,736 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>EMS Vibe Coding Assistant – Project Concept</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2e9ff13f-3ca0-80d7-bf63-cbcdacce215c" class="page sans"><header><h1 class="page-title" dir="auto">EMS Vibe Coding Assistant – Project Concept</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-808b-add7-ed423e516504" class="">What is EMS Vibe Coding Assistant?</h2></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8012-b934-d181ba79cd67" class="">EMS Vibe Coding Assistant is an <strong>AI-driven conversational and coding assistant</strong> integrated with an Element Management System (EMS).</p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80cc-8e8e-c31606b8bf37" class="">It allows users to <strong>monitor, configure, analyze, and troubleshoot network elements (NEs)</strong> using <strong>natural language commands</strong>, smart queries, and guided automation.</p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80f8-bbad-d0152adc2ec8" class="">Think of it as:</p></div><div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-8071-9e2e-e0a9eaa7b678" class="">“ChatGPT + Domain Intelligence + EMS APIs”</blockquote></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8056-ba11-e3471ce9edd4" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8008-9b28-e296fefe4051" class="">Core Objectives</h2></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b0-a28e-ce1c94a7be22" class="bulleted-list"><li style="list-style-type:disc">Reduce manual EMS operations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8083-ab5b-e3af2e0d2159" class="bulleted-list"><li style="list-style-type:disc">Simplify complex EMS workflows</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80db-a2de-ceb06dac9f42" class="bulleted-list"><li style="list-style-type:disc">Enable faster fault resolution</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8000-a17c-cb9298c64887" class="bulleted-list"><li style="list-style-type:disc">Assist engineers with <strong>EMS scripting, KPI creation, and configuration changes</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80cd-bba6-f3296a3f0c90" class="bulleted-list"><li style="list-style-type:disc">Improve operational efficiency (OPEX reduction)</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8042-b829-e70bc788dd7b" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-807e-b523-daf77941597a" class=""><strong>High-Level Architecture (Conceptual)</strong><br/><br/></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2e9ff13f-3ca0-8093-a489-fe7f64b475cf" class="code code-wrap"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph TD
+    User[👤 User :,Web / EMS UI / Chat Panel]
+
+    subgraph AI[&quot;🤖 AI Assistant Layer&quot;]
+        Assistant[EMS Vibe Assistant LLM + EMS Domain Rules]
+    end
+
+    subgraph EMS[&quot;📡 EMS Platform&quot;]
+        APIs[EMS APIs Northbound Interfaces]
+        Modules[EMS Modules : PM / FM / CM / SM]
+    end
+
+    User --&gt; Assistant --&gt; APIs --&gt; Modules --&gt; NE[Network Elements:    Nodes, Cells, Radios]
+</code></pre></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2e9ff13f-3ca0-808f-a758-fb906b7846a5" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all"></code></pre></div><div style="display:contents" dir="auto"><h1 id="2e9ff13f-3ca0-805b-be72-d36940db0a3e" class="">Module-wise Integration &amp; Capabilities</h1></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-80a3-80e8-fbbf29ab1508" class="">1. Performance Management (PM)</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8094-9323-f09be82e633a" class="">EMS Functions Covered</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8047-9307-d640912a870f" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804e-aaf8-dd548eb8901a" class="bulleted-list"><li style="list-style-type:disc">Custom KPI</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-802c-b691-cd4af2478bb2" class="bulleted-list"><li style="list-style-type:disc">Pre-defined KPI</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8011-9b7b-e4b175119fb9" class="bulleted-list"><li style="list-style-type:disc">CM / PM Counters</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8066-abf6-e937f31e3b83" class="bulleted-list"><li style="list-style-type:disc">Graph &amp; Bar KPI Visualization</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ac-9b4e-f424afbf6de7" class="bulleted-list"><li style="list-style-type:disc">Desktop Interactive KPI View</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-804a-a9a5-ca3c69a7f757" class="">Vibe Assistant Capabilities</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80f7-b3d1-de69b14003d0" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809c-b23c-cde71f0c7cae" class="bulleted-list"><li style="list-style-type:disc">Natural language KPI creation<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-80fe-b52f-cc05f2ff4ec6" class="">“Create a KPI for cell availability per hour”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804f-9b2f-d3e4ce52fafd" class="bulleted-list"><li style="list-style-type:disc">Explain KPIs<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-806d-93cf-f1b78460b573" class="">“What does this KPI indicate?”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80e9-b021-f4b19f06510f" class="bulleted-list"><li style="list-style-type:disc">Auto-generate queries for PM counters</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-804a-87cd-e5004997b987" class="bulleted-list"><li style="list-style-type:disc">Detect abnormal trends<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-8046-a0ec-e6eef57615ff" class="">“Why did throughput drop in sector B?”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80fc-8b0b-f5482daf1536" class="bulleted-list"><li style="list-style-type:disc">Suggest new KPIs based on patterns</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8042-b79c-ddd6e3b14d13" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8043-a792-e5858d2776d6" class="">2. Fault Management (FM)</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-809d-940c-f2ffca72dca8" class="">EMS Functions Covered</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-806b-86e9-cc2812bf86c8" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80bf-b787-f5a19b66014c" class="bulleted-list"><li style="list-style-type:disc">Alarm Surveillance</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8070-8a09-fba777e17009" class="bulleted-list"><li style="list-style-type:disc">Alarm Types</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a7-8f0c-e9a35cd187bf" class="bulleted-list"><li style="list-style-type:disc">Current / History / Unknown Alarms</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a8-ac38-f73b97b720bf" class="bulleted-list"><li style="list-style-type:disc">Alarm List with Status, Date &amp; Time</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8061-8a9e-fff5516aea47" class="">Vibe Assistant Capabilities</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80ba-bcbc-c92863304c2a" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d9-9d24-fc63ea945cff" class="bulleted-list"><li style="list-style-type:disc">Conversational alarm queries<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-8011-8a22-feefb3e3361e" class="">“Show critical alarms from last 2 hours”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809b-8eaa-e47b35d71980" class="bulleted-list"><li style="list-style-type:disc">Alarm root-cause hints (rule-based + AI)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ef-bb9d-c310af408e53" class="bulleted-list"><li style="list-style-type:disc">Alarm summarization<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-80b6-807b-f5d5ffeaa15b" class="">“Summarize today’s major alarms”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8010-a4ef-d1f18ab32756" class="bulleted-list"><li style="list-style-type:disc">Correlate alarms with performance degradation</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80fd-8f18-c51d0f9950cb" class="bulleted-list"><li style="list-style-type:disc">Recommend next actions / SOPs</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80e4-a615-cca81163d857" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-807a-9c10-e9140aebf863" class="">3. Configuration Management (CM)</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80d5-a3d9-d61f414c2fe6" class="">EMS Functions Covered</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-802e-87d0-f9646dfeb467" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80cd-82dc-e1c7bf7c89a3" class="bulleted-list"><li style="list-style-type:disc">Import Config File</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d6-8db8-d8e102ee01b9" class="bulleted-list"><li style="list-style-type:disc">Save Config File</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8030-8c4c-c2d5bc84ad87" class="bulleted-list"><li style="list-style-type:disc">Edit Config Parameters per NE</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8053-9d8c-ebd59ace59f9" class="">Vibe Assistant Capabilities</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8082-a390-e2cb2f2d857a" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c9-a250-d3a8dfd35476" class="bulleted-list"><li style="list-style-type:disc">Safe config changes using natural language<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-8017-8097-e5fbd4d77b31" class="">“Increase TX power by 2 dB on Node-12”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80e2-bc32-ebecc6a2cf09" class="bulleted-list"><li style="list-style-type:disc">Config diff explanation<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-80f5-9295-ef26399a6e44" class="">“What changed between these two config files?”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80cc-b777-eccb2083d143" class="bulleted-list"><li style="list-style-type:disc">Pre-check &amp; validation suggestions</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ab-b6e1-cbc85d7604e3" class="bulleted-list"><li style="list-style-type:disc">Rollback guidance<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-807b-b31c-ce5cc13a4ef9" class="">“Revert to last stable configuration”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8007-aa6f-fe77bc1009f1" class="bulleted-list"><li style="list-style-type:disc">Auto-generate EMS scripts / CLI snippets</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80c5-8f7f-dbc7be5b347d" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8065-b1a9-f72782c75d7a" class="">4. Management Functions</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80d8-a8f6-d1d4264e04e5" class="">EMS Functions Covered</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80e9-b20a-ddaf99b3d347" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809f-9f32-db1749a4fe54" class="bulleted-list"><li style="list-style-type:disc">Cell / Node Information</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-800c-8f4a-e818a0d24129" class="bulleted-list"><li style="list-style-type:disc">System Update Info</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-806c-88d3-eab846b21a31" class="bulleted-list"><li style="list-style-type:disc">NEs Status</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-807f-92f7-c46c5d0d98a4" class="">Vibe Assistant Capabilities</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-807a-8d80-c75c488c50ef" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8030-a52a-fccf5143ec3f" class="bulleted-list"><li style="list-style-type:disc">Quick NE health summaries<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-80dd-9636-d405c0092e3e" class="">“Status of all nodes in Cluster-A”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8011-a935-de8d9e7e4f05" class="bulleted-list"><li style="list-style-type:disc">Explain node failures in simple language</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809a-b431-ec77f23dbd95" class="bulleted-list"><li style="list-style-type:disc">Guided reboot / rollback workflows</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ab-8950-f62a6e701313" class="bulleted-list"><li style="list-style-type:disc">Log analysis<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-808e-928a-d82160c4df37" class="">“Why was Node-5 rebooted yesterday?”</blockquote></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8018-9200-c3cb1cf1e720" class="bulleted-list"><li style="list-style-type:disc">Rollback / Reboot</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8027-942e-d023a986e97d" class="bulleted-list"><li style="list-style-type:disc">Activity Logs</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80c8-844d-d54dd7453b3d" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2e9ff13f-3ca0-8040-892a-d3a95dbb26bf" class="">5. System Management</h2></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8090-9f2d-fd07a2f842b6" class="">EMS Functions Covered</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80e8-8ff6-d3c404ad7f9c" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d9-8a4f-f03c7fdd42ae" class="bulleted-list"><li style="list-style-type:disc">Login / Logout</li></ul></div></div></p></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80c1-acfc-cdaee276133f" class="">Vibe Assistant Capabilities</h3></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8040-ac5e-cd09321e384b" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8074-a603-d5e6d6c484a9" class="bulleted-list"><li style="list-style-type:disc">Role-based access awareness</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80a7-8abe-e6a984a0ed9c" class="bulleted-list"><li style="list-style-type:disc">Action approval prompts (for critical ops)</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-809f-b302-d4279a673e15" class="bulleted-list"><li style="list-style-type:disc">Audit-friendly explanations<div style="display:contents" dir="auto"><blockquote id="2e9ff13f-3ca0-8038-986f-c34b842a5aab" class="">“Who changed this parameter and why?”</blockquote></div></li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8094-be2c-dbbb727022d3" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="2e9ff13f-3ca0-8054-9162-e6ba786964dc" class="">Key Features of EMS Vibe Coding Assistant</h1></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-80f1-ad17-ca19d455ae3c" class="">1. Conversational Interface</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ce-bb84-c3ccf1d71b84" class="bulleted-list"><li style="list-style-type:disc">Chat inside EMS UI</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8054-919c-fdced3b4dec1" class="bulleted-list"><li style="list-style-type:disc">Context-aware (NE, cell, time, severity)</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-808d-87c1-edfc26375201" class="">2. EMS-Aware Coding Assistant</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80eb-bbc7-d066e51aff9d" class="bulleted-list"><li style="list-style-type:disc">Generate EMS scripts</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8058-ad7f-c96550a326f9" class="bulleted-list"><li style="list-style-type:disc">Validate parameters before execution</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8002-a705-fd6de52f1117" class="bulleted-list"><li style="list-style-type:disc">Explain EMS counters &amp; alarms</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8005-b5b7-ce0e5c7d07ef" class="">3. Domain Intelligence Layer</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8053-86b6-ec69fde7c583" class="bulleted-list"><li style="list-style-type:disc">Telecom-specific rules</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80fe-a040-eceaf907d6a8" class="bulleted-list"><li style="list-style-type:disc">KPI–Alarm–Config correlation</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8050-84d2-d554e3e51729" class="bulleted-list"><li style="list-style-type:disc">Vendor-neutral abstraction (future-ready)</li></ul></div><div style="display:contents" dir="auto"><h3 id="2e9ff13f-3ca0-8051-8b63-ede05fdd9b26" class="">4. Safe Operations Mode</h3></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-808f-b137-df38a5b4f3e1" class="bulleted-list"><li style="list-style-type:disc">Read-only vs Execute modes</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ba-8c00-e72fbf01d218" class="bulleted-list"><li style="list-style-type:disc">Confirmation for destructive actions</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-803a-b25f-e57e648e3d0e" class="bulleted-list"><li style="list-style-type:disc">Auto-rollback suggestions</li></ul></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8050-9785-fd88c0ccccc2" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="2e9ff13f-3ca0-806b-b3e0-d691e5058b0d" class="">Example User Prompts</h1></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-80e4-b657-dfa7eb1b3f76" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80d7-8db9-cae8f472f520" class="bulleted-list"><li style="list-style-type:disc">“Why is latency high in Sector 3?”</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c5-a193-cbeb50beb369" class="bulleted-list"><li style="list-style-type:disc">“Create a KPI dashboard for availability”</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80b0-9f99-f5a83243a1ef" class="bulleted-list"><li style="list-style-type:disc">“Show alarms correlated with packet loss”</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80f1-ae2a-e74bdb849050" class="bulleted-list"><li style="list-style-type:disc">“Generate config to optimize cell edge users”</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8034-a4bd-d6122249cf16" class="bulleted-list"><li style="list-style-type:disc">“Rollback last change on Node-21”</li></ul></div></div></p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-803a-808e-ee53bdfb558e" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-808c-a083-d60e5d90013a" class="">
+</p></div><div style="display:contents" dir="auto"><h1 id="2e9ff13f-3ca0-80bb-b27a-de86a50395cd" class="">Business Value</h1></div><div style="display:contents" dir="ltr"><table id="2e9ff13f-3ca0-8023-9d86-e6937014c5cf" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8063-bf99-e030e73e6f54"><th id="XBNw" class="simple-table-header-color simple-table-header">Area</th><th id="]ulI" class="simple-table-header-color simple-table-header">Impact</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-8059-80cc-fc979f8de0bb"><td id="XBNw" class="">OPEX</td><td id="]ulI" class="">Reduced manual effort</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80cf-b19a-e55cbca78cf8"><td id="XBNw" class="">MTTR</td><td id="]ulI" class="">Faster fault resolution</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-803a-a5bc-c35d5a760d29"><td id="XBNw" class="">Skill Gap</td><td id="]ulI" class="">Junior engineers become productive</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80c6-b337-e6aef6ae816a"><td id="XBNw" class="">Reliability</td><td id="]ulI" class="">Fewer config errors</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-80ff-a852-ce4e3aeebdae"><td id="XBNw" class="">User Experience</td><td id="]ulI" class="">Simplified EMS usage</td></tr></div><div style="display:contents" dir="ltr"><tr id="2e9ff13f-3ca0-809c-a178-d81b022ad03c"><td id="XBNw" class=""></td><td id="]ulI" class=""></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2e9ff13f-3ca0-8017-80d5-c33c99cef7ad" class="">Future Scope</h1></div><div style="display:contents" dir="auto"><p id="2e9ff13f-3ca0-8066-81ae-c940df33bf73" class=""><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80ba-a202-cedea255ce3a" class="bulleted-list"><li style="list-style-type:disc">Predictive fault analysis</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-80c4-bcd4-ee56a8886bbc" class="bulleted-list"><li style="list-style-type:disc">AI-based config optimization</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-802c-a6cd-c187d028df45" class="bulleted-list"><li style="list-style-type:disc">Multi-vendor EMS support</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-8066-82f0-f43e241c81e2" class="bulleted-list"><li style="list-style-type:disc">Voice-based operations</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9ff13f-3ca0-802d-86e9-f87e49377a4a" class="bulleted-list"><li style="list-style-type:disc">Integration with NMS / OSS / ITSM</li></ul></div></div></p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,829 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>LLM Prompt Architecture for EMS Vibe Coding Assistant</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2e9ff13f-3ca0-80fa-a71a-d545810b7548" class="page sans"><header><h1 class="page-title" dir="auto">LLM Prompt Architecture for EMS Vibe Coding Assistant</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80c2-8e0a-cc5ab2ac6464" class="">1. Architecture Goals</h2></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80b8-aef5-efb4c383a1a2" class="bulleted-list"><li style="list-style-type:disc">Convert <strong>natural language → EMS-safe actions</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8049-a796-ccd9411639f9" class="bulleted-list"><li style="list-style-type:disc">Enforce <strong>telecom domain rules</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8003-b769-d31de3b35fcd" class="bulleted-list"><li style="list-style-type:disc">Prevent unsafe or unauthorized operations</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80f9-b908-e2bd07d7be80" class="bulleted-list"><li style="list-style-type:disc">Ensure <strong>explainable &amp; auditable AI behavior</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8049-9dc5-d36bbe33a5cc" class="bulleted-list"><li style="list-style-type:disc">Support <strong>read, write, rollback</strong> workflows</li></ul></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80ee-b063-e7cd05f70ae8" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8006-98a7-cda39f5d6e92" class="">2. Prompt Stack Overview (Multi-Layer)</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80a2-90cd-d7ece5e246d9" class="code code-wrap"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph TD
+  
+    UP[👤 User Prompt]
+    SP[System Prompt Global Rules]
+    DP[Domain Prompt EMS Knowledge]
+    CP[Context PromptLive EMS Data]
+    TP[Task Prompt User Intent]
+    SAF[Safety &amp; Policy Prompt]
+    AP[Action Prompt API Execution]
+    RP[Response Prompt Explanation]
+    UP --&gt; SP --&gt; DP --&gt; CP --&gt; TP --&gt; SAF --&gt; AP --&gt; RP</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80b2-9be8-e9dfb4c5369d" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8095-afbc-fb3d84d02f0e" class="">
+</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8035-8cd1-ff198e5fc9c8" class="code code-wrap"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">
+graph TD
+    UP[🧑 User Prompt]
+
+    subgraph Prompt_Stack[&quot;🧠 Prompt Orchestration Layer&quot;]
+        SP[System Prompt Global Rules]
+        DP[Domain Prompt EMS Knowledge]
+        CP[Context Prompt Live EMS Data]
+        TP[Task Prompt User Intent]
+        SAF[Safety &amp; Policy Prompt]
+    end
+
+    subgraph Execution[&quot;⚙️ Execution Layer&quot;]
+        AP[Action Prompt : API Execution]
+        RP[Response Prompt : Explanation]
+    end
+
+    UP --&gt; SP
+    SP --&gt; DP
+    DP --&gt; CP
+    CP --&gt; TP
+    TP --&gt; SAF
+    SAF --&gt; AP
+    AP --&gt; RP
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8041-b780-d82a6ae35299" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80ad-8f7a-faef335edcfa" class="">3. System Prompt (Immutable)</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8092-865c-d816cd599c99" class="">Purpose</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8036-8014-db6e869f91bb" class="">Defines <strong>non-negotiable rules</strong> for the LLM.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-803c-94f2-ee1d44b3da81" class="">Example</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80e1-9b15-f2f5fa0336cd" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">You are EMS Vibe Coding Assistant.
+You assistin managing a telecom Element ManagementSystem.
+You must NEVERexecute destructive actionswithout approval.
+You mustALWAYSexplain EMS termsin simplelanguage.
+If uncertain, askfor clarificationor stayinread-only mode.
+All actions must be auditable.
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8081-a737-e5ed08ddf5a5" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-8067-9938-c6db19e4fb56" class="">4. Domain Prompt (EMS Intelligence Layer)</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80d2-bb5f-d973d565f300" class="">Purpose</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80a4-a4ae-f29ea6993df2" class="">Inject <strong>telecom EMS knowledge</strong>.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80e1-bfde-f435b3f81470" class="">Contents</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80e3-b28c-c8cc5bc715b3" class="bulleted-list"><li style="list-style-type:disc">EMS modules: PM, FM, CM, SM</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8071-9429-d2687f43fc5b" class="bulleted-list"><li style="list-style-type:disc">KPI definitions &amp; counters</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80e0-aed1-dd061a89f077" class="bulleted-list"><li style="list-style-type:disc">Alarm taxonomy</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8072-a488-c006f6e9306f" class="bulleted-list"><li style="list-style-type:disc">Config parameter limits</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8068-b51f-e0bb05aaada7" class="bulleted-list"><li style="list-style-type:disc">SOPs &amp; best practices</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80ed-a128-c98289cac1f5" class="">Example</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80f7-8c5b-e5fae63164c4" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">EMS includes Performance, Fault,Configuration,andSystem Management.
+Alarms have severity levels: Critical, Major, Minor,Warning.
+Config changes mustvalidate parameter rangeand NE capability.
+KPI degradation may correlatewith alarmsor recent config changes.
+</code></pre></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-8087-a6ef-da59f8a1dc6b" class="">5. Context Prompt (Dynamic Runtime Context)</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-800e-90c3-e9c5ee046436" class="">Purpose</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8059-b6cf-c0ca436bef6a" class="">Provide <strong>real-time EMS state</strong>.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8085-87c6-e2afdcfeb9b7" class="">Injected Data</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8065-b2d1-ef4d118fb472" class="bulleted-list"><li style="list-style-type:disc">User role &amp; permissions</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80f1-87e7-e61e79cadfcd" class="bulleted-list"><li style="list-style-type:disc">Target NE / Cell / Cluster</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80db-946e-c9051284cb94" class="bulleted-list"><li style="list-style-type:disc">Time window</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8002-bea6-ddc33dde86c6" class="bulleted-list"><li style="list-style-type:disc">Active alarms</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80ed-bfd0-efbc3e7b2094" class="bulleted-list"><li style="list-style-type:disc">Recent config changes</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8034-8799-c369e59082e9" class="">Example</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-807f-afe6-fb5d4644e945" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">UserRole:NetworkEngineer(WriteAllowed)
+TargetNode:Node-12
+ActiveAlarms:HighCPU,LinkDown
+LastConfigChange:TXPoweradjusted2hoursago
+</code></pre></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-8050-bc30-da29d9ad81de" class="">6. Task Prompt (Intent Understanding)</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8024-9d40-c51ffb413d2d" class="">Purpose</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8059-bb95-ca241a9c26e6" class="">Convert user text → structured intent.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-802d-8d93-de393b0b0e1d" class="">Output Schema (JSON)</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8008-8286-f0776dd439f4" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+&quot;intent&quot;:&quot;CONFIG_CHANGE&quot;,
+&quot;target&quot;:&quot;Node-12&quot;,
+&quot;parameters&quot;:{
+&quot;tx_power&quot;:&quot;+2dB&quot;
+},
+&quot;confidence&quot;:0.92
+}
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8098-9e04-f69b3928ad7f" class="">Example Prompt</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80d9-9b67-f446985a64d8" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">User request: &quot;Increase TX power by 2dB on Node-12&quot;
+Identify intent, target, parameters,and confidence.
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80d2-a52b-e6fa32b69796" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80c3-9fe6-c5c4be75c732" class="">7. Safety &amp; Policy Prompt (Guardrail Layer)</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80cb-a79f-d0339bc3f601" class="">Purpose</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8045-a4b4-ecce04b4407c" class="">Prevent unsafe actions.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80d7-9ec7-d3c39867417a" class="">Rules</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8064-9ac5-ed079c8f0912" class="bulleted-list"><li style="list-style-type:disc">Default read-only</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8031-84f9-d207b0b0632f" class="bulleted-list"><li style="list-style-type:disc">Validate thresholds</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8008-b615-ea411a2e8480" class="bulleted-list"><li style="list-style-type:disc">Require approval for write ops</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-808f-8eb7-fd00e08593f0" class="bulleted-list"><li style="list-style-type:disc">Block unknown parameters</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80d2-a9c7-d850edc500ac" class="">Example</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8000-987a-e508531858ca" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Is this action destructive?
+Are parameterswithin allowed range?
+Doesuserrole permit this action?
+Ifnot,return BLOCKEDwith reason.
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80df-8218-ccb86d5ff6e8" class="">Output</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80ea-aacd-e9c6dccde4c1" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+&quot;status&quot;:&quot;REQUIRES_APPROVAL&quot;,
+&quot;risk_level&quot;:&quot;MEDIUM&quot;,
+&quot;validation&quot;:&quot;PASS&quot;
+}
+</code></pre></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-8026-b001-c3a70199adfd" class="">8. Action Prompt (EMS API Mapping)</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8048-88a8-c1242c0e5c8f" class="">Purpose</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80b7-85ad-f654a3f3be42" class="">Translate intent → EMS API calls.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80c4-9c5c-e9bdf5820d18" class="">Example Mapping</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-801d-8b1f-fad757f5786f" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">CONFIG_CHANGE → /ems/cm/updateParameter
+ALARM_QUERY → /ems/fm/getAlarms
+KPI_QUERY → /ems/pm/getKPI
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-800d-871f-ebc6a4f4d455" class="">API Payload (Generated)</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80bf-8b1d-d6e4720c98db" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+&quot;nodeId&quot;:&quot;Node-12&quot;,
+&quot;parameter&quot;:&quot;tx_power&quot;,
+&quot;value&quot;:&quot;+2&quot;
+}
+</code></pre></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-8067-b656-eb0e56ed453e" class="">9. Execution Feedback Prompt</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-804f-9462-f3a589d70714" class="">Purpose</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8044-b4c8-e6b7bb69ea44" class="">Interpret API response.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80ee-918d-dd1a4d3083e9" class="">Example</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80e9-83ab-da0da2d3bfe9" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">API Result:SUCCESS
+Noderespondedin120ms
+Noalarmstriggeredpost-change
+
+</code></pre></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-808c-bdea-ea658cb359e1" class="">10. Response Prompt (Human-Friendly Output)</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8033-9233-e63c08aa6b2e" class="">Purpose</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80f0-9e08-d94dc52e6e33" class="">Explain outcome to user.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8065-993f-cc87cbd68bd7" class="">Rules</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80cb-949c-d922437a36c5" class="bulleted-list"><li style="list-style-type:disc">No raw API jargon</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8020-a611-cd19a248b38b" class="bulleted-list"><li style="list-style-type:disc">Explain impact &amp; next steps</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80eb-9103-e8859fdbe637" class="bulleted-list"><li style="list-style-type:disc">Provide rollback option</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80a4-bb33-fc014e1edcaa" class="">Example</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80ea-9eb5-cb90a9e4900b" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">TX power was increasedby2 dBon Node-12.
+This may improve cell-edge coverage.
+Nonew alarms were detected.
+You canrollback this changeif needed.
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80bf-b18b-d2a0004efb49" class="">11. Prompt Flow Diagram</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-807b-b677-ddd1685e8b96" class="code code-wrap"><code class="language-Mermaid" style="white-space:pre-wrap;word-break:break-all">graph TD
+    User --&gt; System
+    System --&gt; Domain
+    Domain --&gt; Context
+    Context --&gt; Intent
+    Intent --&gt; Safety
+    Safety --&gt;|Approved| Action
+    Safety --&gt;|Blocked| Explain
+    Action --&gt; Execute
+    Execute --&gt; Response</code></pre></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80af-a664-de42c9c50997" class="">12. Prompt Templates (Reusable)</h2></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8007-ab6f-cadc169c8495" class="">Read Operation Template</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8055-9cb1-f90d171ccce3" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Explain current alarms for {{node}} in last {{time_window}}.
+Use simple language and severitysummary.
+
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8097-92c2-e064955b2c12" class="">Write Operation Template</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8029-82d6-e6939dc8cacb" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Propose config change.
+Validate limits.
+Show preview.
+Askfor approvalbefore execution.
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80c7-b120-eb51287d546b" class="">
+</p></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80c8-b844-dfb04bc34d51" class="">13. Audit &amp; Logging Model</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8019-8c4a-f673b197aae7" class="">Every interaction logs:</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-806d-97b4-f137d3a8a715" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+&quot;user&quot;:&quot;engineer01&quot;,
+&quot;intent&quot;:&quot;CONFIG_CHANGE&quot;,
+&quot;action&quot;:&quot;TX_POWER_UPDATE&quot;,
+&quot;approval&quot;:&quot;CONFIRMED&quot;,
+&quot;timestamp&quot;:&quot;2026-01-16T21:30&quot;
+}
+</code></pre></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
