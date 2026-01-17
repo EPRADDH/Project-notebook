@@ -1,0 +1,4 @@
+timestamp,slice_ID,slice_type,latency_ms,packet_loss_pct,SLA_threshold_ms
+2026-01-16T10:01:00Z,SLICE_01,URLLC,4.2,0.01,5
+2026-01-16T10:01:05Z,SLICE_01,URLLC,17.8,0.9,5   <-- SLA breach
+2026-01-16T10:01:10Z,SLICE_01,URLLC,21.3,1.2,5   <-- anomaly

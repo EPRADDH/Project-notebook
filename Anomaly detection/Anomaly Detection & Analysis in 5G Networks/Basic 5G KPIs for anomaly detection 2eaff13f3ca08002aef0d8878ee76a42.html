@@ -1,0 +1,714 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Basic 5G KPIs for anomaly detection</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2eaff13f-3ca0-8002-aef0-d8878ee76a42" class="page sans"><header><h1 class="page-title" dir="auto">Basic 5G KPIs for anomaly detection</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-804b-9303-e855daf94618" class="">
+</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80a5-b248-c4ec6a9d1a1d" class="">1️⃣ What is an Anomaly in 5G?</h3></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80af-9655-d7aaa3d76146" class="">In 5G, an <strong>anomaly</strong> is any behavior that <strong>deviates from normal network patterns</strong> and may impact <strong>QoS, QoE, SLA, or security</strong>.</p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80cf-9c1a-fb5c705cf2f9" class=""><strong>Examples</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80d6-bf05-d6c9e84bbdb4" class="bulleted-list"><li style="list-style-type:disc">Sudden PRB utilization spike without traffic growth</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80d8-b98b-d7014b4a43c4" class="bulleted-list"><li style="list-style-type:disc">gNB handover failure surge in a specific TA</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80a0-919b-c8df4f5b6518" class="bulleted-list"><li style="list-style-type:disc">Latency jitter increase in URLLC slice</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8031-b13f-f1a5bb954cf3" class="bulleted-list"><li style="list-style-type:disc">Packet loss only during 특정 hour / cell / device type</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8038-9ce8-c09d4f3c1239" class="bulleted-list"><li style="list-style-type:disc">Control-plane signaling storm (AMF/SMF overload)</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-808c-baa3-f7ff37b5e52c"/></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8042-a46d-d4d9208d871f" class="">2️⃣ Where Anomalies Occur in 5G Architecture</h3></div><div style="display:contents" dir="ltr"><table id="2eaff13f-3ca0-803c-9ce0-c1e29b57c01d" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-803e-bdaa-f074bf52433c"><th id="O{:m" class="simple-table-header-color simple-table-header">Layer</th><th id="v\dT" class="simple-table-header-color simple-table-header">Example Anomalies</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80f6-bef5-e730e8cbc72d"><td id="O{:m" class=""><strong>RAN (gNB)</strong></td><td id="v\dT" class="">PRB spikes, SINR drops, HO failures</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80a3-9795-e55a571b93b2"><td id="O{:m" class=""><strong>Transport</strong></td><td id="v\dT" class="">Latency, jitter, packet loss</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-805c-97d4-f585cf620398"><td id="O{:m" class=""><strong>5G Core (AMF/SMF/UPF)</strong></td><td id="v\dT" class="">Session drops, CPU/memory leaks</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8051-b5c5-fe451f100adf"><td id="O{:m" class=""><strong>Network Slicing</strong></td><td id="v\dT" class="">SLA breach in one slice only</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8060-b7a6-f1b0c32a7d04"><td id="O{:m" class=""><strong>Edge / MEC</strong></td><td id="v\dT" class="">App latency, resource starvation</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80ae-a6a3-fd1a480f86f5"><td id="O{:m" class=""><strong>Devices (UE/IoT)</strong></td><td id="v\dT" class="">Misbehaving firmware, signaling storms</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8047-bbad-e08d993f98f0"/></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8013-8dda-edcfd3ec15d8" class="">3️⃣ Key 5G KPIs Used for Anomaly Detection</h3></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8090-a289-e6504a1ffa64" class="">🔹 RAN KPIs</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8010-a6b6-c86d5f3c1c6e" class="bulleted-list"><li style="list-style-type:disc">PRB utilization (UL/DL)</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80e0-a69b-fcacb771a5e3" class="bulleted-list"><li style="list-style-type:disc">SINR / RSRP / RSRQ</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8022-878b-c18243f895e4" class="bulleted-list"><li style="list-style-type:disc">Handover success rate</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80f3-aee8-fce83bcbca2c" class="bulleted-list"><li style="list-style-type:disc">Call drop rate</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8075-8f25-ea8f6254500d" class="bulleted-list"><li style="list-style-type:disc">Cell availability</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80c8-95e3-c35b94d63831" class="">🔹 Core KPIs</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-801e-922c-f7fd5885bb4d" class="bulleted-list"><li style="list-style-type:disc">Session setup success rate</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80b1-a5d7-efaac461b958" class="bulleted-list"><li style="list-style-type:disc">PDU session latency</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80d5-8e62-c53cea054b0c" class="bulleted-list"><li style="list-style-type:disc">UPF throughput</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8038-898b-c09559559686" class="bulleted-list"><li style="list-style-type:disc">NF CPU/memory</li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-8070-a11c-e3acc259a334" class="">🔹 Slice KPIs</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-807b-8ce4-c5129d9e91e0" class="bulleted-list"><li style="list-style-type:disc">Slice latency</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80ca-8de1-d21a5ed1162b" class="bulleted-list"><li style="list-style-type:disc">Slice packet loss</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8084-84f7-f6b7b926ac14" class="bulleted-list"><li style="list-style-type:disc">SLA violation %</li></ul></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-801f-9826-f9eb1797eaa2" class="">1. Radio Access Network (RAN) KPIs</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8057-ac7a-f5a8f254a668" class="">These detect <strong>radio degradation, interference, coverage holes, and mobility issues</strong>.</p></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-803e-bdbf-edf2ba75745f" class="">🔹 Signal &amp; Quality</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80b9-b341-e680ef16115e" class="bulleted-list"><li style="list-style-type:disc"><strong>RSRP (Reference Signal Received Power)</strong><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80f7-9f13-d510769a0932" class=""><em>Anomaly:</em> Sudden drop → coverage loss, antenna failure</p></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-801d-b243-d9e8f9c24b72" class="bulleted-list"><li style="list-style-type:disc"><strong>RSRQ (Reference Signal Received Quality)</strong><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80da-9681-c3a4f785075b" class=""><em>Anomaly:</em> Poor quality despite good power → interference or congestion</p></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8015-bdab-f311e0db899d" class="bulleted-list"><li style="list-style-type:disc"><strong>SINR (Signal-to-Interference-plus-Noise Ratio)</strong><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80b6-bf87-c1353e4ec6c1" class=""><em>Anomaly:</em> Rapid fluctuation → interference, jamming, misconfiguration</p></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2eaff13f-3ca0-80ec-8fc9-c08ea2148d62" class="">🔹 Mobility</h3></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8034-879e-f3c5357d93c4" class="bulleted-list"><li style="list-style-type:disc"><strong>Handover Success Rate</strong><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-803f-8c99-cdeb92659bcc" class=""><em>Anomaly:</em> Increase in failures → neighbor cell issues</p></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80ea-bd39-d1735fd4ff2a" class="bulleted-list"><li style="list-style-type:disc"><strong>Ping-Pong Handovers</strong><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-808a-8d7f-e18ce37c6d47" class=""><em>Anomaly:</em> Poor cell planning or unstable radio conditions</p></div></li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8004-891e-dc9ca3d8f0f1"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-806e-87ec-d976652629ce" class="">2. Traffic &amp; Throughput KPIs</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80e4-81aa-c61bba630743" class="">Used to detect <strong>congestion, abnormal usage, or throttling</strong>.</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-802a-a1ab-c5d35a6e4c8d" class="bulleted-list"><li style="list-style-type:disc"><strong>Uplink / Downlink Throughput</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8056-9319-d6763f764ef2" class="bulleted-list"><li style="list-style-type:circle">Sudden drop → congestion, scheduler issues</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80e9-bc09-c72c6ebe7fe5" class="bulleted-list"><li style="list-style-type:disc"><strong>PRB (Physical Resource Block) Utilization</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-805c-ad4a-f82a74999f32" class="bulleted-list"><li style="list-style-type:circle">Sustained 90–100% → capacity bottleneck</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-802e-85fc-d5f806fa2155" class="bulleted-list"><li style="list-style-type:disc"><strong>Traffic Volume per Slice / APN</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80ea-88db-fcade42671a4" class="bulleted-list"><li style="list-style-type:circle">Unexpected spike → rogue device or misbehaving application</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-80a9-b867-d83732aca515"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80db-9010-f14e8ab97348" class="">3. Latency &amp; Reliability KPIs (Critical for URLLC)</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-809c-a51e-c08b4e58f39d" class="">Used heavily in <strong>industrial automation, robotics, and remote control</strong>.</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8045-a555-cc70cdc9835f" class="bulleted-list"><li style="list-style-type:disc"><strong>End-to-End Latency</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8013-9838-e252ef572fb9" class="bulleted-list"><li style="list-style-type:circle">Spike beyond SLA → core/RAN processing delay</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8082-968c-c7d882c1b477" class="bulleted-list"><li style="list-style-type:disc"><strong>Jitter</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8046-a0be-c936a8727ae2" class="bulleted-list"><li style="list-style-type:circle">High variance → packet scheduling issues</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8066-a523-ea3f1a12454c" class="bulleted-list"><li style="list-style-type:disc"><strong>Packet Loss Rate</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-806d-8c11-f8851d3ee47d" class="bulleted-list"><li style="list-style-type:circle">1–2% → radio instability or buffer overflow</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8003-bd08-f6711e242700"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-806e-ae86-febcdfc4969d" class="">4. Core Network KPIs</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8026-b6da-c008dd723f7d" class="">Detect <strong>signaling storms, session failures, and control-plane anomalies</strong>.</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80cf-82be-e838647786c5" class="bulleted-list"><li style="list-style-type:disc"><strong>Session Setup Success Rate (PDU Session)</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80e6-b96f-f5bfc46ba18d" class="bulleted-list"><li style="list-style-type:circle">Drop → AMF/SMF failures</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-806f-ac99-db35d0dde763" class="bulleted-list"><li style="list-style-type:disc"><strong>Registration Success Rate</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-800f-957a-ee9185cdbbbc" class="bulleted-list"><li style="list-style-type:circle">Sudden failures → authentication or slice issue</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-800f-9cf1-d62ba943b0a7" class="bulleted-list"><li style="list-style-type:disc"><strong>Control Plane Latency (AMF ↔ gNB)</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80ae-9b63-d00fcc0d4f68" class="bulleted-list"><li style="list-style-type:circle">Increase → transport or core congestion</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-804b-a8be-fb6328398563"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80df-9796-e76f1e28c520" class="">5. Device &amp; Subscriber KPIs</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-808b-aa4a-c9e805a8457f" class="">Used to detect <strong>faulty devices, misconfigured UEs, or security threats</strong>.</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80dd-8663-c57ef403d5de" class="bulleted-list"><li style="list-style-type:disc"><strong>Attach / Detach Frequency</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-803c-8899-ddb0da8052a7" class="bulleted-list"><li style="list-style-type:circle">Excessive re-attaches → device instability</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80e9-b727-d5087667b886" class="bulleted-list"><li style="list-style-type:disc"><strong>Idle-to-Connected Transition Failures</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8039-bcf4-cfde77deb5fa" class="bulleted-list"><li style="list-style-type:circle">Radio or signaling issue</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8062-b11a-fd544fef4681" class="bulleted-list"><li style="list-style-type:disc"><strong>UE Power Consumption Patterns</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-807e-be17-c92dec177579" class="bulleted-list"><li style="list-style-type:circle">Abnormal drain → signaling loops or retries</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8096-acd2-f934e8f97501"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-8019-8355-d103500ee866" class="">6. Network Slice KPIs (Very Important in Private 5G)</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8024-a9fd-e73d405d649d" class="">Used to detect <strong>slice SLA violations</strong>.</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80c3-bac1-d6b56eaaadb8" class="bulleted-list"><li style="list-style-type:disc"><strong>Slice Latency SLA Breach Rate</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80a7-b7c1-e667e9a41871" class="bulleted-list"><li style="list-style-type:disc"><strong>Slice Throughput Deviation</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80fa-9d25-e0d79326fb6d" class="bulleted-list"><li style="list-style-type:disc"><strong>Slice Availability</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-800b-ac27-ebd2577953e1" class="bulleted-list"><li style="list-style-type:disc"><strong>Inter-slice Resource Starvation</strong></li></ul></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80c0-bfe1-c67f8770a201" class=""><em>Example:</em></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80d4-a943-fdeff1877499" class="">Safety slice latency &gt; 20 ms → <strong>critical anomaly</strong></p></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8078-807e-c3037ccde40e"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-8015-a901-f57247b9372d" class="">7. Transport / Backhaul KPIs</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80dc-8356-e57550924407" class="">Detect <strong>fiber, IP, or switch-level failures</strong>.</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8069-a51d-c956299dcf93" class="bulleted-list"><li style="list-style-type:disc"><strong>Backhaul Latency</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80ce-87ab-e09b29bb506f" class="bulleted-list"><li style="list-style-type:disc"><strong>Packet Drops on UPF Interfaces</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8078-87b6-c919f678264a" class="bulleted-list"><li style="list-style-type:disc"><strong>Link Utilization</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80e5-b659-c4acc8ae8761" class="bulleted-list"><li style="list-style-type:disc"><strong>Clock Sync Drift (PTP / TSN)</strong></li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-80cd-aef3-fa7b9a2ddbef"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-801e-9e91-f9b83291e021" class="">8. Security &amp; Behavioral KPIs</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80a9-920d-d897f00192bb" class="">Used for <strong>AI-driven anomaly &amp; threat detection</strong>.</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-803c-b0b8-d5ed3136893b" class="bulleted-list"><li style="list-style-type:disc"><strong>Signaling Rate per UE</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80a7-b215-df40aba67901" class="bulleted-list"><li style="list-style-type:circle">Spike → signaling storm / DoS attempt</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8093-a898-d17680b68bd8" class="bulleted-list"><li style="list-style-type:disc"><strong>Unexpected Traffic Pattern</strong><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-807c-84e7-fd037a90a76e" class="bulleted-list"><li style="list-style-type:circle">New protocol or destination → malware</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8052-a5cb-c11605244cb2" class="bulleted-list"><li style="list-style-type:disc"><strong>Unauthorized Slice Access Attempts</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8081-83d3-f53bb4c07fd5" class="bulleted-list"><li style="list-style-type:disc"><strong>IMEI / SIM Behavior Deviation</strong></li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-80e2-83de-e5424ddba7c6"/></div><div style="display:contents" dir="auto"><h2 id="2eaff13f-3ca0-80bc-9367-e149ecd1680e" class="">9. AI/ML-Derived Anomaly Indicators</h2></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8058-9b80-eda5335abc53" class="">These are <strong>not raw KPIs</strong>, but <strong>learned patterns</strong>:</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8031-82f6-eca281ca5c90" class="bulleted-list"><li style="list-style-type:disc">KPI Baseline Deviation Score</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80c9-a5e6-d4971f49a5ee" class="bulleted-list"><li style="list-style-type:disc">Multivariate KPI Correlation Break</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8001-96a1-dec0e2296bfc" class="bulleted-list"><li style="list-style-type:disc">Time-Series Change Point Detection</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8095-a38c-f822a2b7d858" class="bulleted-list"><li style="list-style-type:disc">UE / Cell Health Score</li></ul></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

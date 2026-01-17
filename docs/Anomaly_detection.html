@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anomaly Detection</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header>
+  <h1>Anomaly Detection</h1>
+  <p>AI-driven insights to detect issues across 5G networks and systems</p>
+</header>
+
+<main class="container">
+
+  <section class="card">
+    <p>
+      <strong>Anomaly Detection</strong> uses AI to continuously monitor data across 5G networks and EMS systems, automatically identifying unusual patterns that may indicate faults, performance issues, or security risks. By analyzing real-time and historical data, it helps detect problems early—often before they impact operations—enabling faster troubleshooting, improved network reliability, and reduced downtime. This capability is especially valuable in complex environments such as industrial 5G, smart mines, and enterprise networks.
+    </p>
+  </section>
+  <section>
+  <h2>Anomaly Detection Engine</h2>
+
+  <p>
+    The <strong>Anomaly Detection Engine</strong> leverages AI and machine learning to identify abnormal behavior across complex 5G and cloud-native environments.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Hybrid ML Models:</strong> Uses <em>Unsupervised Learning</em> (e.g., Autoencoders) to detect unknown or zero-day threats, and
+      <em>Supervised Learning</em> (e.g., LSTMs, Random Forests) to identify known attack patterns such as botnets and SQL injection.
+    </li>
+
+    <li>
+      <strong>Edge-Based Inference:</strong> Supports deployment at the <em>Mobile Edge Computing (MEC)</em> layer to achieve detection latency of
+      less than <strong>10 ms</strong> for mission-critical URLLC applications.
+    </li>
+
+    <li>
+      <strong>Adaptive Thresholding:</strong> Dynamically adjusts baselines based on time-of-day, network slice priority, and geographic load to
+      avoid false positives.
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>1️⃣ Problem Statement</h2>
+
+  <p>
+    Modern 5G networks are cloud-native, distributed, and highly dynamic:
+  </p>
+
+  <ul>
+    <li>Thousands of Kubernetes CNF pods</li>
+    <li>Massive telemetry from RAN, routers, UPF, and AMF</li>
+    <li>Frequent CI/CD-driven configuration changes</li>
+  </ul>
+
+  <p>
+    Traditional rule-based monitoring fails due to:
+  </p>
+
+  <ul>
+    <li>Unknown and evolving failure patterns</li>
+    <li>Alert storms with low signal-to-noise ratio</li>
+    <li>No correlation across layers (RAN ↔ Core ↔ Cloud)</li>
+  </ul>
+
+  <p>
+    <strong>Result:</strong> We need AI-driven anomaly detection that learns system behavior instead of relying on static rules.
+  </p>
+</section>
+
+<section>
+  <h2>2️⃣ What “Anomaly” Means in 5G</h2>
+
+  <p>
+    In 5G environments, an anomaly is not just a simple threshold breach—it is a deviation from learned behavior patterns.
+  </p>
+
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Layer</th>
+        <th>Anomaly Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>5G RAN</td>
+        <td>Sudden PRB utilization spike without corresponding traffic growth</td>
+      </tr>
+      <tr>
+        <td>5G Core</td>
+        <td>UPF latency increases only for a specific network slice</td>
+      </tr>
+      <tr>
+        <td>Kubernetes</td>
+        <td>Pod restarts increase immediately after a configuration rollout</td>
+      </tr>
+      <tr>
+        <td>Router</td>
+        <td>Packet drops occur only on one ECMP path</td>
+      </tr>
+      <tr>
+        <td>DevOps</td>
+        <td>CPU usage appears normal, but latency increases—indicating a hidden bottleneck</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    These patterns cannot be predefined using static rules—<strong>AI is required</strong> to detect and correlate them effectively.
+  </p>
+</section>
+  <section class="card">
+    <h2>📑 Sub Pages</h2>
+    <ul>
+      <li><a href="../Anomaly detection/Anomaly Detection & Analysis in 5G Networks 2e9ff13f3ca080faa71ad545810b7548.html">Anomaly Detection & Analysis in 5G Networks</a></li>
+      <li><a href="../Anomaly detection/Product Requirements Document (PRD) 2ebff13f3ca0809696c1ec141847f8f9.html">Product Requirements Document (PRD)</a></li>
+      <li><a href="../Anomaly detection/Anomaly detection 2d338e8e0edf8062a1d7da21bbe7aa55.html">Reference Document</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2026 · Anomaly Detection Documentation · Hosted on GitHub Pages</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,763 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Sample Data</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "SF Arabic", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2eaff13f-3ca0-80d9-965c-d67fea49c253" class="page sans"><header><h1 class="page-title" dir="auto">Sample Data</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-80d2-adbc-e59393b9b167" class="">RAN KPI – Real-Time Sample Data</h1></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80aa-88d4-e484f8793e2d" class=""><em>(Capacity, Quality, Availability anomalies)</em></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80a0-bb09-ddc1bb05876a" class="">
+</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-805b-ae04-c6bedf0dad98" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">timestamp,gNB_ID,cell_ID,PRB_DL_pct,PRB_UL_pct,RSRP_dBm,SINR_dB,HO_Success_pct,Throughput_Mbps
+2026-01-16T10:01:00Z,GNB_101,CELL_01,45,32,-85,18,98,120
+2026-01-16T10:01:05Z,GNB_101,CELL_01,88,76,-102,6,72,42   &lt;-- anomaly
+2026-01-16T10:01:10Z,GNB_101,CELL_01,92,80,-105,5,65,35   &lt;-- anomaly
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-803f-9493-c4c542edc4d3" class=""><strong>Detected anomalies</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8033-9dd6-f2cd3362968d" class="bulleted-list"><li style="list-style-type:disc">PRB spike</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80c8-b371-ffef49bfc599" class="bulleted-list"><li style="list-style-type:disc">SINR drop</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80b0-8b8e-f82c1b1bde00" class="bulleted-list"><li style="list-style-type:disc">HO failure surge</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80c4-8bbb-eec3ac0dbd25" class="bulleted-list"><li style="list-style-type:disc">Throughput collapse</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8067-ada9-c5765bdf8024"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-80d5-a3b2-ddfadc8b3e05" class="">2️⃣ Transport Network – Real-Time Sample Data</h1></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-805a-98c9-d7f7cdf7b85e" class=""><em>(Latency, jitter, packet loss anomalies)</em></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80ff-a0ac-ee6710f831fb" class="">
+</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8041-b313-ce8f11d83719" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">timestamp,link_ID,latency_ms,jitter_ms,packet_loss_pct,bandwidth_util_pct
+2026-01-16T10:01:00Z,LINK_22,6,1.2,0.1,40
+2026-01-16T10:01:01Z,LINK_22,48,12.5,4.6,92   &lt;-- anomaly
+2026-01-16T10:01:02Z,LINK_22,52,14.2,5.1,95   &lt;-- anomaly
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80a0-a176-c4c71949a609" class=""><strong>Detected anomalies</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8055-9284-ed000719d11e" class="bulleted-list"><li style="list-style-type:disc">Latency spike</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-801b-bbdc-c5856a7a2163" class="bulleted-list"><li style="list-style-type:disc">Packet loss</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8054-8230-e550cd475e92" class="bulleted-list"><li style="list-style-type:disc">Congestion</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8029-8f37-cca41e4eff08"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-80f6-ad27-d8e7c57cad0c" class="">3️⃣ 5G Core (NF) Metrics – Real-Time Sample Data</h1></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-807c-9315-f96294da257c" class=""><em>(AMF/SMF/UPF anomalies)</em></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8034-85a5-fb8a5d49c468" class="">
+</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80b3-9767-f6aec8cfef05" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">timestamp,NF_Type,NF_ID,CPU_pct,Memory_pct,Session_Success_pct,Active_Sessions
+2026-01-16T10:01:00Z,UPF,UPF_03,42,55,99.2,120000
+2026-01-16T10:01:05Z,UPF,UPF_03,91,88,83.4,119500  &lt;-- anomaly
+2026-01-16T10:01:10Z,UPF,UPF_03,95,92,76.8,118900  &lt;-- anomaly
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80c6-8d7c-c8c88b76d5c3" class=""><strong>Detected anomalies</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80d7-9dc8-c798e0f06a48" class="bulleted-list"><li style="list-style-type:disc">CPU / memory saturation</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8048-aec5-d7a9fc22603c" class="bulleted-list"><li style="list-style-type:disc">Session drop risk</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8069-8462-db2b234d72e8"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-80f7-b098-d814f0ccf5b7" class="">4️⃣ Network Slice KPI – Real-Time Sample Data</h1></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8082-842d-ee2b0862be0f" class=""><em>(SLA &amp; slice isolation anomalies)</em></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80c2-98d7-f66fb5eb612c" class="">
+</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80ee-9056-e1e71c06e71c" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">timestamp,slice_ID,slice_type,latency_ms,packet_loss_pct,SLA_threshold_ms
+2026-01-16T10:01:00Z,SLICE_01,URLLC,4.2,0.01,5
+2026-01-16T10:01:05Z,SLICE_01,URLLC,17.8,0.9,5   &lt;-- SLA breach
+2026-01-16T10:01:10Z,SLICE_01,URLLC,21.3,1.2,5   &lt;-- anomaly
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-801d-ae53-de130dfe968d" class=""><strong>Detected anomalies</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8028-a522-fa5287a63774" class="bulleted-list"><li style="list-style-type:disc">Slice-specific SLA violation</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8012-92dd-f71b9ee4a70b" class="bulleted-list"><li style="list-style-type:disc">Cross-slice interference</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-803a-8f6b-cbc26c1ec9d5"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-80e4-b5c8-eac32ddf1e9c" class="">5️⃣ UE / Device Behavior – Real-Time Sample Data</h1></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8052-9a9f-dc283293acce" class=""><em>(Signaling storms, faulty devices)</em></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-806b-a4aa-d74d84cdd1dc" class="">
+</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-808f-b8a7-e4c6d1e9cd14" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">timestamp,UE_ID,cell_ID,Attach_Requests_per_min,Session_Releases_per_min,Device_Type
+2026-01-16T10:01:00Z,UE_8891,CELL_01,3,1,Smartphone
+2026-01-16T10:01:05Z,UE_4452,CELL_01,230,198,IoT_Sensor  &lt;-- anomaly
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80d2-9ae9-ee41c788a9dd" class=""><strong>Detected anomalies</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80ec-a060-ed8b6830a957" class="bulleted-list"><li style="list-style-type:disc">Signaling storm</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-803f-96db-ea3e36f6ebd6" class="bulleted-list"><li style="list-style-type:disc">Misbehaving IoT device</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8014-847f-fdf057e38d01"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-80c7-a38f-f569c2af477e" class="">6️⃣ Log Events – Real-Time Sample Data</h1></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80b7-ac55-fe91206a506c" class=""><em>(Log-based &amp; contextual anomalies)</em></p></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8070-b98b-f0ba71eacb82" class=""><strong>Stream frequency:</strong> event-based</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-8064-af5b-dbe95c4a7377" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+&quot;timestamp&quot;:&quot;2026-01-16T10:01:07Z&quot;,
+&quot;component&quot;:&quot;AMF&quot;,
+&quot;severity&quot;:&quot;ERROR&quot;,
+&quot;error_code&quot;:&quot;NGAP_503&quot;,
+&quot;message&quot;:&quot;Repeated UE context setup failure&quot;,
+&quot;count_last_10s&quot;:87
+}
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80c5-9359-d1682cb58b39" class=""><strong>Detected anomalies</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80a2-a763-e4d2245cdedb" class="bulleted-list"><li style="list-style-type:disc">Error burst</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8095-994a-d80adc369b7b" class="bulleted-list"><li style="list-style-type:disc">New log pattern</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-800b-a12f-ca5e86a642b7" class="bulleted-list"><li style="list-style-type:disc">Protocol instability</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8090-aba8-dd73c4010810"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-80e9-bd80-d5c6aed97d40" class="">7️⃣ Alarm Correlation – Real-Time Sample Data</h1></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8018-a9dc-c2c7f1b9ceb8" class=""><em>(Collective anomalies)</em></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-803c-97c8-edea7c8b263b" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">timestamp,alarm_ID,source,severity,related_object
+2026-01-16T10:01:05Z,ALM_301,gNB_101,CRITICAL,CELL_01
+2026-01-16T10:01:06Z,ALM_822,UPF_03,MAJOR,SLICE_01
+2026-01-16T10:01:07Z,ALM_144,LINK_22,MAJOR,BACKHAUL
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-80c7-a6d9-c4d4063d269b" class=""><strong>Detected anomalies</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80de-874c-d72dd9b81644" class="bulleted-list"><li style="list-style-type:disc">Multi-layer correlated failure</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-805b-bed3-fd5a8626dbf9"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-80dc-aac9-ef759dbd6111" class="">8️⃣ Security / Fraud – Real-Time Sample Data</h1></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8096-b783-db9a5f8eb856" class=""><em>(Behavioral anomaly detection)</em></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-804a-8622-c9c775d3d5c1" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">timestamp,source_IP,UE_count,request_rate_per_sec,geo_variance_km
+2026-01-16T10:01:00Z,10.22.8.45,3,12,1
+2026-01-16T10:01:05Z,10.22.8.45,214,980,450   &lt;-- anomaly
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-8021-bb41-e0cd47c74e65" class=""><strong>Detected anomalies</strong></p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8026-9c68-e2df387d6860" class="bulleted-list"><li style="list-style-type:disc">DoS attack</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8096-b16b-e159856a6c5d" class="bulleted-list"><li style="list-style-type:disc">Rogue access pattern</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8070-8c9e-fe53401d6d02"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-801d-88e5-e696ba466fc3" class="">9️⃣ Unified Feature Vector (For ML Models)</h1></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2eaff13f-3ca0-80d2-ad32-d622b2a3ec96" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">timestamp,PRB,SINR,Latency,PacketLoss,CPU,SliceLatency,AttachRate
+2026-01-16T10:01:05Z,92,5,52,5.1,95,21.3,230
+
+</code></pre></div><div style="display:contents" dir="auto"><p id="2eaff13f-3ca0-807a-8867-fe552064822e" class="">Used by:</p></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-803d-b4b8-d953fbf26b20" class="bulleted-list"><li style="list-style-type:disc">Autoencoders</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-8042-a932-e5c0bd196e4d" class="bulleted-list"><li style="list-style-type:disc">Isolation Forest</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaff13f-3ca0-80d3-9101-d335026a700f" class="bulleted-list"><li style="list-style-type:disc">LSTM</li></ul></div><div style="display:contents" dir="auto"><hr id="2eaff13f-3ca0-8071-a928-c1e11d231297"/></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-8043-8320-c99905f0e2f7" class="">🔟 Mapping: Data → Anomaly Type</h1></div><div style="display:contents" dir="ltr"><table id="2eaff13f-3ca0-80c7-aa91-d6e1d69ffd5d" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8039-9889-de9641a2a393"><th id="w;\P" class="simple-table-header-color simple-table-header">Data Source</th><th id="JimX" class="simple-table-header-color simple-table-header">Anomaly Type</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8095-bd58-cf11697cd412"><td id="w;\P" class="">RAN KPIs</td><td id="JimX" class="">Capacity / Quality</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80c0-ba52-df263605484a"><td id="w;\P" class="">Transport</td><td id="JimX" class="">Latency / Congestion</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80e0-ac17-cd7363a456f4"><td id="w;\P" class="">Core NFs</td><td id="JimX" class="">Resource / Session</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-8072-912a-dc0db43ddd4e"><td id="w;\P" class="">Slice KPIs</td><td id="JimX" class="">SLA breach</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80fc-9c6e-d93c4c59f11f"><td id="w;\P" class="">UE behavior</td><td id="JimX" class="">Signaling storm</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-805f-9e1b-e42d35c7fe3e"><td id="w;\P" class="">Logs</td><td id="JimX" class="">Contextual</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80d4-98af-f54790a32203"><td id="w;\P" class="">Alarms</td><td id="JimX" class="">Collective</td></tr></div><div style="display:contents" dir="ltr"><tr id="2eaff13f-3ca0-80f2-be28-f4868d1defd8"><td id="w;\P" class="">Security flows</td><td id="JimX" class="">Threat</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h1 id="2eaff13f-3ca0-8020-baf6-d8770c6d0d89" class=""></h1></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

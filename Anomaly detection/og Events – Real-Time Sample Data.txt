@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-01-16T10:01:07Z",
+  "component": "AMF",
+  "severity": "ERROR",
+  "error_code": "NGAP_503",
+  "message": "Repeated UE context setup failure",
+  "count_last_10s": 87
+}

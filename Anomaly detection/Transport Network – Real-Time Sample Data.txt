@@ -1,0 +1,4 @@
+timestamp,link_ID,latency_ms,jitter_ms,packet_loss_pct,bandwidth_util_pct
+2026-01-16T10:01:00Z,LINK_22,6,1.2,0.1,40
+2026-01-16T10:01:01Z,LINK_22,48,12.5,4.6,92   <-- anomaly
+2026-01-16T10:01:02Z,LINK_22,52,14.2,5.1,95   <-- anomaly

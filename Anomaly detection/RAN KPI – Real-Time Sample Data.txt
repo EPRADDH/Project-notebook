@@ -1,0 +1,4 @@
+timestamp,gNB_ID,cell_ID,PRB_DL_pct,PRB_UL_pct,RSRP_dBm,SINR_dB,HO_Success_pct,Throughput_Mbps
+2026-01-16T10:01:00Z,GNB_101,CELL_01,45,32,-85,18,98,120
+2026-01-16T10:01:05Z,GNB_101,CELL_01,88,76,-102,6,72,42   <-- anomaly
+2026-01-16T10:01:10Z,GNB_101,CELL_01,92,80,-105,5,65,35   <-- anomaly

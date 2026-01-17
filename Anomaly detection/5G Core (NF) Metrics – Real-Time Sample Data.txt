@@ -1,0 +1,4 @@
+timestamp,NF_Type,NF_ID,CPU_pct,Memory_pct,Session_Success_pct,Active_Sessions
+2026-01-16T10:01:00Z,UPF,UPF_03,42,55,99.2,120000
+2026-01-16T10:01:05Z,UPF,UPF_03,91,88,83.4,119500  <-- anomaly
+2026-01-16T10:01:10Z,UPF,UPF_03,95,92,76.8,118900  <-- anomaly
